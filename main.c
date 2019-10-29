@@ -1,5 +1,9 @@
+#include <stdio.h>
+#include "menu.h"
+
 int main(void){
-  printf("Thor git gut!");
+  Page();
+    
 
   return 0;
 }
