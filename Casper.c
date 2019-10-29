@@ -1,15 +1,14 @@
-/*Dette er et program skal lave en .txt fil, som der skrives tekst inde i*/
+/*Dette er et program skal lave skal udskrive inputet som en .txt fil*/
 
 #include <stdio.h>
 #include <stdlib.h>
 
-char retter[7][20] = {"Pizza", "Lasagne", "Bof_med_log", "Burger", "Pomfritter", "Ost-fondue", "Gulash"};
-char ingredienser[7][20] = {"Mushroom", "Salet", "Katofler", "Rodbeder", "Gulerod", "Ost", "Peber"};
-FILE *fp;
-int i, ugenummer = 0;
+char retter[7][20] = {"Pizza", "Lasagne", "Bøf med løg", "Burger", "Pomfritter", "Ost-fondue", "Gulash"};
+char ingredienser[7][20] = {"Svampe", "Salat", "Kartofler", "Rødbeder", "Gulerod", "Ost", "Peber"};
 
-int main ()
-{
+int main (){
+  FILE *fp;
+  int i, ugenummer = 0;
 
   printf("Indtast uge nummer:  ");
   scanf(" %d", &ugenummer);
