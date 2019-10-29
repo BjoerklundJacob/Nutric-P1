@@ -1,0 +1,1 @@
+char* StartText(void);
