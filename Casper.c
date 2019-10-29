@@ -36,6 +36,7 @@ int main (){
        fprintf(fp, "-----------------------\n");
        fprintf(fp, "%s:\n", retter [i]);
        fprintf(fp, ">  %s\n", ingredienser[i]);
+       fprintf(fp, ">  %s\n", ingredienser[i]);
        fprintf(fp, "\n");
        /*fprintf(fp, "-----------------------\n\n");*/
     }
@@ -43,7 +44,7 @@ int main (){
    /* close the file*/
    fclose (fp);
 
-   printf("Filen er lavet\n");
+   printf("Filen er genereret\n");
 
    return EXIT_SUCCESS;
  }
