@@ -6,10 +6,8 @@
 #define RECIPE_SET_LEN ceil((double) RECIPE_COUNT / (double) (sizeof(int)*8))
 #define LEN(x) (sizeof(x)/sizeof(x[0]))
 
-int main(void){
-
-  typedef struct {
-    char* name;
+typedef struct _RECIPE{
+    char *name;
     int prep_time;
     int cook_time;
 
@@ -21,19 +19,34 @@ int main(void){
     char **instructions;/*instructions string array*/
   }RECIPE;
 
+  typedef struct _RECIPE_SET{
+    char tag;
+    int bit_string[RECIPE_SET_LEN];
+  }RECIPE_SET;
+
+enum eRecipeSetTags{
+  tomato,
+  nut,
+  gluten,
+  soya,
+  e_recipe_set_tags_size,
+  terminator
+};
+
+int main(void){
+
   RECIPE recipes[RECIPE_COUNT];
+  RECIPE_SET recipe_sets[e_recipe_set_tags_size];
 
-  int recipe_set[RECIPE_SET_LEN];
-  int i;
-
+  int i, j;
   char *tags;
 
-  /* Set to have full 1's as bits */
-  for(i = 0; i < RECIPE_SET_LEN; ++i)
-    recipe_set[i] = -1;
+  /* Initialise all recipe set bit strings to full 0's */
+  for(j = 0; j < e_recipe_set_tags_size; ++j)
+    for(i = 0; i < RECIPE_SET_LEN; ++i)
+      recipe_sets[j].bit_string[i] = 0;
 
-
-  find_recipes(recipe_set, tags);  
+  find_recipes(recipe_set, tags);
 
 
   return 0;
