@@ -32,7 +32,7 @@ int main (){
 
    /* write 10 lines of text into the file stream*/
    for(i = 0; i < 7;i++){
-       fprintf(fp, "Dag: %d        ",i);
+       fprintf(fp, "Dag: %d",i);
        fprintf(fp, "-----------------------------------------------\n");
        fprintf(fp, "Opskrift %d: %s\n", i, retter [i]);
        fprintf(fp, "Info: 2. pers, 45. min\n");
