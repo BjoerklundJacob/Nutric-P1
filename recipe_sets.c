@@ -1,69 +1,45 @@
-#include <stdio.h>
-#include <math.h>
+#include <stdio.h>/* printf, scanf ... */
+#include <stdlib.h>/* abs(int) */
 
-#define RECIPE_COUNT 33
-#define INGREDIENT_COUNT 10
-/* RECIPE_SET_LEN is equal to the amount of int's needed to have a bitflag for each recipe */
-#define RECIPE_SET_LEN (int) ( ((double) RECIPE_COUNT * 2.0 - 1.0) / (double) (sizeof(int)*8*2)+1 )
-#define LEN(x) (sizeof(x)/sizeof(x[0]))
+#include "recipe_sets.h"
 
-#include "types.h"
-
-void find_recipes(RECIPE_SET* recipe_set, RECIPE_SET *recipe_sets, eRECIPE_SET_TAGS *tags, int tag_count);
-void recipe_junction(RECIPE_SET* recipe1, RECIPE_SET recipe2);
-void print_recipe_set(RECIPE_SET recipe_set);
-RECIPE_SET recipe_set_bit_flip(RECIPE_SET* recipe_set);
-
-int main(void){
-
-  RECIPE recipes[RECIPE_COUNT];
-  RECIPE_SET recipe_sets[e_recipe_set_tags_size];
-  RECIPE_SET recipe_set;
-
-  int i, j;
-  eRECIPE_SET_TAGS tags[] = {nut, gluten};
-
-  /* Initialise all recipe set bit strings to "random" test values" */
-  for(j = 0; j < (int) e_recipe_set_tags_size; ++j)
-    for(i = 0; i < RECIPE_SET_LEN; ++i)
-      recipe_sets[j].bit_string[i] = (345 << j) + 9599*j;
-
-  /* Initialise recipe set bit string to full 1's */
-  for(i = 0; i < RECIPE_SET_LEN; ++i)
-    recipe_set.bit_string[i] = -1;
-
-  printf("Bit string length = %d\n", RECIPE_SET_LEN);
-  for(i = 0; i < (int) e_recipe_set_tags_size; ++i){
-    printf("Printing recipe set %d\n", i);
-    print_recipe_set(recipe_sets[i]);
-    printf("\n\n");
-  }
-
-  find_recipes(&recipe_set, recipe_sets, tags, LEN(tags));
-
-  printf("Available recipes from both set 0 and set 1:\n");
-  print_recipe_set(recipe_set_bit_flip(&recipe_set));
-  printf("\n");
-
-  return 0;
-}
-
+/* Finds all recipes from a recipe set that is in recipe sets with the positive input tags
+ * or excludes any recipes from recipe sets with the negative input tags.
+ * param 0: IN+OUT - recipe set to modify to include or exclude any shared recipes from.
+ * param 1: IN     - array of all recipe sets available
+ * param 2: IN     - array of all tags to include or exclude
+ * param 3: IN     - length of param 2 array
+ */
 void find_recipes(RECIPE_SET* recipe_set, RECIPE_SET *recipe_sets, eRECIPE_SET_TAGS *tags, int tag_count){
   int i;
-  RECIPE_SET recipe;
+  RECIPE_SET tag_recipe_set;
   
+  /* loop through tags and include/exclude them from the recipe_set */
   for(i = 0; i < tag_count; ++i){
-    recipe = recipe_sets[tags[i]];
-    recipe_junction(recipe_set, recipe);
+    /* get recipe set for current tag */
+    tag_recipe_set = recipe_sets[abs(tags[i])];/* make sure enum is treated as a signed int */
+    /* if tag is negative, exclude that set instead of including */
+    if ((int) tags[i] < 0){
+      recipe_set_bit_flip(&tag_recipe_set);
+    }
+    recipe_junction(recipe_set, tag_recipe_set);
   }
 }
 
+/* Finds the junction between the two recipe sets setting the result in the first recipe set
+ * param 0: IN+OUT - recipe set 1
+ * param 1: IN     - recipe set 2
+ */
 void recipe_junction(RECIPE_SET* recipe_set1, RECIPE_SET recipe_set2){
   int i;
+  /* bitwise AND between the two bit strings, storing result in the first */
   for(i = 0; i < RECIPE_SET_LEN; ++i)
     recipe_set1->bit_string[i] &= recipe_set2.bit_string[i];
 }
 
+/* Prints the bit string of recipe set
+ * param 0: IN - recipe set 2
+ */
 void print_recipe_set(RECIPE_SET recipe_set){
   int i, j;
   /* Loop for every bit in a recipe set bit string */
@@ -74,9 +50,28 @@ void print_recipe_set(RECIPE_SET recipe_set){
   }
 }
 
+/* Flips every bit in the bit string from 0 to 1 or 1 to 0
+ * param 0: IN+OUT - recipe set
+ * return: The flipped recipe set
+ */
 RECIPE_SET recipe_set_bit_flip(RECIPE_SET* recipe_set){
   int i;
   for(i = 0; i < RECIPE_SET_LEN; ++i)
     recipe_set->bit_string[i] = ~recipe_set->bit_string[i];
   return *recipe_set;
+}
+
+/* Returns the amount of recipes in a recipe set
+ * param 0: IN - recipe set
+ * return: amount of 1-bits in the recipe set bit string
+ */
+int recipe_count(RECIPE_SET recipe_set){
+  int i, j, count = 0;
+  /* Loop for every bit in a recipe set bit string */
+  for(i = 0; i < RECIPE_SET_LEN; ++i){
+    for(j = sizeof(int)*8 - 1; j >= 0; --j){
+      count += recipe_set.bit_string[i] & (1 << j) ? 1 : 0;
+    }
+  }
+  return count;
 }
