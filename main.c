@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include "menu.h"
 
 int main(void){
-  printf("Hello Jacob!");
+  StartText();
+  Page();
 
   return 0;
 }
