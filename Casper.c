@@ -6,6 +6,8 @@
 char retter[7][20] = {"Pizza", "Lasagne", "Bøf med løg", "Burger", "Pomfritter", "Ost-fondue", "Gulash"};
 char ingredienser[7][20] = {"Svampe", "Salat", "Kartofler", "Rødbeder", "Gulerod", "Ost", "Peber"};
 
+void ascii_output(void); 
+
 int main (){
   FILE *fp;
   int i, ugenummer = 0;
@@ -14,9 +16,10 @@ int main (){
   scanf(" %d", &ugenummer);
 
    /* open the file for writing*/
-   fp = fopen ("C:\\Users\\caspe\\Desktop\\VeGen_file.txt","w");
+   fp = fopen ("VeGen_file.txt","w");
 
-   fprintf(fp, " __      __   _____\n \\ \\    / /  / ____|\n  \\ \\  / /__| |  __  ___ _ __\n   \\ \\/ / _ \\ | |_ |/ _ \\ '_ \\\n    \\  /  __/ |__| |  __/ | | |\n     \\/ \\___|\\_____|\\___|_| |_|\n \n");
+   //fprintf(fp, " __      __   _____\n \\ \\    / /  / ____|\n  \\ \\  / /__| |  __  ___ _ __\n   \\ \\/ / _ \\ | |_ |/ _ \\ '_ \\\n    \\  /  __/ |__| |  __/ | | |\n     \\/ \\___|\\_____|\\___|_| |_|\n \n");
+   fprintf(fp, " __      __   _____\n");
 
    fprintf(fp, "Uge: %d\n\n", ugenummer);
 
@@ -52,6 +55,10 @@ int main (){
    return EXIT_SUCCESS;
  }
 
+ void ascii_output(){
+
+ }
+
  /*
   __      __   _____
   \ \    / /  / ____|
@@ -83,5 +90,16 @@ __      __                                          _               _
     \/ \___|\__, |\___|_| |_|           \___/ \__,_|\__| .__/ \__,_|\__|
              __/ |                                     | |
             |___/                                      |_|
+
+
+  __      __   _____                __         _               _
+  \ \    / /  / ____|              / /        | |             | |
+   \ \  / /__| |  __  ___ _ __    / /__  _   _| |_ _ __  _   _| |_
+    \ \/ / _ \ | |_ |/ _ \ '_ \  / / _ \| | | | __| '_ \| | | | __|
+     \  /  __/ |__| |  __/ | | |/ / (_) | |_| | |_| |_) | |_| | |_
+      \/ \___|\_____|\___|_| |_/_/ \___/ \__,_|\__| .__/ \__,_|\__|
+                                                  | |
+                                                  |_|
+
 
  */
