@@ -6,7 +6,7 @@
 char retter[7][20] = {"Pizza", "Lasagne", "Bøf med løg", "Burger", "Pomfritter", "Ost-fondue", "Gulash"};
 char ingredienser[7][20] = {"Svampe", "Salat", "Kartofler", "Rødbeder", "Gulerod", "Ost", "Peber"};
 
-void ascii_output(int);
+void ascii_output(void);
 
 int main (){
   FILE *fp;
@@ -19,14 +19,6 @@ int main (){
    fp = fopen ("VeGen_file.txt","w");
 
    //fprintf(fp, " __      __   _____\n \\ \\    / /  / ____|\n  \\ \\  / /__| |  __  ___ _ __\n   \\ \\/ / _ \\ | |_ |/ _ \\ '_ \\\n    \\  /  __/ |__| |  __/ | | |\n     \\/ \\___|\\_____|\\___|_| |_|\n \n");
-   fprintf(fp, " __      __     _____                 ____          _                  _      \n");
-   fprintf(fp, " \ \    / /    / ____|               / __ \        | |                | |     \n");
-   fprintf(fp, "  \ \  / /___ | |  __   ___  _ __   | |  | | _   _ | |_  _ __   _   _ | |     \n");
-   fprintf(fp, "   \ \/ // _ \| | |_ | / _ \| '_ \  | |  | || | | || __|| '_ \ | | | || __|   \n");
-   fprintf(fp, "    \  /|  __/| |__| ||  __/| | | | | |__| || |_| || |_ | |_) || |_| || |_    \n");
-   fprintf(fp, "     \/  \___| \_____| \___||_| |_|  \____/  \__,_| \__|| .__/  \__,_| \__|   \n");
-   fprintf(fp, "                                                        | |                   \n");
-   fprintf(fp, "                                                        |_|                   \n");
 
    fprintf(fp, "Uge: %d\n\n", ugenummer);
 
@@ -62,7 +54,16 @@ int main (){
    return EXIT_SUCCESS;
  }
 
- void ascii_output(int j){
+ void ascii_output(){
+   fprintf(fp, " __      __     _____                 ____          _                  _      \n");
+   fprintf(fp, " \ \    / /    / ____|               / __ \        | |                | |     \n");
+   fprintf(fp, "  \ \  / /___ | |  __   ___  _ __   | |  | | _   _ | |_  _ __   _   _ | |     \n");
+   fprintf(fp, "   \ \/ // _ \| | |_ | / _ \| '_ \  | |  | || | | || __|| '_ \ | | | || __|   \n");
+   fprintf(fp, "    \  /|  __/| |__| ||  __/| | | | | |__| || |_| || |_ | |_) || |_| || |_    \n");
+   fprintf(fp, "     \/  \___| \_____| \___||_| |_|  \____/  \__,_| \__|| .__/  \__,_| \__|   \n");
+   fprintf(fp, "                                                        | |                   \n");
+   fprintf(fp, "                                                        |_|                   \n");
+
  }
 
  /*
