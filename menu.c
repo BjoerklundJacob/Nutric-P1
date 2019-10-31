@@ -1,32 +1,42 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "menu.h"
-#
+
+
 void Page(void){
+    UserData userData;
+
     char pageinput = '9';
     StartText();
     do{
-        
-        pageinput =GetPage();
+        pageinput = GetPage();
         
         switch(pageinput){
             case '1':
-            Recipes();
-            break;
+                ClearScreen();
+                Recipes();
+                ClearScreen();
+                StartText();
+                break;
             case '2':
-            UserSettings();
-            break;
+                ClearScreen();
+                UserSettings(&userData);
+                ClearScreen();
+                StartText();
+                break;
             case '0': 
-            Exit();
-            break;
+                ClearScreen();
+                Exit();
+                break;
             default:
-            printf("The following page was not found. Please try again.\n");
-            break;
+                printf("The following page was not found. Please try again.\n");
+                break;
 
         }
     } while(pageinput !='0');
 }
 
-int GetPage(void){
+char GetPage(void){
     char menu_page_number;
     scanf(" %c", &menu_page_number);
     return menu_page_number;
@@ -45,8 +55,6 @@ void Recipes(void){
 
     return;
 }
-
-
 
 void Exit(void){
     printf("See you next time.\n");
@@ -69,4 +77,8 @@ void StartText(void)
     printf("(1) Recipies\n");
     printf("(2) User Settings\n");
     printf("(0) Exit\n");
+}
+
+void ClearScreen(void){
+    system("@cls||clear");
 }
