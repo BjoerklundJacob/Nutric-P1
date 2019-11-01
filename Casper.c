@@ -9,21 +9,27 @@ char ingredienser[7][20] = {"Svampe", "Salat", "Kartofler", "Rødbeder", "Gulero
 void ascii_output(void);
 
 int main (){
-  FILE *fp;
+  FILE *fp = NULL;
+  char username[250];
+  char userfile[255];
+
   int i, ugenummer = 0;
 
   printf("Indtast uge nummer:  ");
-  scanf(" %d", &ugenummer);
+  scanf(" %d", &userfile, &ugenummer);
+  printf("Hvad skal filen hedde:");
+  //scanf("%s", & username);
+  sprintf(userfile, "uge%d.txt", username);
 
    /* open the file for writing*/
-   fp = fopen ("VeGen_file.txt","w");
+   fp = fopen (userfile,"w");
 
    //fprintf(fp, " __      __   _____\n \\ \\    / /  / ____|\n  \\ \\  / /__| |  __  ___ _ __\n   \\ \\/ / _ \\ | |_ |/ _ \\ '_ \\\n    \\  /  __/ |__| |  __/ | | |\n     \\/ \\___|\\_____|\\___|_| |_|\n \n");
-   fprintf(fp, " __      __      _____                   ____           _                  _         \n");
-   fprintf(fp, " \\ \\    / /     /  ____|                / __ \\        | |                | |        \n");
-   fprintf(fp, "  \\ \\  / /___  |  |  __    ___  _ __   | |  | | _   _ | |_  _ __   _   _ | |         \n");
-   fprintf(fp, "   \\ \\/ // _ \\ | | |_ |  / _ \\| '_ \\  | |  | || | | || __|| '_ \\ | | | || __|    \n");
-   fprintf(fp, "    \\  / |  __/  | |__| | |  __/| | | | | |__| || |_| || |_ | |_) || |_| || |_        \n");
+   fprintf(fp, " __      __      _____                      ____           _                  _         \n");
+   fprintf(fp, " \\ \\    / /     /  ____|                 / __ \\        | |                | |        \n");
+   fprintf(fp, "  \\ \\  / /___  |  |  __    ___  _ __    | |  | | _   _ | |_  _ __   _   _ | |         \n");
+   fprintf(fp, "   \\ \\/ // _ \\ | | |_ |  / _ \\| '_ \\ | |  | || | | || __|| '_ \\ | | | || __|    \n");
+   fprintf(fp, "    \\  /|  __/  | |__| | |  __/| | | |   | |__| || |_| || |_ | |_) || |_| || |_        \n");
    fprintf(fp, "     \\/  \\___| \\_____| \\___||_| |_|  \\____/ \\__,_| \\__|| .__/  \\__,_| \\__|   \n");
    fprintf(fp, "                                                              | |                     \n");
    fprintf(fp, "                                                              |_|                     \n");
