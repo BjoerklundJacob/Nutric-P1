@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "menu.h"
 
-
 void Page(void){
     UserData userData;
 
@@ -10,30 +9,29 @@ void Page(void){
     StartText();
     do{
         pageinput = GetPage();
-        
-        switch(pageinput){
-            case '1':
-                ClearScreen();
-                Recipes();
-                ClearScreen();
-                StartText();
-                break;
-            case '2':
-                ClearScreen();
-                UserSettings(&userData);
-                ClearScreen();
-                StartText();
-                break;
-            case '0': 
-                ClearScreen();
-                Exit();
-                break;
-            default:
-                printf("The following page was not found. Please try again.\n");
-                break;
 
+        switch (pageinput){
+        case '1':
+            ClearScreen();
+            Recipes();
+            ClearScreen();
+            StartText();
+            break;
+        case '2':
+            ClearScreen();
+            UserSettings(&userData);
+            ClearScreen();
+            StartText();
+            break;
+        case '0':
+            ClearScreen();
+            Exit();
+            break;
+        default:
+            printf("The following page was not found. Please try again.\n");
+            break;
         }
-    } while(pageinput !='0');
+    } while (pageinput != '0');
 }
 
 char GetPage(void){
@@ -44,13 +42,13 @@ char GetPage(void){
 
 void Recipes(void){
     char recipeinput = '9';
-     
+
     do{
         printf("You're at the Recipes page. Press 1 to find recipes or smth and 0 to return to main menu.\n");
         scanf(" %c", &recipeinput);
     } while (recipeinput != '0');
     printf("You're leaving recipes page now.\n\n");
-    
+
     StartText();
 
     return;
@@ -61,8 +59,7 @@ void Exit(void){
     return;
 }
 
-void StartText(void)
-{
+void StartText(void){
     /*
      __      __   _____
      \ \    / /  / ____|
@@ -71,7 +68,12 @@ void StartText(void)
         \  /  __/ |__| |  __/ | | |
          \/ \___|\_____|\___|_| |_|
     */
-    printf(" __      __   _____\n \\ \\    / /  / ____|\n  \\ \\  / /__| |  __  ___ _ __\n   \\ \\/ / _ \\ | |_ |/ _ \\ '_ \\\n    \\  /  __/ |__| |  __/ | | |\n     \\/ \\___|\\_____|\\___|_| |_|\n");
+    printf(" __      __   _____\n");
+    printf(" \\ \\    / /  / ____|\n");
+    printf("  \\ \\  / /__| |  __  ___ _ __\n");
+    printf("   \\ \\/ / _ \\ | |_ |/ _ \\ '_ \\\n");
+    printf("    \\  /  __/ |__| |  __/ | | |\n");
+    printf("     \\/ \\___|\\_____|\\___|_| |_|\n");
 
     printf("\nType 1,2 or 0 to get to the respective page.\n");
     printf("(1) Recipies\n");

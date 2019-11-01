@@ -6,6 +6,7 @@ Return to main menu
 If $ then eastereggl ("https://pics.me.me/looks-like-meats-back-on-the-menu-boys-when-you-37741962.png")
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include "settings.h"
 
 void UserSettings(UserData* userData){
@@ -36,7 +37,7 @@ void UserSettings(UserData* userData){
 void Weight(UserData* userData){
     printf("Please input your current weight: ");
     scanf(" %lf", &userData->weight);
-    printf("Your weight is now set to %.0lf\n\n", userData->weight); 
+    printf("Your weight is now set to %.1lf\n\n", userData->weight); 
     return;
 }
 
@@ -46,8 +47,4 @@ void UserSettingsText(void){
     printf("(2) Food Exclusions\n");
     printf("(0) Return to the main menu\n");
     return;
-}
-
-void ClearScreen(void){
-    system("@cls||clear");
 }
