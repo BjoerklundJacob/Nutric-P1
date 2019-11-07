@@ -9,5 +9,5 @@ typedef enum _eRECIPE_SET_TAGS{
 
 typedef struct UserData{
     double weight;
-    eRECIPE_SET_TAGS foodExclusions[];
+    eRECIPE_SET_TAGS foodExclusions[e_recipe_set_tags_size];
 } UserData;

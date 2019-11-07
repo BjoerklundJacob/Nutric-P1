@@ -5,3 +5,4 @@ void FoodExclusions(UserData* UserData);
 void UserSettingsText(void);
 void ClearScreen(void);
 char Signed(int input);
+int CheckInput(char* sign, int* input);
