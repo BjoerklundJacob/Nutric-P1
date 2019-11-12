@@ -25,10 +25,10 @@ void UserSettings(UserData* userData){
         case '2':
             ClearScreen();
             FoodExclusions(userData);
-            
             UserSettingsText();
             break;
         case '0':
+            SaveUserData(*userData);
             return;
         default:
             printf("The following page was not found. Please try again.\n");
@@ -43,9 +43,9 @@ void Weight(UserData* userData){
     printf("Please input your current weight: ");
     scanres = scanf(" %lf", &userData->weight);
     while (scanres != 1){
-        char clearBuffer;
-        while (clearBuffer != '\n'){
-            scanf("%c", &clearBuffer);
+        char buffer;
+        while (buffer != '\n'){
+            scanf("%c", &buffer);
         }
         scanres = scanf(" %lf", &userData->weight);
     }
@@ -62,21 +62,25 @@ void FoodExclusions(UserData* userData) {
         userData->foodExclusions[i] = -e_recipe_set_tags_size;
     }
 
-    printf("Type the '+' to must include or '-' to exclude the respective ingredients.\n");
+    printf("Type the '+' to must include or '-' to exclude the respective ingredients or '*' to remove in- or exclusion.\n");
     for (i = 1; i < e_recipe_set_tags_size; i++){
         printf("(%d) %s\n", i, stringTags[i]);
     }
-    printf("(0) Return to the main menu\n");
+    printf("(0) Return to the User Settings\n\n");
     do {
         if (CheckInput(&sign, &input) == -1){
             break;
         }
         for (i = 0; i < e_recipe_set_tags_size-1; i++){
-            if (userData->foodExclusions[i] == -e_recipe_set_tags_size || abs(userData->foodExclusions[i]) == input){        
+            if (i == input-1){        
                 if (sign == '-'){
                     userData->foodExclusions[i] = -input;
                 }else if (sign == '+'){
                     userData->foodExclusions[i] = input;
+                } else if (sign == '*'){
+                    userData->foodExclusions[i] = -e_recipe_set_tags_size;
+                    printf("Food Exclusion %s now added/updated\n", stringTags[input]);
+                    break;
                 }else{
                     break;
                 }
@@ -86,10 +90,15 @@ void FoodExclusions(UserData* userData) {
         }
 
     } while (input != 0);
-
+    printf("\nFood in- and exclusions are now\n");
     for (i = 0; i < e_recipe_set_tags_size-1; i++){
-        printf("Food exclusions are now %c%s\n", Signed(userData->foodExclusions[i]), stringTags[abs(userData->foodExclusions[i])]);
+        if (userData->foodExclusions[i] == -e_recipe_set_tags_size){
+            printf("   %s\n", stringTags[i+1]);
+        }else{
+            printf("  %c%s\n", Signed(userData->foodExclusions[i]), stringTags[i+1]);
+        }
     }
+    printf("\n");
 }
 
 void UserSettingsText(void){
@@ -106,33 +115,57 @@ char Signed(int input){
     } else if (input > 0) {
         return '+';
     } else{
-        return '?';
+        return ' ';
     }
 }
 
 int CheckInput(char* sign, int* input){
     int scanres;
+    char buffer;
     scanres = scanf(" %c", sign);
     if (*sign == '0'){
         return -1;
     }
-    while (*sign != '-' && *sign != '+' && *sign != '\n'){
-        char clearBuffer;
-        printf("Unexpected input try again\n");
-        while (clearBuffer != '\n'){
-            scanf("%c", &clearBuffer);
-        }
-        scanres = scanf(" %c", sign);
-
-    }
+    ClearChar(sign, &scanres);
 
     scanres = scanf(" %d", input);
-    while (scanres != 1 || *input >= e_recipe_set_tags_size || *input == 0){
-        char clearBuffer;
-        while (clearBuffer != '\n'){
-            scanf("%c", &clearBuffer);
+    while (scanres != 1 || *input > e_recipe_set_tags_size-1 || *input == 0){
+        printf("Unexpected number try again\n");
+        while (buffer != '\n'){
+            scanf("%c", &buffer);
         }
+        
+        scanres = scanf(" %c", sign);
+        ClearChar(sign,&scanres);
         scanres = scanf(" %d", input);
     }
     return 0;
+}
+
+void ClearChar(char* sign, int* scanres){
+    char buffer;
+    while (*sign != '-' && *sign != '+' && *sign != '*'){
+        printf("Unexpected sign try again\n");
+        while (buffer != '\n'){
+            scanf("%c", &buffer);
+        }
+        *scanres = scanf(" %c", sign);
+    }
+}
+
+void SaveUserData(UserData UserData){
+    FILE *file;
+    int i;
+    
+    file = fopen("User Data.ini", "w");
+    
+
+    fprintf(file, "Weight=%lf\n", UserData.weight);
+    for (i = 0; i < e_recipe_set_tags_size-1; i++){
+        fprintf(file, "FoodExclusions[%d]=%lf\n", i, UserData.foodExclusions[i]);
+    }
+}
+
+void LoadUserData(){
+
 }
