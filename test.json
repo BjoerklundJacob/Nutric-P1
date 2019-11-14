@@ -1,0 +1,52 @@
+{
+  "recipes":[
+    {
+      "name": "Vegan tiffin",
+      "prep time": 15,
+      "cook time": 3,
+      "ingredients": [
+        {
+          "name": "coconut oil",
+          "amount": 75,
+          "unit": "g",
+          "nutrients":[]
+        },
+        {
+          "name": "vegan dark chocolate",
+          "amount": 200,
+          "unit": "g",
+          "nutrients":[]
+        },
+        {
+          "name": "golden syrup",
+          "amount": 2,
+          "unit": "tbsp",
+          "nutrients":[]
+        },
+        {
+          "name": "vegan ginger nuts",
+          "amount": 200,
+          "unit": "g",
+          "nutrients":[]
+        },
+        {
+          "name": "dried cranberries",
+          "amount": 100,
+          "unit": "g",
+          "nutrients":[]
+        },
+        {
+          "name": "pistachios",
+          "amount": 50,
+          "unit": "g",
+          "nutrients":[]
+        }
+      ],
+      "instructions":[
+        "Lightly oil a 20cm square brownie tin with coconut oil and line the base with baking parchment. Melt the chocolate with the coconut oil and golden syrup in the microwave in 30-second bursts until smooth and glossy.",
+        "Break the ginger nuts into small pieces in a bowl, then add the dried cranberries and pistachios. Scrape in the chocolate mixture and give everything a good mix to combine, then spoon the tiffin into the tin. Use the back of the spoon to smooth out the top and press it down, then chill in the fridge for 2 hrs or until set hard. Once set, cut into 25 mini squares. Will keep for a week in the fridge."
+      ],
+      "nutriens":[]
+    }
+  ]
+}

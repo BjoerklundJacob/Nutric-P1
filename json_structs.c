@@ -1,58 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-typedef struct _KEY_VALUE_PAIR{
-  char* key;
-  void* value;
-}KEY_VALUE_PAIR;
-
-typedef struct _LIST{
-  void* value;
-  struct _LIST* next_element;
-}LIST;
-
-typedef struct _MAP{
-  LIST key_value_pairs;
-  LIST submaps;
-}MAP;
-
-MAP* map_create(void);
-void list_free(LIST* list);
-void list_add(LIST* list, void* value);
-LIST* list_last(LIST* list);
-void list_delete(LIST* list, LIST* element);
-void map_free(MAP* map);
-void map_add(MAP* map, char* key, void* value);
-void* map_value(MAP* map, char* key);
-int list_size(LIST list);
-void map_add_map(MAP* map, char* key, MAP* value);
-
-void print_map_keys(MAP* map);
-
-
-int main(void){
-  MAP* map = map_create();
-  MAP* submap = map_create();
-  int number = 100;
-
-  map_add(map, "greeting", "Hej");
-  map_add(map, "navn", "Simon");
-
-  map_add(submap, "submap key", "omg it woks!");
-  map_add_map(map, "submap", submap);
-  printf("%s %s!\n", (char*) map_value(map, "greeting"), (char*) map_value(map, "navn"));
-
-  printf("%s\n", (char*) map_value(map_value(map, "submap"), "submap key"));
-
-  print_map_keys(map);
-  print_map_keys(submap);
-
-  map_free(map);
-  
-  return 0;
-}
-
+#include "json_structs.h"
 
 void map_add(MAP* map, char* key, void* value){
   KEY_VALUE_PAIR* key_val_p = malloc(sizeof(KEY_VALUE_PAIR));
@@ -69,6 +15,7 @@ void map_free(MAP* map){
   }
   /* free all key_value pairs */
   while(map->key_value_pairs.value != NULL){
+    free(((KEY_VALUE_PAIR*) map->key_value_pairs.value)->value);
     free(map->key_value_pairs.value);
     list_delete(&map->key_value_pairs, &map->key_value_pairs);
   }
@@ -131,15 +78,15 @@ LIST* list_last(LIST* list){
 void list_add(LIST* list, void* value){
   LIST* new_element_p;
   LIST* last_element;
-  if (new_element_p == NULL){
-    exit(EXIT_FAILURE);
-  }
   last_element = list_last(list);
   if (last_element == list && list->value == NULL){
     list->value = value;
   }
   else{
     new_element_p = malloc(sizeof(LIST));
+    if (new_element_p == NULL){
+      exit(EXIT_FAILURE);
+    }
     new_element_p->value = value;
     new_element_p->next_element = NULL;
     last_element->next_element = new_element_p;
@@ -176,17 +123,6 @@ void* map_value(MAP* map, char* key){
   return NULL;
 }
 
-void print_map_keys(MAP* map){
-  LIST* current_element = &map->key_value_pairs;
-  KEY_VALUE_PAIR* key_val;
-  printf("Keys:\n");
-  while(current_element != NULL && current_element->value != NULL){
-    key_val = (KEY_VALUE_PAIR*)current_element->value;
-    printf("  %s\n", key_val->key);
-    current_element = current_element->next_element;
-  }
-}
-
 int list_size(LIST list){
   int size = 0;
   LIST* current_element = &list;
@@ -200,4 +136,22 @@ int list_size(LIST list){
 void map_add_map(MAP* map, char* key, MAP* submap){
   list_add(&map->submaps, submap);
   map_add(map, key, submap);
+}
+
+void map_add_int(MAP* map, char* key, int i){
+  int* i_p = malloc(sizeof(int));
+  if(i_p == NULL){
+    exit(EXIT_FAILURE);
+  }
+  *i_p = i;
+  map_add(map, key, i_p);
+}
+
+void map_add_double(MAP* map, char* key, double d){
+  double* d_p = malloc(sizeof(double));
+  if(d_p == NULL){
+    exit(EXIT_FAILURE);
+  }
+  *d_p = d;
+  map_add(map, key, d_p);
 }
