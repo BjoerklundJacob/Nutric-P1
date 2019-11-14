@@ -12,10 +12,11 @@ typedef struct _LIST{
 }LIST;
 
 typedef struct _MAP{
-  LIST key_value_pairs;
-  LIST submaps;
+  LIST* key_value_pairs;
+  LIST* submaps;
 }MAP;
 
+LIST* list_create(void);
 MAP* map_create(void);
 void list_free(LIST* list);
 void list_add(LIST* list, void* value);
