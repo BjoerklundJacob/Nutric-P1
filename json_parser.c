@@ -15,6 +15,7 @@ int main(void){
   MAP *map = json_load(".\\test.json");
 
   map_free(map);
+  printf("success?");
   return 0;
 }
 
@@ -59,7 +60,7 @@ char non_white_space_char(FILE* file){
 MAP* json_parse_map(FILE* file){
   MAP* map = map_create();
   char key[MAX_KEY_LEN];
-  char c;
+  char c, value_type;
   char buffer[BUFFER_LEN];
   void* value;
   
@@ -82,12 +83,15 @@ MAP* json_parse_map(FILE* file){
       switch(c){
         case '{':
           value = (void*) json_parse_map(file);
+          value_type = 'M';
           break;
         case '[':
           value = (void*) json_parse_list(file);
+          value_type = 'L';
           break;
         case ',':case '}':
           value = NULL;
+          value_type = 0;
           break;
         case '\"':
           c = file_string_read(file, buffer, BUFFER_LEN, "\"", 0);
@@ -101,6 +105,7 @@ MAP* json_parse_map(FILE* file){
             exit(EXIT_FAILURE);
           }
           strcpy(value, buffer);
+          value_type = 'S';
           break;
         case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
           break;
@@ -108,7 +113,7 @@ MAP* json_parse_map(FILE* file){
           printf("Could not parse JSON file. default %c\n", c);
           exit(EXIT_FAILURE);
       }
-      map_add(map, key, value);
+      map_add(map, key, value, value_type);
     }
     else if (c != '}'){
       printf("Could not parse json..\n");
@@ -134,7 +139,7 @@ char json_read_key(FILE* file, char *key){
 
 LIST* json_parse_list(FILE* file){
   LIST* list = list_create();
-  char c;
+  char c, value_type;
   char buffer[BUFFER_LEN];
   void* value;
 
@@ -146,12 +151,15 @@ LIST* json_parse_list(FILE* file){
     switch(c){
       case '{':
         value = (void*) json_parse_map(file);
+        value_type = 'M';
         break;
       case '[':
         value = (void*) json_parse_list(file);
+        value_type = 'L';
         break;
       case ',':case ']':
         value = NULL;
+        value_type = 0;
         break;
       case '\"':
         c = file_string_read(file, buffer, BUFFER_LEN, "\"", 0);
@@ -165,6 +173,9 @@ LIST* json_parse_list(FILE* file){
           exit(EXIT_FAILURE);
         }
         strcpy(value, buffer);
+        printf("%s strlen = %d\n", value, strlen(value));
+        value_type = 'S';
+        printf("string done\n");
         break;
       case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
         break;
@@ -172,7 +183,15 @@ LIST* json_parse_list(FILE* file){
         printf("Could not parse JSON file.\n");
         exit(EXIT_FAILURE);
     }
-    list_add(list, value);
+    printf("+ %p %c\n", value, value_type);
+    list_add(&list, value, value_type);
+    printf("+");
+    c = non_white_space_char(file);
+    printf("%c", c);
+    if (c != ',' && c != ']'){
+      printf("Error with ,\n");
+      exit(EXIT_FAILURE);
+    }
   }
   while(c != ']');
   printf("ended parsing list\n");

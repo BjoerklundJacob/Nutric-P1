@@ -14,26 +14,28 @@ LIST* list_create(void){
 }
 
 /* Does not delete any nested lists */
-void list_delete(LIST* list, LIST* element){
+void list_delete(LIST** list, LIST* element){
   int done = 0;
   LIST *prev_element, *current_element;
-  current_element = list;
+  current_element = *list;
   do{
     if (current_element == element){
       /* if element to delete is first element in list */
-      if (element == list){
-        if (list->next_element != NULL){
+      if (element == *list){
+        if ((*list)->next_element != NULL){
           /* set first element of the list to be the next element */
-          current_element = list->next_element;
-          list->value = list->next_element->value;
-          list->next_element = list->next_element->next_element;
+          current_element = (*list)->next_element;
+          (*list)->value = (*list)->next_element->value;
+          (*list)->next_element = (*list)->next_element->next_element;
           /* free deleted element */
+          free_value(current_element->value, current_element->value_type);
           free(current_element);
         }
         /* if deleting first and only element */
         else{
-          free(list);
-          list = NULL;
+          free_value((*list)->value, (*list)->value_type);
+          free(*list);
+          *list = NULL;
         }
       }
       else{
@@ -65,28 +67,28 @@ LIST* list_last(LIST* list){
   return current_element;
 }
 
-void list_add(LIST* list, void* value){
+void list_add(LIST** list, void* value, char value_type){
   LIST* new_element_p;
   LIST* last_element;
-  last_element = list_last(list);
-  if (last_element == list && list->value == NULL){
-    list->value = value;
+  if (*list == NULL){
+    *list = list_create();
+    (*list)->value = value;
+    (*list)->value_type = value_type;
   }
   else{
-    new_element_p = malloc(sizeof(LIST));
-    if (new_element_p == NULL){
-      exit(EXIT_FAILURE);
-    }
+    last_element = list_last(*list);
+    new_element_p = list_create();
     new_element_p->value = value;
-    new_element_p->next_element = NULL;
+    new_element_p->value_type = value_type;
     last_element->next_element = new_element_p;
   }
 }
 
-void list_free(LIST* list){
-  while(list != NULL){
-    list_delete(list, list);
+void list_free(LIST** list){
+  while(*list != NULL){
+    list_delete(list, *list);
   }
+  *list = NULL;
 }
 
 int list_size(LIST list){
@@ -106,8 +108,8 @@ MAP* map_create(void){
     printf("Could not allocate memory for map.\n");
     exit(EXIT_FAILURE);
   }
-  map->key_value_pairs = list_create();
-  map->submaps = list_create();
+  map->key_value_pairs = NULL;
+  map->submaps = NULL;
   return map;
 }
 
@@ -126,8 +128,8 @@ void* map_value(MAP* map, char* key){
 }
 
 void map_add_map(MAP* map, char* key, MAP* submap){
-  list_add(map->submaps, submap);
-  map_add(map, key, submap);
+  list_add(&map->submaps, submap, 'M');
+  map_add(map, key, submap, 'M');
 }
 
 void map_add_int(MAP* map, char* key, int i){
@@ -136,7 +138,7 @@ void map_add_int(MAP* map, char* key, int i){
     exit(EXIT_FAILURE);
   }
   *i_p = i;
-  map_add(map, key, i_p);
+  map_add(map, key, i_p, 'i');
 }
 
 void map_add_double(MAP* map, char* key, double d){
@@ -145,33 +147,48 @@ void map_add_double(MAP* map, char* key, double d){
     exit(EXIT_FAILURE);
   }
   *d_p = d;
-  map_add(map, key, d_p);
+  map_add(map, key, d_p, 'd');
 }
 
-void map_add(MAP* map, char* key, void* value){
+void map_add(MAP* map, char* key, void* value, char value_type){
   KEY_VALUE_PAIR* key_val_p = malloc(sizeof(KEY_VALUE_PAIR));
   if(key_val_p == NULL){
     exit(EXIT_FAILURE);
   }
   key_val_p->key = key;
   key_val_p->value = value;
-  list_add(map->key_value_pairs, key_val_p);
+  key_val_p->value_type = value_type;
+  list_add(&map->key_value_pairs, key_val_p, value_type);
 }
 
 void map_free(MAP* map){
+  KEY_VALUE_PAIR *key_val_p;
   /* free all submaps */
   while(map->submaps != NULL){
+    printf("deleting submap.");
     map_free((MAP*) map->submaps->value);
-    list_delete(map->submaps, map->submaps);
-    printf("deleted submap.");
+    list_delete(&map->submaps, map->submaps);
   }
   /* free all key_value pairs */
   while(map->key_value_pairs != NULL){
+    printf("deleting key value pair value.");
     /* free key-value pair value */
-    free(((KEY_VALUE_PAIR*) map->key_value_pairs->value)->value);
+    key_val_p = (KEY_VALUE_PAIR*) map->key_value_pairs->value;
+    free_value(key_val_p->value, key_val_p->value_type);
     /* free key-value pair */
-    free(map->key_value_pairs->value);
-    list_delete(map->key_value_pairs, map->key_value_pairs);
-    printf("deleted key value pair value.");
+    free(key_val_p);
+    list_delete(&map->key_value_pairs, map->key_value_pairs);
   }
+  free(map);
+}
+
+void free_value(void* value, char value_type){
+  if (value != NULL){
+    switch(value_type){
+      case 'M': map_free(value); break;
+      case 'L': list_free(value); break;
+      default: free(value);
+    }
+  }
+  printf("freed value");
 }
