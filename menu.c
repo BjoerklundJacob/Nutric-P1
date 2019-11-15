@@ -4,9 +4,16 @@
 
 void Page(void){
     UserData userData;
+    char pageinput = '!';
+    int i;
+    
+    userData.weight = 80;
+    for (i = 0; i < e_recipe_set_tags_size; i++){
+        userData.foodExclusions[i] = -5;
+    }
 
-    char pageinput = '9';
     StartText();
+    LoadUserData(&userData);
     do{
         pageinput = GetPage();
 
@@ -83,4 +90,24 @@ void StartText(void){
 
 void ClearScreen(void){
     system("@cls||clear");
+}
+
+void LoadUserData(UserData* userData){
+    FILE *file;
+    int i;
+    
+    if ((file = fopen("User Data.ini", "r")) == NULL){
+        return;
+    }
+    
+    fscanf(file, " Weight=%lf", &userData->weight);
+
+    for (i = 0; i < e_recipe_set_tags_size-1; i++)
+    {
+        fscanf(file, " FoodExclusions[%d]=%d", &i,  &userData->foodExclusions[i]);
+            
+        
+    }
+    fclose(file);
+    return;
 }

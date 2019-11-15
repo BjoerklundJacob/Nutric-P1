@@ -153,19 +153,23 @@ void ClearChar(char* sign, int* scanres){
     }
 }
 
-void SaveUserData(UserData UserData){
+void SaveUserData(UserData userData){
     FILE *file;
     int i;
+    char sign;
     
     file = fopen("User Data.ini", "w");
     
 
-    fprintf(file, "Weight=%lf\n", UserData.weight);
+    fprintf(file, "Weight=%lf\n", userData.weight);
     for (i = 0; i < e_recipe_set_tags_size-1; i++){
-        fprintf(file, "FoodExclusions[%d]=%lf\n", i, UserData.foodExclusions[i]);
+        sign = Signed(userData.foodExclusions[i]);
+        if (sign == '+'){
+            fprintf(file, "FoodExclusions[%d]=%c%d\n", i, sign, userData.foodExclusions[i]);
+        }else{
+            fprintf(file, "FoodExclusions[%d]=%d\n", i, userData.foodExclusions[i]);
+        }
     }
+    fclose(file);
 }
 
-void LoadUserData(){
-
-}
