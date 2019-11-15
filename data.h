@@ -8,6 +8,6 @@ typedef enum _eRECIPE_SET_TAGS{
 }eRECIPE_SET_TAGS;
 
 typedef struct UserData{
-    double weight;
+    double age;
     int foodExclusions[e_recipe_set_tags_size-1];
 } UserData;
