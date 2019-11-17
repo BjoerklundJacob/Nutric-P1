@@ -7,12 +7,12 @@
   */
 LIST* list_create(void){
   LIST* list = malloc(sizeof(LIST));
-  printf("List create pointer = %p\n", list);
   if(list == NULL){
     printf("Could not allocate memory for list.\n");
     exit(EXIT_FAILURE);
   }
   list->value = NULL;
+  list->value_type = 0;
   list->next_element = NULL;
   return list;
 }
@@ -78,13 +78,11 @@ void list_add(LIST** list, void* value, char value_type){
   LIST* new_element_p;
   LIST* last_element;
   if (*list == NULL){
-    printf("list is null at add\n");
     *list = list_create();
     (*list)->value = value;
     (*list)->value_type = value_type;
   }
   else{
-    printf("list is not null at add\n");
     last_element = list_last(*list);
     new_element_p = list_create();/* this stops program */
     new_element_p->value = value;

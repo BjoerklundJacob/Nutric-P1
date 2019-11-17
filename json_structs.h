@@ -11,8 +11,8 @@ typedef struct _KEY_VALUE_PAIR{
 
 typedef struct _LIST{
   void* value;
-  struct _LIST* next_element;
   char value_type;
+  struct _LIST* next_element;
 }LIST;
 
 typedef struct _MAP{

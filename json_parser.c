@@ -12,10 +12,19 @@ LIST* json_parse_list(FILE* file);
 char parse_value(FILE* file, void** value);
 
 int main(void){
-  MAP *map = json_load(".\\test.json");
+  LIST *recipes, *ingredients;
+  MAP *recipe, *map;
+  map = json_load(".\\test.json");
   printf("json loaded.");
+
+  recipes = map_value(map, "recipes");
+  recipe = recipes->value;
+  ingredients = map_value(recipe, "ingredients");
+  
+  printf("\nIngredient 0 = %s\n", ingredients->value);
+
   map_free(map);
-  printf("success?");
+  printf("\nsuccess?\n");
   return 0;
 }
 
@@ -190,7 +199,7 @@ char parse_value(FILE* file, void** value){
         printf("Could not parse value string.\n");
         exit(EXIT_FAILURE);
       }
-      *value = malloc(strlen(buffer));
+      *value = malloc(strlen(buffer)+1);
       if (*value == NULL){
         printf("Could not allocate memory.\n");
         exit(EXIT_FAILURE);
