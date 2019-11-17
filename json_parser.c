@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "json_structs.h"
 
-#define MAX_KEY_LEN 32
 #define BUFFER_LEN 512
 
 char file_string_read(FILE* file, char *buffer, int buffer_size, char* stop_chars, int ignore_whitespace);
@@ -10,10 +9,11 @@ char json_read_key(FILE* file, char *key);
 char non_white_space_char(FILE* file);
 MAP* json_parse_map(FILE* file);
 LIST* json_parse_list(FILE* file);
+char parse_value(FILE* file, void** value);
 
 int main(void){
   MAP *map = json_load(".\\test.json");
-
+  printf("json loaded.");
   map_free(map);
   printf("success?");
   return 0;
@@ -61,67 +61,34 @@ MAP* json_parse_map(FILE* file){
   MAP* map = map_create();
   char key[MAX_KEY_LEN];
   char c, value_type;
-  char buffer[BUFFER_LEN];
   void* value;
   
   printf("started parsing map\n");
 
   do{
+    /* get first white space character */
     c = non_white_space_char(file);
-    if (c == ','){
-      c = non_white_space_char(file);
-    }
-    if(c == '\"'){
-      /* read key*/
-      c = json_read_key(file, key);
-      /* read ':' */
-      c = non_white_space_char(file);
-      /* read first char of value */
-      c = non_white_space_char(file);
-
-      /* parse value */
-      switch(c){
-        case '{':
-          value = (void*) json_parse_map(file);
-          value_type = 'M';
-          break;
-        case '[':
-          value = (void*) json_parse_list(file);
-          value_type = 'L';
-          break;
-        case ',':case '}':
-          value = NULL;
-          value_type = 0;
-          break;
-        case '\"':
-          c = file_string_read(file, buffer, BUFFER_LEN, "\"", 0);
-          if (c != '\"'){
-            printf("Could not parse value string.\n");
-            exit(EXIT_FAILURE);
-          }
-          value = malloc(strlen(buffer));
-          if (value == NULL){
-            printf("Could not allocate memory.\n");
-            exit(EXIT_FAILURE);
-          }
-          strcpy(value, buffer);
-          value_type = 'S';
-          break;
-        case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
-          break;
-        default:
-          printf("Could not parse JSON file. default %c\n", c);
-          exit(EXIT_FAILURE);
-      }
-      map_add(map, key, value, value_type);
-    }
-    else if (c != '}'){
-      printf("Could not parse json..\n");
+    if(c != '\"'){
+      printf("Invalid key formatting in json.\n");
       exit(EXIT_FAILURE);
     }
-  }
-  while(c != '}');
+    /* read key*/
+    c = json_read_key(file, key);
+    /* read ':' */
+    c = non_white_space_char(file);
+    /* parse value */
+    value_type = parse_value(file, &value);
+    /* add to map */
+    map_add(map, key, value, value_type);
 
+    /* check if end of map or more elements*/
+    c = non_white_space_char(file);
+  }
+  while(c == ',');
+  if(c != '}'){
+    printf("Missing '}' at the end of map.\n");
+    exit(EXIT_FAILURE);
+  }
   printf("ended parsing map\n");
 
   return map;
@@ -138,62 +105,26 @@ char json_read_key(FILE* file, char *key){
 }
 
 LIST* json_parse_list(FILE* file){
-  LIST* list = list_create();
+  LIST* list = NULL;/* should this be here??===*/
   char c, value_type;
-  char buffer[BUFFER_LEN];
   void* value;
-
+  
   printf("started parsing list\n");
-  do{
-    c = non_white_space_char(file);
 
+  do{
     /* parse value */
-    switch(c){
-      case '{':
-        value = (void*) json_parse_map(file);
-        value_type = 'M';
-        break;
-      case '[':
-        value = (void*) json_parse_list(file);
-        value_type = 'L';
-        break;
-      case ',':case ']':
-        value = NULL;
-        value_type = 0;
-        break;
-      case '\"':
-        c = file_string_read(file, buffer, BUFFER_LEN, "\"", 0);
-        if (c != '\"'){
-          printf("Could not parse value string.\n");
-          exit(EXIT_FAILURE);
-        }
-        value = malloc(strlen(buffer));
-        if (value == NULL){
-          printf("Could not allocate memory.\n");
-          exit(EXIT_FAILURE);
-        }
-        strcpy(value, buffer);
-        printf("%s strlen = %d\n", value, strlen(value));
-        value_type = 'S';
-        printf("string done\n");
-        break;
-      case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':
-        break;
-      default:
-        printf("Could not parse JSON file.\n");
-        exit(EXIT_FAILURE);
-    }
-    printf("+ %p %c\n", value, value_type);
+    value_type = parse_value(file, &value);
+    /* add to list */
     list_add(&list, value, value_type);
-    printf("+");
+
+    /* check if end of map or more elements*/
     c = non_white_space_char(file);
-    printf("%c", c);
-    if (c != ',' && c != ']'){
-      printf("Error with ,\n");
-      exit(EXIT_FAILURE);
-    }
   }
-  while(c != ']');
+  while(c == ',');
+  if(c != ']'){
+    printf("Missing ']' at the end of list.\n");
+    exit(EXIT_FAILURE);
+  }
   printf("ended parsing list\n");
 
   return list;
@@ -209,7 +140,7 @@ char file_string_read(FILE* file, char *buffer, int buffer_size, char* stop_char
   for(i = 0; i < buffer_size-1; ++i){
     c = fgetc(file);
     
-    if(ignore_whitespace && (c == '\t' || c == '\n' || c == ' ')){
+    if(ignore_whitespace && (c == EOF || c == '\t' || c == '\n' || c == ' ' || c == '\r')){
       --i;/* don't proceed in buffer */
     }
     else{
@@ -230,8 +161,48 @@ char file_string_read(FILE* file, char *buffer, int buffer_size, char* stop_char
       }
     }
   }
+  /* end string (char array to string) */
   buffer[i] = 0;
   
   printf("%s _ %c\n", buffer, c);
   return c;
+}
+
+char parse_value(FILE* file, void** value){
+  char c, buffer[BUFFER_LEN], value_type;
+  /* read first char of value */
+  c = non_white_space_char(file);
+  switch(c){
+    /* value is a map */
+    case '{':
+      *value = (void*) json_parse_map(file);
+      value_type = 'M';
+      break;
+    /* value is a list */
+    case '[':
+      *value = (void*) json_parse_list(file);
+      value_type = 'L';
+      break;
+    /* value is a string */
+    case '\"':
+      c = file_string_read(file, buffer, BUFFER_LEN, "\"", 0);
+      if (c != '\"'){
+        printf("Could not parse value string.\n");
+        exit(EXIT_FAILURE);
+      }
+      *value = malloc(strlen(buffer));
+      if (*value == NULL){
+        printf("Could not allocate memory.\n");
+        exit(EXIT_FAILURE);
+      }
+      strcpy(*value, buffer);
+      value_type = 'S';
+      break;
+    /* value not being parsed by simplified json parser or invalid input */
+    default:
+      printf("Unexpected value format in json. <%c>\n", c);
+      exit(EXIT_FAILURE);
+  }
+
+  return value_type;
 }

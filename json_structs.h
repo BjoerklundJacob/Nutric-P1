@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_KEY_LEN 32
+
 typedef struct _KEY_VALUE_PAIR{
-  char* key;
+  char key[MAX_KEY_LEN];
   void* value;
   char value_type;
 }KEY_VALUE_PAIR;

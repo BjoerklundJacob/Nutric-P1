@@ -1,9 +1,13 @@
 #include "json_structs.h"
 #include <stdio.h>/* for failed allocation error messages */
 
-/* remember to free */
+/** Creates a pointer to a dynamic LIST
+  * and sets the variables to NULL
+  * @return pointer to dynamic LIST
+  */
 LIST* list_create(void){
   LIST* list = malloc(sizeof(LIST));
+  printf("List create pointer = %p\n", list);
   if(list == NULL){
     printf("Could not allocate memory for list.\n");
     exit(EXIT_FAILURE);
@@ -13,7 +17,10 @@ LIST* list_create(void){
   return list;
 }
 
-/* Does not delete any nested lists */
+/** Deletes an element from a list
+  * @param list is a pointer to the list pointer being changes
+  * @param element is the element to be deleted of type LIST*
+  */
 void list_delete(LIST** list, LIST* element){
   int done = 0;
   LIST *prev_element, *current_element;
@@ -71,13 +78,15 @@ void list_add(LIST** list, void* value, char value_type){
   LIST* new_element_p;
   LIST* last_element;
   if (*list == NULL){
+    printf("list is null at add\n");
     *list = list_create();
     (*list)->value = value;
     (*list)->value_type = value_type;
   }
   else{
+    printf("list is not null at add\n");
     last_element = list_last(*list);
-    new_element_p = list_create();
+    new_element_p = list_create();/* this stops program */
     new_element_p->value = value;
     new_element_p->value_type = value_type;
     last_element->next_element = new_element_p;
@@ -155,7 +164,7 @@ void map_add(MAP* map, char* key, void* value, char value_type){
   if(key_val_p == NULL){
     exit(EXIT_FAILURE);
   }
-  key_val_p->key = key;
+  strcpy(key_val_p->key, key);
   key_val_p->value = value;
   key_val_p->value_type = value_type;
   list_add(&map->key_value_pairs, key_val_p, value_type);
@@ -173,11 +182,15 @@ void map_free(MAP* map){
   while(map->key_value_pairs != NULL){
     printf("deleting key value pair value.");
     /* free key-value pair value */
-    key_val_p = (KEY_VALUE_PAIR*) map->key_value_pairs->value;
-    free_value(key_val_p->value, key_val_p->value_type);
-    /* free key-value pair */
-    free(key_val_p);
-    list_delete(&map->key_value_pairs, map->key_value_pairs);
+    if (map->key_value_pairs->value != NULL){
+      printf("deleting key value pair value..");
+      key_val_p = (KEY_VALUE_PAIR*) map->key_value_pairs->value;
+      printf("%s = %p = %c\n", key_val_p->key, key_val_p->value, key_val_p->value_type);
+      free_value(key_val_p->value, key_val_p->value_type);
+      /* free key-value pair */
+      free(key_val_p);
+    }
+    list_delete(&map->key_value_pairs, map->key_value_pairs);/* this isn't working correctly? */
   }
   free(map);
 }

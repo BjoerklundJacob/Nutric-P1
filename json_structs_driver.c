@@ -12,7 +12,7 @@ int main(void){
   map_add(map, "greeting", "Hej");
   map_add(map, "navn", "Simon");
 
-  map_add(submap, "submap key", "omg it woks!");
+  map_add(submap, "submap key", "omg it woks!", 'S');
   map_add_map(map, "submap", submap);
   printf("%s %s!\n", (char*) map_value(map, "greeting"), (char*) map_value(map, "navn"));
 
