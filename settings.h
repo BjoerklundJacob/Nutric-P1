@@ -1,6 +1,6 @@
 #include "data.h"
 
-void Weight(UserData* userData);
+void Age(UserData* userData);
 void FoodExclusions(UserData* UserData);
 void UserSettingsText(void);
 void ClearScreen(void);

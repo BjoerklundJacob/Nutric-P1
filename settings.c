@@ -76,7 +76,7 @@ void FoodExclusions(UserData* userData) {
     }
 
     /* Gives the user directions on what is possible */
-    printf("Type the '+' to must include or '-' to exclude the respective ingredients or '*' to remove in- or exclusion.\n");
+    printf("Type the '+' to must include or '-' to exclude the respective ingredients or '*' to remove in- or exclusion.\n ");
     for (i = 1; i < e_recipe_set_tags_size; i++){
         printf("(%d) %s\n", i, stringTags[i]);
     }
@@ -165,6 +165,9 @@ int CheckInput(char* sign, int* input){
         }
         
         scanres = scanf(" %c", sign);
+        if (*sign == '0'){
+        return -1;
+        }
         ClearChar(sign,&scanres);
         scanres = scanf(" %d", input);
     }
