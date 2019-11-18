@@ -3,7 +3,7 @@
 #include "menu.h"
 
 /**
- * Sets the users data as a backup and then tries to get it from the file then goes to the relevant page using a dialog with the user.
+ * Sets the users data as a backup and then tries to get it from the file and goes to the relevant page using dialogue with the user.
  */
 void Page(void){
     UserData userData;
@@ -45,7 +45,7 @@ void Page(void){
 }
 
 /**
- * Finds the next page dependant on the user submitted number
+ * Finds the page responding to the user submitted number
  */
 char GetPage(void){
     char menu_page_number;
@@ -54,7 +54,7 @@ char GetPage(void){
 }
 
 /**
- * Goes to the recipe page (not incorperated yet)
+ * Goes to the recipe page (not incorporated yet)
  */
 void Recipes(void){
     char recipeinput = '9';
