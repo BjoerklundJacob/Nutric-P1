@@ -14,7 +14,7 @@ void UserSettings(UserData* userData){
     UserSettingsText();
 
     while (input != 0){
-        scanf(" %c", &input);
+        input = PageInput();
         switch (input){
             case '1':
                 ClearScreen();

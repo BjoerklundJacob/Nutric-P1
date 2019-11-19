@@ -19,7 +19,7 @@ void Page(void){
 
     StartText();
     do{
-        pageinput = GetPage();
+        pageinput = PageInput();
 
         switch (pageinput){
         case '1':
@@ -48,8 +48,8 @@ void Page(void){
 /**
  * Finds the page responding to the user submitted number
  */
-char GetPage(void){
-    return getchar();
+char PageInput(void){
+    return _getche();
 }
 
 /**
@@ -60,7 +60,7 @@ void Recipes(void){
 
     do{
         printf("You're at the Recipes page. Press 1 to find recipes or smth and 0 to return to main menu.\n");
-        scanf(" %c", &recipeinput);
+        recipeinput = PageInput();
         if(recipeinput == '1'){
             ClearScreen();
             RecipeOutput();

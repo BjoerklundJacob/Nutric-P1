@@ -34,6 +34,7 @@ void RecipeAssigner(RECIPE *arr);
 void RecipeOutput(void){
   RECIPE *Recipes;
   int i;
+  srand(time(NULL));
   /*Printf here is just for styling*/
   printf("////////////////////////////////////////////////////////////////////\n");
   /*We staticly initialise this array because we know the exact amount of recipes we need*/
