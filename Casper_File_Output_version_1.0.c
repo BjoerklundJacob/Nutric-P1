@@ -1,5 +1,5 @@
 /*
- * Dette er koden til at outputte til en fil
+ * Dette er koden til at outputte til en fil 
  *
  */
 
@@ -29,44 +29,44 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]);
 
 
 int main() {
-  int weeknumber = 0; 
+  int weeknumber = 0;
 
   /*Array af strucs med opskrifter, grunden til array er at det er nemmere at printe det efter*/
-  struct _RECIPE res[8]; 
-  res[1].name = "Pie",            
-  res[1].prep_time = 20,  
+  struct _RECIPE res[8];
+  res[1].name = "Pie",
+  res[1].prep_time = 20,
   res[1].cook_time = 10,
   res[1].servings = 2;
-  
-  res[2].name = "Meatpie", 
-  res[2].prep_time = 10,  
-  res[2].cook_time = 13,  
+
+  res[2].name = "Meatpie",
+  res[2].prep_time = 10,
+  res[2].cook_time = 13,
   res[2].servings = 5;
-  
+
   res[3].name = "Vegan pie",
-  res[3].prep_time = 15,  
-  res[3].cook_time = 11,  
+  res[3].prep_time = 15,
+  res[3].cook_time = 11,
   res[3].servings = 5;
-  
-  res[4].name = "Pizza",          
-  res[4].prep_time = 25,  
-  res[4].cook_time = 30,  
-  res[4].servings = 1; 
 
-  res[5].name = "Vegan Pizza",    
-  res[5].prep_time = 25,  
-  res[5].cook_time = 30,  
-  res[5].servings = 1; 
+  res[4].name = "Pizza",
+  res[4].prep_time = 25,
+  res[4].cook_time = 30,
+  res[4].servings = 1;
 
-  res[6].name = "Meat Pizza",     
-  res[6].prep_time = 25,  
-  res[6].cook_time = 30,  
+  res[5].name = "Vegan Pizza",
+  res[5].prep_time = 25,
+  res[5].cook_time = 30,
+  res[5].servings = 1;
+
+  res[6].name = "Meat Pizza",
+  res[6].prep_time = 25,
+  res[6].cook_time = 30,
   res[6].servings = 1;
- 
-  res[7].name = "Burger",         
-  res[7].prep_time = 25,  
-  res[7].cook_time = 30,  
-  res[7].servings = 1; 
+
+  res[7].name = "Burger",
+  res[7].prep_time = 25,
+  res[7].cook_time = 30,
+  res[7].servings = 1;
 
   printf("Vegan file outputter (Number between 1-53)\n\n");
   printf("What week is it? ");
@@ -94,12 +94,12 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
 
   fprintf(fp, "Vegan File Output\n", weeknumber);
   fprintf(fp, "\nUge %d\n\n", weeknumber);
- 
-  fprintf(fp, "Shoppinglist (For the whole week)\n"); 
+
+  fprintf(fp, "Shoppinglist (For the whole week)\n");
   fprintf(fp, "/////////////////////////////////////////////////////////////////////\n");
      for(i = 0; i < 7;i++){
        fprintf(fp, ">  %s\n", ingredienser[i]);
-    }  
+    }
   fprintf(fp, "\n");
   /*fprintf(fp, "\n/////////////////////////////////////////////////////////////////////\n\n");*/
 
@@ -127,15 +127,14 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
 }
 
 /*
- * Funktioner som skal bruges senere 
- * 
+ * Funktioner som skal bruges senere
+ *
  * typedef struct _NUTRIENT{
  * int nutrient_amount;
  * char *nutrient_unit;
  * char *nutrient_letter;
  * int nutrient_number;
  * }NUTRIENT;
- * 
+ *
  *
 */
-
