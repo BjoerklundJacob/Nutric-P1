@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include "menu.h"
 
 /**
@@ -48,9 +49,7 @@ void Page(void){
  * Finds the page responding to the user submitted number
  */
 char GetPage(void){
-    char menu_page_number;
-    scanf(" %c", &menu_page_number);
-    return menu_page_number;
+    return getchar();
 }
 
 /**
