@@ -2,7 +2,7 @@ Vegan File Output
 
 Uge 42
 
-Shoppinglist for the whole week
+Shoppinglist (For the whole week)
 /////////////////////////////////////////////////////////////////////
 >  Svampe
 >  Salat
@@ -11,8 +11,6 @@ Shoppinglist for the whole week
 >  Gulerod
 >  Ost
 >  Peber
->
-/////////////////////////////////////////////////////////////////////
 
 Meal planner
 /////////////////////////////////////////////////////////////////////
@@ -65,4 +63,6 @@ Prep time: 25 min, Cook time: 30 min, Servings: 1 pers
 The vitamins are: i11 20kg, w1 25kg, u6 90ton.
 Ingredients: Cocain 116 tons, Tomato 705 mg, Pasta 307 kg, Meatless meat 22 kg.
 
-/////////////////////////////////////////////////////////////////////
+
+
+Copyright: VeGen
