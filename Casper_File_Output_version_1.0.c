@@ -86,7 +86,7 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
   FILE *fp = NULL;
   int i;
 
-  char userfile[15];
+  char userfile[20];
 
   sprintf(userfile, "VeGen_week_%d.txt", weeknumber);
 
@@ -122,7 +122,7 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
 
   fclose(fp);
 
-  printf("\nSucces file created\n(The file is located in the same folder as this program, with the name: '%s)\n", userfile);
+  printf("\nSucces file created\n(The file is located in the same folder as this program, with the name: '%s')\n", userfile);
 
 }
 
