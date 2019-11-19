@@ -65,17 +65,12 @@ void FoodExclusions(UserData* userData) {
     int i, input;
     char sign;
 
-    /* Sets the whole array to a nonvalid number */
-    for (i = 0; i < e_recipe_set_tags_size-1; i++){
-        userData->foodExclusions[i] = -e_recipe_set_tags_size;
-    }
-
     /* Gives the user directions on what is possible */
-    printf("Type the '+' to must include or '-' to exclude the respective ingredients or '*' to remove in- or exclusion.\n ");
+    printf("Type the '+' to must include or '-' to exclude the respective ingredients or '*' to remove in- or exclusion.\n");
     for (i = 1; i < e_recipe_set_tags_size; i++){
-        printf("(%d) %s\n", i, stringTags[i]);
+        printf(" (%d) %s\n", i, stringTags[i]);
     }
-    printf("(0) Return to the User Settings\n\n");
+    printf(" (0) Return to the User Settings\n\n");
     
     /* Checks the users input and puts it into the foodexclusions member array using -, + and a nonvalid number*/
     do {

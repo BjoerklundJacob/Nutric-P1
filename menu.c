@@ -63,11 +63,15 @@ void Recipes(void){
         printf("You're at the Recipes page. Press 1 to find recipes or smth and 0 to return to main menu.\n");
         scanf(" %c", &recipeinput);
         if(recipeinput == '1'){
-        RecipeOutput();
+            ClearScreen();
+            RecipeOutput();
         }
-        else
-        printf("The input does not correspond to any pages. Please try again.\n");
+        else{
+            ClearScreen();
+            printf("The input does not correspond to any pages. Please try again.\n");
+        }
     } while (recipeinput != '0');
+    ClearScreen();
     printf("You're leaving recipes page now.\n\n");
 
     StartText();
