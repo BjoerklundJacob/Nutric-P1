@@ -30,11 +30,12 @@ void RecipeAssigner(RECIPE *arr);
 
 
 int main(void){
+  RECIPE *Recipes;
+  int i;
   /*Printf here is just for styling*/
   printf("////////////////////////////////////////////////////////////////////\n");
   /*We staticly initialise this array because we know the exact amount of recipes we need*/
-  RECIPE Recipes[8];
-  int i;
+  Recipes = calloc(8, sizeof(RECIPE)+1);
   /*We use this function to make the recipes*/
   RecipeAssigner(Recipes);
   /*Here we generate a random amount of nutrients*/
@@ -114,7 +115,6 @@ RECIPE RecipeMaker(){
   r.amount = malloc(r.length * sizeof(int));
   r.unit = malloc(r.length * 30);
   r.ingredients = malloc(r.length * 30);
-  r.ingredients[r.length];
   for(i = 0; i < r.length; i++){
     r.amount[i] = rand()%1000+1;
     r.unit[i] = stillNotMyProblem[rand()%4];
