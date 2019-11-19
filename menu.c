@@ -62,6 +62,7 @@ void Recipes(void){
     do{
         printf("You're at the Recipes page. Press 1 to find recipes or smth and 0 to return to main menu.\n");
         scanf(" %c", &recipeinput);
+        RecipeOutput();
     } while (recipeinput != '0');
     printf("You're leaving recipes page now.\n\n");
 

@@ -8,3 +8,5 @@ void Exit(void);
 void StartText(void);
 void ClearScreen(void);
 void LoadUserData(UserData* userData);
+
+void RecipeOutput(void);

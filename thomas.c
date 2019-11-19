@@ -28,8 +28,10 @@ void IngredientsPrint(RECIPE Recipe);
 void RecipePrint(RECIPE Recipe, char day[]);
 void RecipeAssigner(RECIPE *arr);
 
-
-int main(void){
+/**
+ * Primary output function for recipes
+ */
+void RecipeOutput(void){
   RECIPE *Recipes;
   int i;
   /*Printf here is just for styling*/
@@ -49,7 +51,7 @@ int main(void){
   RecipePrint(Recipes[1], "Tuesday");
   IngredientsPrint(Recipes[1]);
   printf("---------------------------------------------------------------------\n");
-  RecipePrint(Recipes[2], "Wedensday");
+  RecipePrint(Recipes[2], "Wednesday");
   IngredientsPrint(Recipes[2]);
   printf("---------------------------------------------------------------------\n");
   RecipePrint(Recipes[3], "Thursday");
@@ -64,7 +66,7 @@ int main(void){
   RecipePrint(Recipes[6], "Sunday");
   IngredientsPrint(Recipes[6]);
   printf("////////////////////////////////////////////////////////////////////\n");
-  return 0;
+  return;
 }
 /*Prints the recipes and the nutrients*/
 void RecipePrint(RECIPE Recipe, char day[]){
