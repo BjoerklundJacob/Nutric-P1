@@ -10,16 +10,15 @@ void ascii_output(void);
 
 int main (){
   FILE *fp = NULL;
-  char username[250];
   char userfile[255];
 
   int i, ugenummer = 0;
 
   printf("Indtast uge nummer:  ");
-  scanf(" %d", &userfile, &ugenummer);
+  scanf(" %d", &ugenummer);
   printf("Hvad skal filen hedde:");
   //scanf("%s", & username);
-  sprintf(userfile, "uge%d.txt", username);
+  sprintf(userfile, "uge%d.txt", ugenummer);
 
    /* open the file for writing*/
    fp = fopen (userfile,"w");
