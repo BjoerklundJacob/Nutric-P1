@@ -1,9 +1,4 @@
-/*
-User Settings
-Weight
-Food Exclusions
-Return to main menu
-If $ then eastereggl ("https://pics.me.me/looks-like-meats-back-on-the-menu-boys-when-you-37741962.png")
+/*If $ then eastereggl ("https://pics.me.me/looks-like-meats-back-on-the-menu-boys-when-you-37741962.png")
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -123,7 +118,7 @@ void FoodExclusions(UserData* userData) {
  */
 void UserSettingsText(void){
     printf("You're at the User Settings page. \nType 1, 2 or 0 to get to the respective settings.\n");
-    printf("(1) Weight\n");
+    printf("(1) Age\n");
     printf("(2) Food Exclusions\n");
     printf("(0) Return to the main menu\n");
     return;
