@@ -1,5 +1,5 @@
 /*
- * Dette er test kode som printer flere strucs med en funktion
+ * Dette er koden til at outputte til en fil
  *
  */
 
@@ -8,7 +8,6 @@
 #include <math.h>
 
 /***** STRUCTS *****/
-
 typedef struct _RECIPE{
   char *name;
   int prep_time;
@@ -87,7 +86,7 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
   FILE *fp = NULL;
   int i;
 
-  char userfile[255];
+  char userfile[15];
 
   sprintf(userfile, "VeGen_week_%d.txt", weeknumber);
 
@@ -106,7 +105,7 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
 
   fprintf(fp, "Meal planner\n");
   fprintf(fp, "/////////////////////////////////////////////////////////////////////\n");
-  for (i = 1; i <= 7; i++){
+  for (i = 0; i < 7; i++){
     fprintf(fp, "%s\n", week[i]);
     fprintf(fp, "---------------------------------------------------------------------\n");
     fprintf(fp, "Meal name: %s\n", res[i].name);
