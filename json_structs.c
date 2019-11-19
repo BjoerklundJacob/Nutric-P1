@@ -12,7 +12,7 @@ LIST* list_create(void){
     exit(EXIT_FAILURE);
   }
   list->value = NULL;
-  list->value_type = 0;
+  list->value_type = value_undefined;
   list->next_element = NULL;
   return list;
 }
@@ -49,11 +49,12 @@ void list_delete(LIST** list, LIST* element){
         /* set previous element's next element to the next element */
         prev_element->next_element = element->next_element;
         /* free deleted element */
+        free_value(element->value, element->value_type);
         free(element);
       }
       done = 1;
     }
-    if (!done){
+    else{
       prev_element = current_element;
       if (current_element->next_element != NULL){
         current_element = current_element->next_element;
@@ -84,28 +85,47 @@ void list_add(LIST** list, void* value, char value_type){
   }
   else{
     last_element = list_last(*list);
-    new_element_p = list_create();/* this stops program */
+    new_element_p = list_create();
     new_element_p->value = value;
     new_element_p->value_type = value_type;
     last_element->next_element = new_element_p;
   }
 }
 
-void list_free(LIST** list){
-  while(*list != NULL){
-    list_delete(list, *list);
+void list_free(LIST* list){
+  while(list != NULL){
+    list_delete(&list, list);
   }
-  *list = NULL;
 }
 
-int list_size(LIST list){
+int list_size(LIST* list){
   int size = 0;
-  LIST* current_element = &list;
-  while(current_element != NULL && current_element->value != NULL){
+  LIST* current_element = list;
+  while(current_element != NULL){
     size++;
     current_element = current_element->next_element;
   }
   return size;
+}
+
+/* This function returns the value of a list
+ * pre: 0 <= index < list_size
+ */
+void* list_value(LIST* list, int index){
+  LIST* element = list_element(list, index);
+  return element->value;
+}
+
+/* This function returns the element of a list
+ * pre: 0 <= index < list_size
+ */
+LIST* list_element(LIST* list, int index){
+  LIST* element = list;
+  int i;
+  for(i = 0; i < index; ++i){
+    element = element->next_element;
+  }
+  return element;
 }
 
 /* remember to free */
@@ -165,41 +185,28 @@ void map_add(MAP* map, char* key, void* value, char value_type){
   strcpy(key_val_p->key, key);
   key_val_p->value = value;
   key_val_p->value_type = value_type;
-  list_add(&map->key_value_pairs, key_val_p, value_type);
+  list_add(&map->key_value_pairs, key_val_p, value_key_value_pair);
 }
 
 void map_free(MAP* map){
-  KEY_VALUE_PAIR *key_val_p;
   /* free all submaps */
-  while(map->submaps != NULL){
-    printf("deleting submap.");
-    map_free((MAP*) map->submaps->value);
-    list_delete(&map->submaps, map->submaps);
-  }
+  list_free(map->submaps);
   /* free all key_value pairs */
-  while(map->key_value_pairs != NULL){
-    printf("deleting key value pair value.");
-    /* free key-value pair value */
-    if (map->key_value_pairs->value != NULL){
-      printf("deleting key value pair value..");
-      key_val_p = (KEY_VALUE_PAIR*) map->key_value_pairs->value;
-      printf("%s = %p = %c\n", key_val_p->key, key_val_p->value, key_val_p->value_type);
-      free_value(key_val_p->value, key_val_p->value_type);
-      /* free key-value pair */
-      free(key_val_p);
-    }
-    list_delete(&map->key_value_pairs, map->key_value_pairs);/* this isn't working correctly? */
-  }
+  list_free(map->key_value_pairs);
   free(map);
 }
 
 void free_value(void* value, char value_type){
   if (value != NULL){
     switch(value_type){
-      case 'M': map_free(value); break;
-      case 'L': list_free(value); break;
+      case value_map: map_free(value); break;
+      case value_list: list_free(value); break;
+      case value_key_value_pair: 
+        free_value(((KEY_VALUE_PAIR*)value)->value, ((KEY_VALUE_PAIR*)value)->value_type);
+        /* free key-value pair */
+        free(value);
+        break;
       default: free(value);
     }
   }
-  printf("freed value");
 }

@@ -12,16 +12,20 @@ LIST* json_parse_list(FILE* file);
 char parse_value(FILE* file, void** value);
 
 int main(void){
-  LIST *recipes, *ingredients;
+  LIST *recipes, *ingredients, *instructions;
   MAP *recipe, *map;
+
   map = json_load(".\\test.json");
-  printf("json loaded.");
+  printf("json loaded.\n");
 
   recipes = map_value(map, "recipes");
-  recipe = recipes->value;
+  printf("Recipe count = %d\n", list_size(recipes));
+  recipe = list_value(recipes, 1);
   ingredients = map_value(recipe, "ingredients");
+  instructions = map_value(recipe, "instructions");
   
-  printf("\nIngredient 0 = %s\n", ingredients->value);
+  printf("\nIngredient = %s\n", list_value(ingredients, 0));
+  printf("Instruction 1:\n%s", list_value(instructions, 0));
 
   map_free(map);
   printf("\nsuccess?\n");
@@ -71,8 +75,6 @@ MAP* json_parse_map(FILE* file){
   char key[MAX_KEY_LEN];
   char c, value_type;
   void* value;
-  
-  printf("started parsing map\n");
 
   do{
     /* get first white space character */
@@ -98,7 +100,6 @@ MAP* json_parse_map(FILE* file){
     printf("Missing '}' at the end of map.\n");
     exit(EXIT_FAILURE);
   }
-  printf("ended parsing map\n");
 
   return map;
 }
@@ -109,7 +110,6 @@ char json_read_key(FILE* file, char *key){
   c = file_string_read(file, buffer, MAX_KEY_LEN, "\"}", 1);
   buffer[strlen(buffer)] = 0;
   strcpy(key, &buffer[0]);
-  printf("key = %s\n", key);
   return c;
 }
 
@@ -117,8 +117,6 @@ LIST* json_parse_list(FILE* file){
   LIST* list = NULL;/* should this be here??===*/
   char c, value_type;
   void* value;
-  
-  printf("started parsing list\n");
 
   do{
     /* parse value */
@@ -134,7 +132,6 @@ LIST* json_parse_list(FILE* file){
     printf("Missing ']' at the end of list.\n");
     exit(EXIT_FAILURE);
   }
-  printf("ended parsing list\n");
 
   return list;
 }
@@ -173,7 +170,6 @@ char file_string_read(FILE* file, char *buffer, int buffer_size, char* stop_char
   /* end string (char array to string) */
   buffer[i] = 0;
   
-  printf("%s _ %c\n", buffer, c);
   return c;
 }
 
@@ -185,12 +181,12 @@ char parse_value(FILE* file, void** value){
     /* value is a map */
     case '{':
       *value = (void*) json_parse_map(file);
-      value_type = 'M';
+      value_type = value_map;
       break;
     /* value is a list */
     case '[':
       *value = (void*) json_parse_list(file);
-      value_type = 'L';
+      value_type = value_list;
       break;
     /* value is a string */
     case '\"':
@@ -205,7 +201,7 @@ char parse_value(FILE* file, void** value){
         exit(EXIT_FAILURE);
       }
       strcpy(*value, buffer);
-      value_type = 'S';
+      value_type = value_string;
       break;
     /* value not being parsed by simplified json parser or invalid input */
     default:
