@@ -146,7 +146,9 @@ int CheckInput(char* sign, int* input){
         return -1;
     }
     ClearChar(sign, &scanres);
-
+    if (*sign == '0'){
+        return -1;
+    }
     scanres = scanf(" %d", input);
     while (scanres != 1 || *input > e_recipe_set_tags_size-1 || *input == 0){
         printf("Unexpected number try again\n");
@@ -177,6 +179,9 @@ void ClearChar(char* sign, int* scanres){
             scanf("%c", &buffer);
         }
         *scanres = scanf(" %c", sign);
+        if (*sign == '0'){
+        return;
+    }
     }
 }
 
