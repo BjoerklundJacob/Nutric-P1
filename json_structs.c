@@ -115,47 +115,37 @@ void map_add(MAP* map, char* key, void* value, char value_type){
 void list_delete(LIST** list, LIST* element){
   int done = 0;
   LIST *prev_element, *current_element;
-  current_element = *list;
-  do{
-    if (current_element == element){
-      /* if element to delete is first element in list */
-      if (element == *list){
-        if ((*list)->next_element != NULL){
-          /* set first element of the list to be the next element */
-          current_element = (*list)->next_element;
-          (*list)->value = (*list)->next_element->value;
-          (*list)->next_element = (*list)->next_element->next_element;
-          /* free deleted element */
-          free_value(current_element->value, current_element->value_type);
-          free(current_element);
-        }
-        /* if deleting first and only element */
-        else{
-          free_value((*list)->value, (*list)->value_type);
-          free(*list);
-          *list = NULL;
-        }
-      }
-      else{
+  /* if list or element is null - do nothing */
+  if (*list == NULL || element == NULL){
+    return;
+  }
+  /* if deleting first element of list */
+  if (element == *list){
+    *list = (*list)->next_element;
+    free_value(element->value, element->value_type);
+    free(element);
+  }
+  else{
+    current_element = (*list)->next_element;
+    do{
+      if (current_element == element){        
         /* set previous element's next element to the next element */
         prev_element->next_element = element->next_element;
         /* free deleted element */
         free_value(element->value, element->value_type);
         free(element);
-      }
-      done = 1;
-    }
-    else{
-      prev_element = current_element;
-      if (current_element->next_element != NULL){
-        current_element = current_element->next_element;
-      }
-      else{
         done = 1;
       }
+      else{
+        prev_element = current_element;
+        current_element = current_element->next_element;
+        if (current_element == NULL){
+          done = 1;
+        }
+      }
     }
+    while(!done);
   }
-  while(!done);
 }
 
 void list_free(LIST* list){

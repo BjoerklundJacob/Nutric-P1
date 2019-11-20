@@ -20,27 +20,18 @@ int main(void){
   MAP *map, *submap;
   LIST* list = NULL;
 
-  list_add(&list, map_create(), value_map);
+  /*list_add(&list, map_create(), value_map);
   list_add(&list, map_create(), value_map);
   list_add(&list, map_create(), value_map);
   list_free(list);
 
-  return 0;
+  return 0;*/
   map = json_load(".\\test.json");
   printf("json loaded.\n");
 
   print_map(map);
 
-  printf("\n\nGOING TO FREE EVERYTHING NOW:\n\n");
-  list = map_value(map, "recipes");
-  /*list_free(list);*/
-  submap = list_value(list, 0);
-  list = map_value(submap, "ingredients");
-  printf("Fetched ingredient list of Vegan Tiffin, going to free\n");
-  map_free(submap);
-
-  /*map_free(map);*/
-  printf("\nsuccess!\n");
+  map_free(map);
   return 0;
 }
 
