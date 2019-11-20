@@ -3,7 +3,7 @@
 
 #define BUFFER_LEN 512
 
-char file_string_read(FILE* file, char *buffer, int buffer_size, char* stop_chars, int ignore_whitespace);
+char file_string_read(FILE* file, char *buffer, int buffer_size, const char* stop_chars, int ignore_whitespace);
 MAP* json_load(char* file_dir);
 char json_read_key(FILE* file, char *key);
 char non_white_space_char(FILE* file);
@@ -11,24 +11,36 @@ MAP* json_parse_map(FILE* file);
 LIST* json_parse_list(FILE* file);
 char parse_value(FILE* file, void** value);
 
-int main(void){
-  LIST *recipes, *ingredients, *instructions;
-  MAP *recipe, *map;
+void print_list(LIST* list);
+void print_value(void* value, enum value_types type);
+void print_key_value_pair(KEY_VALUE_PAIR* kv);
+void print_map(MAP* map);
 
+int main(void){
+  MAP *map, *submap;
+  LIST* list = NULL;
+
+  list_add(&list, map_create(), value_map);
+  list_add(&list, map_create(), value_map);
+  list_add(&list, map_create(), value_map);
+  list_free(list);
+
+  return 0;
   map = json_load(".\\test.json");
   printf("json loaded.\n");
 
-  recipes = map_value(map, "recipes");
-  printf("Recipe count = %d\n", list_size(recipes));
-  recipe = list_value(recipes, 1);
-  ingredients = map_value(recipe, "ingredients");
-  instructions = map_value(recipe, "instructions");
-  
-  printf("\nIngredient = %s\n", list_value(ingredients, 0));
-  printf("Instruction 1:\n%s", list_value(instructions, 0));
+  print_map(map);
 
-  map_free(map);
-  printf("\nsuccess?\n");
+  printf("\n\nGOING TO FREE EVERYTHING NOW:\n\n");
+  list = map_value(map, "recipes");
+  /*list_free(list);*/
+  submap = list_value(list, 0);
+  list = map_value(submap, "ingredients");
+  printf("Fetched ingredient list of Vegan Tiffin, going to free\n");
+  map_free(submap);
+
+  /*map_free(map);*/
+  printf("\nsuccess!\n");
   return 0;
 }
 
@@ -107,7 +119,7 @@ MAP* json_parse_map(FILE* file){
 char json_read_key(FILE* file, char *key){
   char c;
   char buffer[MAX_KEY_LEN];
-  c = file_string_read(file, buffer, MAX_KEY_LEN, "\"}", 1);
+  c = file_string_read(file, buffer, MAX_KEY_LEN, "\"}", 0);
   buffer[strlen(buffer)] = 0;
   strcpy(key, &buffer[0]);
   return c;
@@ -140,7 +152,7 @@ LIST* json_parse_list(FILE* file){
  * or end of buffer size.
  * returns the position in the buffer of the last read char
  */
-char file_string_read(FILE* file, char *buffer, int buffer_size, char* stop_chars, int ignore_whitespace){
+char file_string_read(FILE* file, char *buffer, int buffer_size, const char* stop_chars, int ignore_whitespace){
   int i, j;
   char c;
   for(i = 0; i < buffer_size-1; ++i){
@@ -210,4 +222,48 @@ char parse_value(FILE* file, void** value){
   }
 
   return value_type;
+}
+
+void print_map(MAP* map){
+  int i;
+  printf("{\n");
+  for(i = 0; i < list_size(map->key_value_pairs); ++i){
+    print_key_value_pair(list_value(map->key_value_pairs, i));
+    if (i < list_size(map->key_value_pairs)-1){
+      printf(", ");
+    }
+  }
+  printf("\n}");
+}
+
+void print_key_value_pair(KEY_VALUE_PAIR* kv){
+  printf("\"%s\": ", kv->key);
+  print_value(kv->value, kv->value_type);
+}
+
+void print_value(void* value, enum value_types type){
+  if (value != NULL){
+    switch(type){
+      case value_list: print_list(value); break;
+      case value_map: print_map(value); break;
+      default: printf("\"%s\"", value);
+    }
+  }
+  else{
+    printf("(null)");
+  }
+}
+
+void print_list(LIST* list){
+  int i;
+  LIST* element;
+  printf("[\n");
+  for(i = 0; i < list_size(list); ++i){
+    element = list_element(list, i);
+    print_value(element->value, element->value_type);
+    if (i < list_size(list)-1){
+      printf(", ");
+    }
+  }
+  printf("\n]");
 }

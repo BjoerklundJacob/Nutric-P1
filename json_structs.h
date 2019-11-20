@@ -17,7 +17,6 @@ typedef struct _LIST{
 
 typedef struct _MAP{
   LIST* key_value_pairs;
-  LIST* submaps;
 }MAP;
 
 enum value_types{
@@ -38,9 +37,6 @@ void map_free(MAP* map);
 void map_add(MAP* map, char* key, void* value, char value_type);
 void* map_value(MAP* map, char* key);
 int list_size(LIST* list);
-void map_add_map(MAP* map, char* key, MAP* value);
-void map_add_int(MAP* map, char* key, int i);
-void map_add_double(MAP* map, char* key, double d);
 void free_value(void* value, char value_type);
 void* list_value(LIST* list, int index);
 LIST* list_element(LIST* list, int index);

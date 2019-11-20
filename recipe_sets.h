@@ -17,7 +17,7 @@ typedef struct _RECIPE{
   int ingredients[INGREDIENT_COUNT];/*int array with all ingredients (value of 0 if ingredient is not in recipe)*/
 
   int instruction_count;
-  char **instructions;/*instructions string array*/
+  char *instructions[10];/*instructions string array*/
 }RECIPE;
 
 typedef struct _RECIPE_SET{
