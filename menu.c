@@ -19,7 +19,7 @@ void Page(void){
 
     StartText();
     do{
-        pageinput = PageInput();
+        pageinput = _getche();
 
         switch (pageinput){
         case '1':
@@ -46,13 +46,6 @@ void Page(void){
 }
 
 /**
- * Finds the page responding to the user submitted number
- */
-char PageInput(void){
-    return _getche();
-}
-
-/**
  * Goes to the recipe page (not incorporated yet)
  */
 void Recipes(void){
@@ -60,7 +53,7 @@ void Recipes(void){
 
     do{
         printf("You're at the Recipes page. Press 1 to find recipes or smth and 0 to return to main menu.\n");
-        recipeinput = PageInput();
+        recipeinput = _getche();
         if(recipeinput == '1'){
             ClearScreen();
             RecipeOutput();

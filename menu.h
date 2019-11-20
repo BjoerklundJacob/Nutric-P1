@@ -1,6 +1,5 @@
 #include "data.h"
 
-char PageInput(void);
 void Page(void);
 void Recipes(void);
 void UserSettings(UserData* userData);

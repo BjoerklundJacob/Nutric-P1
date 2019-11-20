@@ -2,6 +2,7 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include "settings.h"
 
 /**
@@ -14,7 +15,7 @@ void UserSettings(UserData* userData){
     UserSettingsText();
 
     while (input != 0){
-        input = PageInput();
+        input = _getche();
         switch (input){
             case '1':
                 ClearScreen();
@@ -28,6 +29,7 @@ void UserSettings(UserData* userData){
                 break;
             case '0':
                 SaveUserData(*userData);
+                ClearScreen();
                 return;
             default:
                 printf("The following page was not found. Please try again.\n");
@@ -139,29 +141,23 @@ char Signed(int input){
  * @param input the number the user submits 
  */
 int CheckInput(char* sign, int* input){
-    int scanres;
-    char buffer;
-    scanres = scanf(" %c", sign);
+    *sign = _getche();
     if (*sign == '0'){
         return -1;
     }
-    ClearChar(sign, &scanres);
+    ClearChar(sign);
     if (*sign == '0'){
         return -1;
     }
-    scanres = scanf(" %d", input);
-    while (scanres != 1 || *input > e_recipe_set_tags_size-1 || *input == 0){
-        printf("Unexpected number try again\n");
-        while (buffer != '\n'){
-            scanf("%c", &buffer);
-        }
-        
-        scanres = scanf(" %c", sign);
+    scanf("%d", &*input);
+    while (*input > e_recipe_set_tags_size-1 || *input == 0){
+        printf("Unexpected number try again\n");        
+       *sign = _getche();
         if (*sign == '0'){
         return -1;
         }
-        ClearChar(sign,&scanres);
-        scanres = scanf(" %d", input);
+        ClearChar(sign);
+        *input = _getche();
     }
     return 0;
 }
@@ -169,16 +165,12 @@ int CheckInput(char* sign, int* input){
 /**
  * Clears the input buffer if the sign was incorrect
  * @param sign the char the user submits
- * @param scanres the result from the previous scanf
  */
-void ClearChar(char* sign, int* scanres){
-    char buffer;
+void ClearChar(char* sign){
     while (*sign != '-' && *sign != '+' && *sign != '*'){
         printf("Unexpected sign try again\n");
-        while (buffer != '\n'){
-            scanf("%c", &buffer);
-        }
-        *scanres = scanf(" %c", sign);
+        
+       *sign = _getche();
         if (*sign == '0'){
         return;
     }
