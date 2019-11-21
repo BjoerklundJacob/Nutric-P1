@@ -1,31 +1,8 @@
-#include <stdio.h>
-#include "json_structs.h"
-
-#define BUFFER_LEN 512
-
-char file_string_read(FILE* file, char *buffer, int buffer_size, const char* stop_chars, int ignore_whitespace);
-MAP* json_load(char* file_dir);
-char json_read_key(FILE* file, char *key);
-char non_white_space_char(FILE* file);
-MAP* json_parse_map(FILE* file);
-LIST* json_parse_list(FILE* file);
-char parse_value(FILE* file, void** value);
-
-void print_list(LIST* list);
-void print_value(void* value, enum value_types type);
-void print_key_value_pair(KEY_VALUE_PAIR* kv);
-void print_map(MAP* map);
+#include "json_parser.h"
 
 int main(void){
-  MAP *map, *submap;
-  LIST* list = NULL;
+  MAP *map;
 
-  /*list_add(&list, map_create(), value_map);
-  list_add(&list, map_create(), value_map);
-  list_add(&list, map_create(), value_map);
-  list_free(list);
-
-  return 0;*/
   map = json_load(".\\test.json");
   printf("json loaded.\n");
 
@@ -35,6 +12,11 @@ int main(void){
   return 0;
 }
 
+/** Parses a json file loading the data to a map, returning the loaded map
+  * (simplified parsing - not full json parser)
+  * @param file_dir directory to the .json file
+  * @return MAP* allocated
+  */
 MAP* json_load(char* file_dir){
   FILE *file;
   MAP *map;
@@ -65,7 +47,10 @@ MAP* json_load(char* file_dir){
 }
 
 
-/* scans a char until a non white space char is read returning the last char read */
+/** scans a char until a non white space char is read returning the last char read
+  * @param file - FILE* to the open file to read from
+  * @return first non-whitespace char being read
+  */
 char non_white_space_char(FILE* file){
   char c;
   do{c = fgetc(file);}
@@ -73,10 +58,15 @@ char non_white_space_char(FILE* file){
   return c;
 }
 
+/** Parses json from an open file to a map returning the allocated map
+  * @param file - FILE* to the open file to read from
+  * @return MAP* allocated
+  */
 MAP* json_parse_map(FILE* file){
   MAP* map = map_create();
   char key[MAX_KEY_LEN];
-  char c, value_type;
+  char c;
+  eVALUE_TYPES value_type;
   void* value;
 
   do{
@@ -107,6 +97,11 @@ MAP* json_parse_map(FILE* file){
   return map;
 }
 
+/** Parses a key from an open file storing it in key and returning the char last read
+  * @param file - FILE* to the open file to read from
+  * @param key - char array to store key in
+  * @return last char read
+  */
 char json_read_key(FILE* file, char *key){
   char c;
   char buffer[MAX_KEY_LEN];
@@ -116,9 +111,14 @@ char json_read_key(FILE* file, char *key){
   return c;
 }
 
+/** Parses json from an open file to a list returning the allocated list
+  * @param file - FILE* to the open file to read from
+  * @return LIST* to the first element in allocated linked list
+  */
 LIST* json_parse_list(FILE* file){
-  LIST* list = NULL;/* should this be here??===*/
-  char c, value_type;
+  LIST* list = NULL;
+  char c;
+  eVALUE_TYPES value_type;
   void* value;
 
   do{
@@ -139,11 +139,16 @@ LIST* json_parse_list(FILE* file){
   return list;
 }
 
-/* reads a string from a file until a character from the break string is read
- * or end of buffer size.
- * returns the position in the buffer of the last read char
- */
-char file_string_read(FILE* file, char *buffer, int buffer_size, const char* stop_chars, int ignore_whitespace){
+/** Reads a string from a file until a character from the break string is read
+  * or end of buffer size returning the position in the buffer of the last read char
+  * @param file - FILE* of open file to read from
+  * @param buffer - char array to read to of size buffer_size
+  * @param buffer_size - size of buffer
+  * @param stop_chars - characters that should stop the reading
+  * @param ignore_whitespace - boolean if whitespace should be stored in buffer or not
+  * @return last char read
+  */
+char file_string_read(FILE* file, char* buffer, int buffer_size, const char* stop_chars, int ignore_whitespace){
   int i, j;
   char c;
   for(i = 0; i < buffer_size-1; ++i){
@@ -176,8 +181,14 @@ char file_string_read(FILE* file, char *buffer, int buffer_size, const char* sto
   return c;
 }
 
-char parse_value(FILE* file, void** value){
-  char c, buffer[BUFFER_LEN], value_type;
+/** Parses value from open file storing it in output parameter and returning its type
+  * @param file - FILE* of open file to read from
+  * @param value - adress to store value in
+  * @return eVALUE_TYPES type of value
+  */
+eVALUE_TYPES parse_value(FILE* file, void** value){
+  char c, buffer[BUFFER_LEN];
+  eVALUE_TYPES value_type;
   /* read first char of value */
   c = non_white_space_char(file);
   switch(c){
@@ -215,6 +226,9 @@ char parse_value(FILE* file, void** value){
   return value_type;
 }
 
+/** Prints a map
+  * @param map to be printed
+  */
 void print_map(MAP* map){
   int i;
   printf("{\n");
@@ -227,12 +241,19 @@ void print_map(MAP* map){
   printf("\n}");
 }
 
+/** Prints a key-value pair
+  * @param kv - key-value pair to print
+  */
 void print_key_value_pair(KEY_VALUE_PAIR* kv){
   printf("\"%s\": ", kv->key);
   print_value(kv->value, kv->value_type);
 }
 
-void print_value(void* value, enum value_types type){
+/** Prints a value
+  * @param value - void* value to print
+  * @param type - eVALUE_TYPES type of value to print
+  */
+void print_value(void* value, eVALUE_TYPES type){
   if (value != NULL){
     switch(type){
       case value_list: print_list(value); break;
@@ -245,6 +266,9 @@ void print_value(void* value, enum value_types type){
   }
 }
 
+/** Prints a list
+  * @param list - list to be printed
+  */
 void print_list(LIST* list){
   int i;
   LIST* element;
