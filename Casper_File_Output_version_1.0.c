@@ -1,13 +1,14 @@
 /*
- * Dette er koden til at outputte til en fil 
+ * This code is the for the file output for the project 
+ * 
+ * Note: The program prints the recipes as an array for easier printing 
  *
  */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
-#define INGREDIENT_COUNT 10
+/*#define INGREDIENT_COUNT 10*/
 
 
 /***** STRUCTS *****/
@@ -16,8 +17,8 @@ typedef struct _RECIPE{
   int prep_time;
   int cook_time;
   int servings;
-  int ingredients[INGREDIENT_COUNT];/*int array with all ingredients (value of 0 if ingredient is not in recipe)*/
-  int instruction_count;
+  /*int ingredients[INGREDIENT_COUNT]; int array with all ingredients (value of 0 if ingredient is not in recipe)*/
+  /*int instruction_count;*/
   char **instructions;/*instructions string array*/
 } RECIPE;
 
@@ -38,34 +39,30 @@ int main() {
   res[1].prep_time = 20,
   res[1].cook_time = 10,
   res[1].servings = 2;
-  res[1].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
+  res[1].instructions = {"Take the Soya milk and add the vegan yeast and bake it for 20 min"}; 
 
   res[2].name = "Meatpie",
   res[2].prep_time = 10,
   res[2].cook_time = 13,
   res[2].servings = 5;
-  res[2].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
 
 
   res[3].name = "Vegan pie",
   res[3].prep_time = 15,
   res[3].cook_time = 11,
   res[3].servings = 5;
-  res[3].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
 
 
   res[4].name = "Pizza",
   res[4].prep_time = 25,
   res[4].cook_time = 30,
   res[4].servings = 1;
-  res[4].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
 
 
   res[5].name = "Vegan Pizza",
   res[5].prep_time = 25,
   res[5].cook_time = 30,
   res[5].servings = 1;
-  res[5].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
 
 
   res[6].name = "Meat Pizza",
@@ -78,6 +75,9 @@ int main() {
   res[7].cook_time = 30,
   res[7].servings = 1;
 
+
+
+  /*Start af programmet, indleaser hvilken uge der er*/
   printf("Vegan file outputter (Number between 1-53)\n\n");
   printf("What week is it? ");
   scanf(" %d", &weeknumber);
@@ -92,14 +92,16 @@ int main() {
   return EXIT_SUCCESS;
 }
 
+/*The function under prints the entire mealplan into a file*/
 void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
   FILE *fp = NULL;
   int i;
-
   char userfile[20];
 
+  /*The function under takes the string and add the weeknumber into a string*/
   sprintf(userfile, "VeGen_week_%d.txt", weeknumber);
 
+  /*A file is created with the name with the string "username"*/
   fp = fopen (userfile,"w");
 
   fprintf(fp, "Vegan File Output\n", weeknumber);
@@ -115,6 +117,8 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
 
   fprintf(fp, "Meal planner\n");
   fprintf(fp, "/////////////////////////////////////////////////////////////////////\n");
+  fprintf(fp, "Remember: You will need to take B12-suplement yourself\n");
+
   for (i = 0; i < 7; i++){
     fprintf(fp, "%s\n", week[i]);
     fprintf(fp, "---------------------------------------------------------------------\n");
@@ -130,14 +134,16 @@ void print_mealplan_to_file(int weeknumber, struct _RECIPE res[]){
 
   fprintf(fp, "\nCopyright: VeGen");
 
+  /*Closes the file*/
   fclose(fp);
 
+  /*Prints if the file was succesfully created and have text in it, the name of the file is also printet, so you can find the file*/
   printf("\nSucces file created\n(The file is located in the same folder as this program, with the name: '%s')\n", userfile);
 
 }
 
 /*
- * Funktioner som skal bruges senere
+ * Functions that is needed for later
  *
  * typedef struct _NUTRIENT{
  * int nutrient_amount;
