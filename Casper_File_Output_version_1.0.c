@@ -7,29 +7,18 @@
 #include <stdlib.h>
 #include <math.h>
 
-<<<<<<< Updated upstream
-=======
 #define INGREDIENT_COUNT 10
 
 
->>>>>>> Stashed changes
 /***** STRUCTS *****/
 typedef struct _RECIPE{
   char *name;
   int prep_time;
   int cook_time;
   int servings;
-<<<<<<< Updated upstream
-  int *amount;
-  int length;
-  char **unit;
-  char **ingredients;
-  /*NUTRIENT *nutrients;*/
-=======
   int ingredients[INGREDIENT_COUNT];/*int array with all ingredients (value of 0 if ingredient is not in recipe)*/
   int instruction_count;
   char **instructions;/*instructions string array*/
->>>>>>> Stashed changes
 } RECIPE;
 
 /*Her under er der 2 char arrays med ugenummer og 7 random ingredienser*/
@@ -49,50 +38,35 @@ int main() {
   res[1].prep_time = 20,
   res[1].cook_time = 10,
   res[1].servings = 2;
-<<<<<<< Updated upstream
-=======
   res[1].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
->>>>>>> Stashed changes
 
   res[2].name = "Meatpie",
   res[2].prep_time = 10,
   res[2].cook_time = 13,
   res[2].servings = 5;
-<<<<<<< Updated upstream
-=======
   res[2].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
 
->>>>>>> Stashed changes
 
   res[3].name = "Vegan pie",
   res[3].prep_time = 15,
   res[3].cook_time = 11,
   res[3].servings = 5;
-<<<<<<< Updated upstream
-=======
   res[3].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
 
->>>>>>> Stashed changes
 
   res[4].name = "Pizza",
   res[4].prep_time = 25,
   res[4].cook_time = 30,
   res[4].servings = 1;
-<<<<<<< Updated upstream
-=======
   res[4].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
 
->>>>>>> Stashed changes
 
   res[5].name = "Vegan Pizza",
   res[5].prep_time = 25,
   res[5].cook_time = 30,
   res[5].servings = 1;
-<<<<<<< Updated upstream
-=======
   res[5].ingredients[INGREDIENT_COUNT] = {"Water", "Soya", "Soyamilk", "Meat", "-Meat"};
 
->>>>>>> Stashed changes
 
   res[6].name = "Meat Pizza",
   res[6].prep_time = 25,
