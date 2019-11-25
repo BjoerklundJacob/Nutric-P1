@@ -1,10 +1,14 @@
 #include "data.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
 
+void UserSettings(UserData* userData);
 void Age(UserData* userData);
-void FoodExclusions(UserData* UserData);
+void Weight(UserData* userData);
+void FoodExclusions(UserData* userData) ;
 void UserSettingsText(void);
-void ClearScreen(void);
 char Signed(int input);
 int CheckInput(char* sign, int* input);
 void ClearChar(char* sign);
-void SaveUserData(UserData UserData);
+void SaveUserData(UserData userData);

@@ -1,17 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
 #include "menu.h"
-
 /**
  * Sets the users data as a backup and then tries to get it from the file and goes to the relevant page using dialogue with the user.
- */
+*/
 void Page(void){
     UserData userData;
     char pageinput = '!';
     int i;
     
+    ClearScreen();
     userData.age = 20;
+    userData.weight = 20;
     for (i = 0; i < e_recipe_set_tags_size; i++){
         userData.foodExclusions[i] = -5;
     }
@@ -121,10 +119,12 @@ void LoadUserData(UserData* userData){
     
     /* Checks if the file exists if it does not go back to Page and use the initial settings*/
     if ((file = fopen("User Data.ini", "r")) == NULL){
+        printf("\x1b[32m" "It is recommended to input your specifics in User Settings for optimal perfomance" "\x1b[0m\n\n");
         return;
     }
     
-    fscanf(file, " Age=%lf", &userData->age);
+    fscanf(file, " Age=%i", &userData->age);
+    fscanf(file, " Weight=%lf", &userData->weight);
     for (i = 0; i < e_recipe_set_tags_size-1; i++)
     {
         fscanf(file, " FoodExclusions[%d]=%d", &i,  &userData->foodExclusions[i]);
