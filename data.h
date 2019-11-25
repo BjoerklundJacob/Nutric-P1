@@ -14,6 +14,7 @@ typedef struct UserData{
     int age;
     int foodExclusions[e_recipe_set_tags_size-1];
     double weight;
+    char gender;
 } UserData;
 
 #endif

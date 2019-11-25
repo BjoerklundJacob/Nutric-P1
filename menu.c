@@ -9,7 +9,8 @@ void Page(void){
     
     ClearScreen();
     userData.age = 20;
-    userData.weight = 20;
+    userData.weight = 80;
+    userData.gender = 'm';
     for (i = 0; i < e_recipe_set_tags_size; i++){
         userData.foodExclusions[i] = -5;
     }
@@ -125,6 +126,7 @@ void LoadUserData(UserData* userData){
     
     fscanf(file, " Age=%i", &userData->age);
     fscanf(file, " Weight=%lf", &userData->weight);
+    fscanf(file, " Gender=%c", &userData->gender);
     for (i = 0; i < e_recipe_set_tags_size-1; i++)
     {
         fscanf(file, " FoodExclusions[%d]=%d", &i,  &userData->foodExclusions[i]);

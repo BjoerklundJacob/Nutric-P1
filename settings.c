@@ -1,5 +1,5 @@
 /*
- *If $ then eastereggl ("https://pics.me.me/looks-like-meats-back-on-the-menu-boys-when-you-37741962.png")
+ *If $ then easteregg ("https://pics.me.me/looks-like-meats-back-on-the-menu-boys-when-you-37741962.png")
 */
 
 #include "settings.h"
@@ -28,6 +28,11 @@ void UserSettings(UserData* userData){
                 break;
             case '3':
                 ClearScreen();
+                Gender(userData);
+                UserSettingsText();
+                break;
+            case '4':
+                ClearScreen();
                 FoodExclusions(userData);
                 UserSettingsText();
                 break;
@@ -47,7 +52,7 @@ void UserSettings(UserData* userData){
 }
 
 /**
- * Takes the users age from dialog and inputs it into the structure member age and clearing the buffer on invalid inputs.
+ * Takes the users weight from dialog and inputs it into the structure member weight and clearing the buffer on invalid inputs.
  * @param userData the struct in control of all the users data and modifies the data
  */
 void Age(UserData* userData){
@@ -66,7 +71,34 @@ void Age(UserData* userData){
 }
 
 /**
- * Takes the users age from dialog and inputs it into the structure member age and clearing the buffer on invalid inputs.
+ * Takes the users gender from dialog and inputs it into the structure member gender and clearing the buffer on invalid inputs.
+ * @param userData the struct in control of all the users data and modifies the data
+ */
+void Gender(UserData* userData){
+    char gender;
+    printf("Please input your gender (f)emale or (m)ale: ");
+    gender = tolower(_getche());
+    do{
+        switch (gender)
+        {
+        case 'm':
+            userData->gender = gender;
+            break;
+        case 'f':
+            userData->gender = gender;
+            break;
+        default:
+            printf("\nPlease input a valid gender: ");
+            gender = tolower(_getche());
+            break;
+        }
+    }while(gender != 'm' && gender != 'f');
+    printf("\nYour gender is now set to %c\n\n", userData->gender); 
+    return;
+}
+
+/**
+ * Takes the users weight from dialog and inputs it into the structure member weight and clearing the buffer on invalid inputs.
  * @param userData the struct in control of all the users data and modifies the data
  */
 void Weight(UserData* userData){
@@ -143,7 +175,8 @@ void UserSettingsText(void){
     printf("You're at the User Settings page. \nType 1, 2 or 0 to get to the respective settings.\n");
     printf(" (1) Age\n");
     printf(" (2) Weight\n");
-    printf(" (3) Food Exclusions\n");
+    printf(" (3) Gender\n");
+    printf(" (4) Food Exclusions\n");
     printf(" (0) Return to the main menu\n");
     return;
 }
@@ -219,6 +252,7 @@ void SaveUserData(UserData userData){
 
     fprintf(file, "Age=%i\n", userData.age);
     fprintf(file, "Weight=%lf\n", userData.weight);
+    fprintf(file, "Gender=%c\n", userData.gender);
     for (i = 0; i < e_recipe_set_tags_size-1; i++){
         sign = Signed(userData.foodExclusions[i]);
         if (sign == '+'){
