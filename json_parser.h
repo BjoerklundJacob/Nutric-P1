@@ -1,5 +1,8 @@
 #include <stdio.h>
-#include "json_structs.h"
+#ifndef JSON_STRUCTS_H
+#define JSON_STRUCTS_H "json_structs.h"
+#include JSON_STRUCTS_H
+#endif
 
 #define BUFFER_LEN 512
 

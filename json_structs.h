@@ -8,6 +8,7 @@ typedef enum _eVALUE_TYPES{
   value_map,
   value_string,
   value_key_value_pair,
+  value_double,
   value_undefined
 } eVALUE_TYPES;
 

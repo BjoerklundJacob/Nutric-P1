@@ -1,6 +1,6 @@
 #include "json_parser.h"
 
-int main(void){
+/*int main(void){
   MAP *map;
 
   map = json_load(".\\test.json");
@@ -10,7 +10,7 @@ int main(void){
 
   map_free(map);
   return 0;
-}
+}*/
 
 /** Parses a json file loading the data to a map, returning the loaded map
   * (simplified parsing - not full json parser)
@@ -219,6 +219,21 @@ eVALUE_TYPES parse_value(FILE* file, void** value){
       strcpy(*value, buffer);
       value_type = value_string;
       break;
+    case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':case '0':
+      ungetc(c, file);
+      c = file_string_read(file, buffer, BUFFER_LEN, " ,", 0);
+      if (c == ','){
+        /* put c back since will be read by call to determine if there are more elements */
+        ungetc(',', file);
+      }
+      *value = malloc(sizeof(double));
+      if (*value == NULL){
+        printf("Could not allocate memory.\n");
+        exit(EXIT_FAILURE);
+      }
+      sscanf(buffer, "%lf", (double*) *value);
+      value_type = value_double;
+      break;
     /* value not being parsed by simplified json parser or invalid input */
     default:
       printf("Unexpected value format in json. <%c>\n", c);
@@ -283,6 +298,7 @@ void fprint_value(FILE* file, void* value, eVALUE_TYPES type, int depth){
     switch(type){
       case value_list: fprint_list(file, value, depth); break;
       case value_map: fprint_map(file, value, depth); break;
+      case value_double: fprintf(file, "%lf", *(double*) value); break;
       default: fprintf(file, "\"%s\"", value);
     }
   }
