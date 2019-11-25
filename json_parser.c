@@ -6,7 +6,7 @@ int main(void){
   map = json_load(".\\test.json");
   printf("json loaded.\n");
 
-  print_map(map);
+  json_write(".\\test.json", map);
 
   map_free(map);
   return 0;
@@ -54,7 +54,7 @@ MAP* json_load(char* file_dir){
 char non_white_space_char(FILE* file){
   char c;
   do{c = fgetc(file);}
-  while(c == EOF || c == '\t' || c == '\n' || c == ' ' || c == '\r');
+  while(c != EOF && (c == '\t' || c == '\n' || c == ' ' || c == '\r'));
   return c;
 }
 
@@ -153,8 +153,10 @@ char file_string_read(FILE* file, char* buffer, int buffer_size, const char* sto
   char c;
   for(i = 0; i < buffer_size-1; ++i){
     c = fgetc(file);
-    
-    if(ignore_whitespace && (c == EOF || c == '\t' || c == '\n' || c == ' ' || c == '\r')){
+    if (c == EOF){
+      break;
+    }
+    if(ignore_whitespace && (c == '\t' || c == '\n' || c == ' ' || c == '\r')){
       --i;/* don't proceed in buffer */
     }
     else{
@@ -226,59 +228,98 @@ eVALUE_TYPES parse_value(FILE* file, void** value){
   return value_type;
 }
 
-/** Prints a map
-  * @param map to be printed
+/** Writes json to a .json file from a map
+  * @param file_dir - directory of file to write to
+  * @param map - map to parse to json
   */
-void print_map(MAP* map){
+void json_write(const char* file_dir, MAP* map){
+  FILE* file = fopen(file_dir, "w");
+  if (file == NULL){
+    printf("Could not open file to write.\n");
+    exit(EXIT_FAILURE);
+  }
+  fprint_map(file, map, 0);
+  fclose(file);
+}
+
+/** Prints a map to a file
+  * @param file - FILE* to open file to write to
+  * @param map - to be printed
+  * @param depth - depth of the nested data
+  */
+void fprint_map(FILE* file, MAP* map, int depth){
   int i;
-  printf("{\n");
+  fprintf(file, "{\n");
   for(i = 0; i < list_size(map->key_value_pairs); ++i){
-    print_key_value_pair(list_value(map->key_value_pairs, i));
+    findent(file, depth+1);
+    fprint_key_value_pair(file, list_value(map->key_value_pairs, i), depth+1);
     if (i < list_size(map->key_value_pairs)-1){
-      printf(", ");
+      fprintf(file, ",\n");
     }
   }
-  printf("\n}");
+  fprintf(file, "\n");
+  findent(file, depth);
+  fprintf(file, "}");
 }
 
-/** Prints a key-value pair
+/** Prints a key-value pair to a file
+  * @param file - FILE* to open file to write to
   * @param kv - key-value pair to print
+  * @param depth - depth of the nested data
   */
-void print_key_value_pair(KEY_VALUE_PAIR* kv){
-  printf("\"%s\": ", kv->key);
-  print_value(kv->value, kv->value_type);
+void fprint_key_value_pair(FILE* file, KEY_VALUE_PAIR* kv, int depth){
+  fprintf(file, "\"%s\": ", kv->key);
+  fprint_value(file, kv->value, kv->value_type, depth);
 }
 
-/** Prints a value
+/** Prints a value to a file
+  * @param file - FILE* to open file to write to
   * @param value - void* value to print
   * @param type - eVALUE_TYPES type of value to print
+  * @param depth - depth of the nested data
   */
-void print_value(void* value, eVALUE_TYPES type){
+void fprint_value(FILE* file, void* value, eVALUE_TYPES type, int depth){
   if (value != NULL){
     switch(type){
-      case value_list: print_list(value); break;
-      case value_map: print_map(value); break;
-      default: printf("\"%s\"", value);
+      case value_list: fprint_list(file, value, depth); break;
+      case value_map: fprint_map(file, value, depth); break;
+      default: fprintf(file, "\"%s\"", value);
     }
   }
   else{
-    printf("(null)");
+    fprintf(file, "(null)");
   }
 }
 
-/** Prints a list
+/** Prints a list to a file
+  * @param file - FILE* to open file to write to
   * @param list - list to be printed
+  * @param depth - depth of the nested data
   */
-void print_list(LIST* list){
+void fprint_list(FILE* file, LIST* list, int depth){
   int i;
   LIST* element;
-  printf("[\n");
+  fprintf(file, "[\n");
   for(i = 0; i < list_size(list); ++i){
+    findent(file, depth+1);
     element = list_element(list, i);
-    print_value(element->value, element->value_type);
+    fprint_value(file, element->value, element->value_type, depth+1);
     if (i < list_size(list)-1){
-      printf(", ");
+      fprintf(file, ",\n");
     }
   }
-  printf("\n]");
+  fprintf(file, "\n");
+  findent(file, depth);
+  fprintf(file, "]");
+}
+
+/** Writes 2 spaces per depth to a file
+  * @param file - FILE* to open file to write to
+  * @param depth - depth of the nested data
+  */
+void findent(FILE* file, int depth){
+  int i;
+  for(i = 0; i < depth; ++i){
+    fprintf(file, "  ");
+  }
 }
