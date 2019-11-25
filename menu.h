@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include "data.h"
 
-
-
+void UserSettings(UserData* userData);
+void RecipeOutput(void);
 void Page(void);
 void Recipes(void);
 void Exit(void);

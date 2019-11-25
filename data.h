@@ -1,3 +1,6 @@
+#ifndef DATA_H
+#define DATA_H
+
 typedef enum _eRECIPE_SET_TAGS{
   all,
   tomato,
@@ -12,3 +15,5 @@ typedef struct UserData{
     int foodExclusions[e_recipe_set_tags_size-1];
     double weight;
 } UserData;
+
+#endif
