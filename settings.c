@@ -1,7 +1,3 @@
-/*
- *If $ then easteregg ("https://pics.me.me/looks-like-meats-back-on-the-menu-boys-when-you-37741962.png")
-*/
-
 #include "settings.h"
 
 /**
@@ -40,9 +36,6 @@ void UserSettings(UserData* userData){
                 SaveUserData(*userData);
                 ClearScreen();
                 return;
-            case '$':
-                system("start https://pics.me.me/looks-like-meats-back-on-the-menu-boys-when-you-37741962.png");
-                break;
             default:
                 printf("The following page was not found. Please try again.\n");
                 break;

@@ -33,6 +33,9 @@ void Page(void){
             ClearScreen();
             StartText();
             break;
+        case '3':
+            system("cmd /C \"Input.json\"");
+            break;
         case '0':
             ClearScreen();
             Exit();
@@ -100,6 +103,7 @@ void StartText(void){
     printf("\nType 1,2 or 0 to get to the respective page.\n");
     printf("(1) Recipies\n");
     printf("(2) User Settings\n");
+    printf("(3) Open the recipe list\n");
     printf("(0) Exit\n");
 }
 
