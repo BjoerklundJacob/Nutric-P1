@@ -8,6 +8,8 @@ int main() {
 }
 
 void cvs_reader(){
-  FILE 
+  FILE *f;
+
+
 
 }
