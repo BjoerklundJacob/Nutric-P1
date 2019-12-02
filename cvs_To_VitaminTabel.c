@@ -6,18 +6,7 @@
 #define GENDERS (2)
 #define ALLVITAMINS (AGE_GROUPS *2 *GENDERS * VITAMINS)
 
-enum{
-  VitaminA,
-  Iron,
-  VitaminD,
-  Calcium,
-  RiboflavinB2,
-  NiacinB3,
-  Selenium,
-  Zinc,
-  VitaminB12,
-  Iodine,
-};
+enum{VitaminA, Iron, VitaminD, Calcium, RiboflavinB2, NiacinB3, Selenium, Zinc, VitaminB12, Iodine,};
 
 void GetRange(double VitaminTabel[], double *minMax, int age, int vitamin, int gender, int weight);
 int AgeGroupe(int age);
@@ -26,7 +15,6 @@ void GetVitaminsTabel(FILE *vitamins, double *VitaminTabel);
 int PlaceIndTabel(int ageGroupe, int vitamin, int gender);
 
 int main(void){
-
   double VitaminTabel[ALLVITAMINS];
 
   SetVitamins(VitaminTabel);
@@ -35,20 +23,13 @@ int main(void){
   int age = 19, vitamin = 1, gender = 1, weight = 100;
   GetRange(VitaminTabel, minMax, age, vitamin, gender, weight);
 
-  printf("\nMin %lf - Max %lf (A) ", minMax[0], minMax[1]);
-
   return 0;
 }
 
 void GetRange(double VitaminTabel[], double *minMax, int age, int vitamin, int gender, int weight){
-
   int place = PlaceIndTabel(AgeGroupe(age), vitamin, gender);
 
-  printf("\nplace %i", place);
-  printf("\nplace %i", place +1);
-
-  switch (vitamin)
-  {
+  switch (vitamin){
   case VitaminA:
   case Iron:
   case Zinc:
@@ -86,12 +67,10 @@ int AgeGroupe(int age){
   else {return 9;}
 }
 
-void SetVitamins(double VitaminTabel[])
-{
+void SetVitamins(double VitaminTabel[]){
   FILE *vitamins = fopen("C:\\Users\\Malthe\\Documents\\VeGen-P1\\Vitamins.csv", "r");
 
-  if (vitamins == NULL)
-  {
+  if (vitamins == NULL){
     perror("NO");
     exit(1);
   }
@@ -103,16 +82,12 @@ void SetVitamins(double VitaminTabel[])
   return;
 }
 
-void GetVitaminsTabel(FILE *vitamins, double *VitaminTabel)
-{
+void GetVitaminsTabel(FILE *vitamins, double *VitaminTabel){
   int place;
 
-  for (int vitamin = 0; vitamin < VITAMINS; vitamin++)
-  {
-    for (int gender = 0; gender < GENDERS; gender++)
-    {
-      for (int i = 0; i < AGE_GROUPS; i++)
-      {
+  for (int vitamin = 0; vitamin < VITAMINS; vitamin++){
+    for (int gender = 0; gender < GENDERS; gender++){
+      for (int i = 0; i < AGE_GROUPS; i++){
         place = PlaceIndTabel(i,vitamin,gender);
         
         fscanf(vitamins,"%lf - %lf",&VitaminTabel[place], &VitaminTabel[place + 1]);
