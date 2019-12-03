@@ -41,7 +41,7 @@ int main() {
 
   if (j > 81){
     printf("Prove igen tallet er for stort\n");
-    return EXIT_FAILURE;
+    return EXIT_FAILURE; 
   } else if(j < 0){
     printf("Prove igen tallet er for lille\n");
     return EXIT_FAILURE;    
