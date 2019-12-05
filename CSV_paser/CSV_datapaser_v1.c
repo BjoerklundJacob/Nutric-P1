@@ -58,13 +58,9 @@ int main() {
     
   }
 
-
   printing_the_choosen_in(ingredientsList, j); 
 
   fclose(f); 
-
-  /*Funktionen printer array'et */ 
-
   
   return EXIT_SUCCESS;
 }
