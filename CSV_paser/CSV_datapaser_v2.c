@@ -33,11 +33,11 @@ void printing_the_choosen_in(ingredientsList_struct ingredList[MAX_ARRAY_SIZE], 
 
 int main() {
   int i, j; 
-  FILE *f = fopen("IngredientsListP_2.csv", "r"); 
+  FILE *f = fopen("IngredientsList.csv", "r"); 
   ingredientsList_struct ingredList[MAX_ARRAY_SIZE]; 
 
   j = scan_data(); 
-  
+
   if (j == 0){
       return EXIT_FAILURE; 
   }
@@ -91,6 +91,6 @@ void printing_the_choosen_in(ingredientsList_struct ingredList[MAX_ARRAY_SIZE], 
       printf("Vitamin A:        %s\n", ingredList[j].vitamin_A);
       printf("Vitamin D:        %s\n", ingredList[j].viatamin_D);
       printf("Iodine:           %s\n", ingredList[j].iodine);         
-      printf("\n\n"); 
+      printf("\n"); 
 }
 
