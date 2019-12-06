@@ -1,6 +1,5 @@
-#ifndef OUTPUT_H
-#define OUTPUT_H
-
+#ifndef OUTPUT
+#define OUTPUT
 #include "data.h"
 #include "json_parser.h"
 #include "csv_nutrient_ranges.h"

@@ -1,6 +1,5 @@
-#ifndef NUTRIENT_COUNTER_H
-#define NUTRIENT_COUNTER_H
-
+#ifndef NUTRIENT_COUNTER
+#define NUTRIENT_COUNTER
 #include "json_structs.h"
 #include "json_parser.h"
 #include <string.h>
@@ -25,4 +24,5 @@ typedef enum _eNUTRIENTS{
 
 void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients);
 double unit_to_gram(const char* unit);
+int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, char* name);
 #endif

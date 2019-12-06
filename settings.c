@@ -64,20 +64,12 @@ void Age(UserData* userData){
 void Gender(UserData* userData){
     char gender;
     printf("Please input your gender (f)emale or (m)ale: ");
-    gender = tolower(_getche());
     do{
-        switch (gender)
-        {
-        case 'm':
-            userData->gender = gender;
-            break;
-        case 'f':
-            userData->gender = gender;
-            break;
-        default:
+        gender = tolower(_getche());
+        if (gender == 'm' || gender == 'f'){
+            userData->gender = gender; 
+        }else{
             printf("\nPlease input a valid gender: ");
-            gender = tolower(_getche());
-            break;
         }
     }while(gender != 'm' && gender != 'f');
     printf("\nYour gender is now set to %c\n\n", userData->gender); 

@@ -1,24 +1,24 @@
 #include "nutrient_counter.h"
 #include "csv_nutrient_parser.h"
 #include <string.h>
-
+/*
 int main(void){
   list_t *hash_lists[LETTER_COUNT];
   map_t *map, *submap, *nutrient_map;
   list_t *list;
   int i;
-
+*/
   /* init hash lists to null */
-  for(i = 0; i < LETTER_COUNT; ++i){
+  /*for(i = 0; i < LETTER_COUNT; ++i){
     hash_lists[i] = NULL;
   }
-
+*/
   /* load recipes */
-  map = json_load(".\\output.json");
+  /*map = json_load(".\\output.json");
   printf("json loaded.\n");
-
+*/
   /* calculate nutrients for all recipes */
-  nutrient_map = ingredient_nutrients();
+  /*nutrient_map = ingredient_nutrients();
 
   list = map_value(map, "recipes");
   if (list != NULL){
@@ -38,7 +38,7 @@ int main(void){
   map_free(nutrient_map);
   printf("succes?\n");
   return 0;
-}
+}*/
 
 void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients){
   list_t *ingredient_element = map_value(recipe, "ingredients");

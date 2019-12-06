@@ -1,3 +1,5 @@
+#ifndef SETTINGS
+#define SETTINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
@@ -12,3 +14,4 @@ void UserSettingsText(void);
 char Signed(int input);
 void SaveUserData(UserData userData);
 void ClearScreen(void);
+#endif

@@ -1,8 +1,7 @@
+#ifndef JSON_STRUCTS
+#define JSON_STRUCTS
 #include <stdlib.h>
 #include <string.h>
-
-#ifndef JSON_STRUCTS_H
-#define JSON_STRUCTS_H
 
 #define MAX_KEY_LEN 32
 

@@ -7,7 +7,7 @@
 #include "csv_nutrient_parser.h"
 
 void get_ingredient_nutrients(ingredient_nutrients_t* output_array){
-  FILE *f = fopen("IngredientsListP_2.csv", "r"); 
+  FILE *f = fopen("C:/Users/User/Documents/GitHub/VeGen-P1/IngredientsListP_2.csv", "r"); 
   int i, j;
 
   /* Funktionen afleaser CSV filen og skaber array'et */
