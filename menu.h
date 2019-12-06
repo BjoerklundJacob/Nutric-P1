@@ -1,3 +1,5 @@
+#ifndef MENU
+#define MENU
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -17,3 +19,4 @@ void Exit(void);
 void StartText(void);
 void ClearScreen(void);
 void LoadUserData(UserData* userData);
+#endif

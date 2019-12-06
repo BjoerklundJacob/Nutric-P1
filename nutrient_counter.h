@@ -1,6 +1,5 @@
-#ifndef NUTRIENT_COUNTER_H
-#define NUTRIENT_COUNTER_H
-
+#ifndef NUTRIENT_COUNTER
+#define NUTRIENT_COUNTER
 #include "json_structs.h"
 #include "json_parser.h"
 #include <string.h>

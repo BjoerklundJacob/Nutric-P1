@@ -1,5 +1,4 @@
-#ifndef CSV_NUTRIENT_PARSER_H
-#define CSV_NUTRIENT_PARSER_H
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,4 +25,3 @@ typedef struct ingredientsList_struct{
 
 void printing_the_choosen_in(ingredient_nutrients_t ingredientsList[MAX_ARRAY_SIZE], int j);
 void get_ingredient_nutrients(ingredient_nutrients_t* output_array);
-#endif

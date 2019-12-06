@@ -6,18 +6,24 @@
         {
             "type": "shell",
             "label": "gcc.exe build active file",
-            "command": "C:\\Progs\\MinGW\\bin\\gcc.exe",
+            "command": "C:\\MinGW\\bin\\gcc.exe",
             "args": [
                 "-g",
                 "${workspaceFolder}\\main.c",
                 "${workspaceFolder}\\menu.c",
                 "${workspaceFolder}\\settings.c",
+                "${workspaceFolder}\\json_parser.c",
+                "${workspaceFolder}\\json_structs.c",
+                "${workspaceFolder}\\csv_nutrient_ranges.c",
+                "${workspaceFolder}\\csv_nutrient_parser.c",
+                "${workspaceFolder}\\nutrient_counter.c",
+                "${workspaceFolder}\\output.c",
                 "-ansi",
                 "-pedantic",
                 "-Wall"
             ],
             "options": {
-                "cwd": "C:\\Progs\\MinGW\\bin"
+                "cwd": "C:\\MinGW\\bin"
             },
             "problemMatcher": [
                 "$gcc"
