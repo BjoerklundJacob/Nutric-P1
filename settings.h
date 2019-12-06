@@ -10,6 +10,5 @@ void Gender(UserData* userData);
 void Weight(UserData* userData);
 void UserSettingsText(void);
 char Signed(int input);
-int CheckInput(char* sign, int* input);
-void ClearChar(char* sign);
 void SaveUserData(UserData userData);
+void ClearScreen(void);

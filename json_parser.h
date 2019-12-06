@@ -1,8 +1,8 @@
 #include <stdio.h>
-#ifndef JSON_STRUCTS_H
-#define JSON_STRUCTS_H "json_structs.h"
-#include JSON_STRUCTS_H
-#endif
+#include "json_structs.h"
+
+#ifndef JSON_PARSER_H
+#define JSON_PARSER_H
 
 #define BUFFER_LEN 512
 
@@ -19,3 +19,4 @@ void fprint_key_value_pair(FILE* file, key_value_pair_t* kv, int depth);
 void fprint_value(FILE* file, void* value, value_types_t type, int depth);
 void fprint_list(FILE* file, list_t* list, int depth);
 void findent(FILE* file, int depth);
+#endif

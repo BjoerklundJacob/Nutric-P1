@@ -5,38 +5,28 @@
 void Page(void){
     UserData userData;
     char pageinput = '!';
-    int i;
     
     ClearScreen();
-    userData.age = 20;
-    userData.weight = 80;
-    userData.gender = 'm';
-    for (i = 0; i < e_recipe_set_tags_size; i++){
-        userData.foodExclusions[i] = -5;
-    }
     LoadUserData(&userData);
 
-    StartText();
     do{
+        ClearScreen();
+        StartText();
         pageinput = _getche();
 
         switch (pageinput){
-        case '1':
+        case NUTRIENT_PAGE:
             ClearScreen();
-            Recipes();
-            ClearScreen();
-            StartText();
+            NutrientPage(userData);
             break;
-        case '2':
+        case USER_SETTINGS_PAGE:
             ClearScreen();
             UserSettings(&userData);
-            ClearScreen();
-            StartText();
             break;
-        case '3':
+        case INPUT_FILE_PAGE:
             system("cmd /C \"Input.json\"");
             break;
-        case '0':
+        case EXIT:
             ClearScreen();
             Exit();
             break;
@@ -44,31 +34,19 @@ void Page(void){
             printf("The following page was not found. Please try again.\n");
             break;
         }
-    } while (pageinput != '0');
+    } while (pageinput != EXIT);
 }
 
 /**
- * Goes to the recipe page (not incorporated yet)
+ * Goes to the recipe page
  */
-void Recipes(void){
-    char recipeinput = '9';
-
+void NutrientPage(UserData userdata){
     do{
-        printf("You're at the Recipes page. Press 1 to find recipes or smth and 0 to return to main menu.\n");
-        recipeinput = _getche();
-        if(recipeinput == '1'){
-            ClearScreen();
-            RecipeOutput();
-        }
-        else{
-            ClearScreen();
-            printf("The input does not correspond to any pages. Please try again.\n");
-        }
-    } while (recipeinput != '0');
-    ClearScreen();
-    printf("You're leaving recipes page now.\n\n");
-
-    StartText();
+        printf("You're at the nutrient page.\n");
+        /* Output nutrients */
+        NutrientOutput(userdata);
+        printf("Press 0 to return to main menu.\n");
+    } while (_getche() != '0');
 
     return;
 }
@@ -98,10 +76,9 @@ void StartText(void){
     printf("  \\ \\  / /__| |  __  ___ _ __\n");
     printf("   \\ \\/ / _ \\ | |_ |/ _ \\ '_ \\\n");
     printf("    \\  /  __/ |__| |  __/ | | |\n");
-    printf("     \\/ \\___|\\_____|\\___|_| |_|\n");
+    printf("     \\/ \\___|\\_____|\\___|_| |_|\n\n");
 
-    printf("\nType 1,2 or 0 to get to the respective page.\n");
-    printf("(1) Recipies\n");
+    printf("(1) Nutrients\n");
     printf("(2) User Settings\n");
     printf("(3) Open the recipe list\n");
     printf("(0) Exit\n");
@@ -120,11 +97,13 @@ void ClearScreen(void){
  */
 void LoadUserData(UserData* userData){
     FILE *file;
-    int i;
     
     /* Checks if the file exists if it does not go back to Page and use the initial settings*/
     if ((file = fopen("User Data.ini", "r")) == NULL){
         printf("\x1b[32m" "It is recommended to input your specifics in User Settings for optimal perfomance" "\x1b[0m\n\n");
+        userData->age = 20;
+        userData->weight = 80;
+        userData->gender = 'm';
         return;
     }
     

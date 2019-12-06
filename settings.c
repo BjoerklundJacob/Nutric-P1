@@ -99,7 +99,7 @@ void Weight(UserData* userData){
         }
         scanres = scanf(" %lf", &userData->weight);
     }
-    printf("Your age is now set to %.1lf\n\n", userData->weight); 
+    printf("Your weight is now set to %.1lf\n\n", userData->weight); 
     return;
 }
 
@@ -109,11 +109,10 @@ void Weight(UserData* userData){
  * Prints the introductory text to user settings
  */
 void UserSettingsText(void){
-    printf("You're at the User Settings page. \nType 1, 2 or 0 to get to the respective settings.\n");
+    printf("You're at the user settings page.\n");
     printf(" (1) Age\n");
     printf(" (2) Weight\n");
     printf(" (3) Gender\n");
-    printf(" (4) Food Exclusions\n");
     printf(" (0) Return to the main menu\n");
     return;
 }
@@ -133,55 +132,11 @@ char Signed(int input){
 }
 
 /**
- * Checks the users input whilst clearing the buffer for both inputs: the sign and the number.
- * @param sign the char the user submits 
- * @param input the number the user submits 
- */
-int CheckInput(char* sign, int* input){
-    *sign = _getche();
-    if (*sign == '0'){
-        return -1;
-    }
-    ClearChar(sign);
-    if (*sign == '0'){
-        return -1;
-    }
-    scanf("%d", &*input);
-    while (*input > e_recipe_set_tags_size-1 || *input == 0){
-        printf("Unexpected number try again\n");        
-       *sign = _getche();
-        if (*sign == '0'){
-        return -1;
-        }
-        ClearChar(sign);
-        *input = _getche();
-    }
-    return 0;
-}
-
-/**
- * Clears the input buffer if the sign was incorrect
- * @param sign the char the user submits
- */
-void ClearChar(char* sign){
-    while (*sign != '-' && *sign != '+' && *sign != '*'){
-        printf("Unexpected sign try again\n");
-        
-       *sign = _getche();
-        if (*sign == '0'){
-        return;
-    }
-    }
-}
-
-/**
  * Saves the users data to an ini file and stores it in the directory of the executable.
  * @param userData the struct in control of all the users data
  */
 void SaveUserData(UserData userData){
     FILE *file;
-    int i;
-    char sign;
     
     /* Opens the file with write permissions and creates it if it does not exist*/
     file = fopen("User Data.ini", "w");
@@ -190,13 +145,5 @@ void SaveUserData(UserData userData){
     fprintf(file, "Age=%i\n", userData.age);
     fprintf(file, "Weight=%lf\n", userData.weight);
     fprintf(file, "Gender=%c\n", userData.gender);
-    for (i = 0; i < e_recipe_set_tags_size-1; i++){
-        sign = Signed(userData.foodExclusions[i]);
-        if (sign == '+'){
-            fprintf(file, "FoodExclusions[%d]=%c%d\n", i, sign, userData.foodExclusions[i]);
-        }else{
-            fprintf(file, "FoodExclusions[%d]=%d\n", i, userData.foodExclusions[i]);
-        }
-    }
     fclose(file);
 }

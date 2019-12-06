@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef JSON_STRUCTS_H
+#define JSON_STRUCTS_H
+
 #define MAX_KEY_LEN 32
 
 typedef enum _value_types_t{
@@ -41,3 +44,4 @@ void map_add(map_t* map, const char* key, void* value, value_types_t value_type)
 void* map_value(map_t* map, const char* key);
 void map_free(map_t* map);
 void free_value(void* value, value_types_t value_type);
+#endif
