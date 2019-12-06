@@ -37,6 +37,7 @@ int main() {
   ingredientsList_struct ingredList[MAX_ARRAY_SIZE]; 
 
   j = scan_data(); 
+  
   if (j == 0){
       return EXIT_FAILURE; 
   }
