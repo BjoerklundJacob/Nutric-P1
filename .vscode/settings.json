@@ -1,5 +1,10 @@
 {
   "files.associations": {
-    "json_structs.h": "c"
-  }
+    "json_structs.h": "c",
+    "conio.h": "c",
+    "settings.h": "c",
+    "data.h": "c",
+    "stdlib.h": "c",
+    "stdio.h": "c"
+    }
 }

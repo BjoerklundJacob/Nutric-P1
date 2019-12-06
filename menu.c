@@ -1,17 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
 #include "menu.h"
-
 /**
  * Sets the users data as a backup and then tries to get it from the file and goes to the relevant page using dialogue with the user.
- */
+*/
 void Page(void){
     UserData userData;
     char pageinput = '!';
     int i;
     
+    ClearScreen();
     userData.age = 20;
+    userData.weight = 80;
+    userData.gender = 'm';
     for (i = 0; i < e_recipe_set_tags_size; i++){
         userData.foodExclusions[i] = -5;
     }
@@ -33,6 +32,9 @@ void Page(void){
             UserSettings(&userData);
             ClearScreen();
             StartText();
+            break;
+        case '3':
+            system("cmd /C \"Input.json\"");
             break;
         case '0':
             ClearScreen();
@@ -101,6 +103,7 @@ void StartText(void){
     printf("\nType 1,2 or 0 to get to the respective page.\n");
     printf("(1) Recipies\n");
     printf("(2) User Settings\n");
+    printf("(3) Open the recipe list\n");
     printf("(0) Exit\n");
 }
 
@@ -121,14 +124,13 @@ void LoadUserData(UserData* userData){
     
     /* Checks if the file exists if it does not go back to Page and use the initial settings*/
     if ((file = fopen("User Data.ini", "r")) == NULL){
+        printf("\x1b[32m" "It is recommended to input your specifics in User Settings for optimal perfomance" "\x1b[0m\n\n");
         return;
     }
     
-    fscanf(file, " Age=%lf", &userData->age);
-    for (i = 0; i < e_recipe_set_tags_size-1; i++)
-    {
-        fscanf(file, " FoodExclusions[%d]=%d", &i,  &userData->foodExclusions[i]);
-    }
+    fscanf(file, " Age=%i", &userData->age);
+    fscanf(file, " Weight=%lf", &userData->weight);
+    fscanf(file, " Gender=%c", &userData->gender);
     fclose(file);
     return;
 }

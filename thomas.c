@@ -22,10 +22,12 @@ typedef struct _RECIPE{
   NUTRIENT *nutrients;
 }RECIPE;
 
-RECIPE RecipeMaker();
-void NutrientAssigner(NUTRIENT *arr, int r);
-void IngredientsPrint(RECIPE Recipe);
+void RecipeOutput(void);
 void RecipePrint(RECIPE Recipe, char day[]);
+void IngredientsPrint(RECIPE Recipe);
+RECIPE RecipeMaker();
+NUTRIENT NutrientMaker();
+void NutrientAssigner(NUTRIENT *arr, int r);
 void RecipeAssigner(RECIPE *arr);
 
 /**

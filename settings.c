@@ -1,14 +1,8 @@
-/*If $ then eastereggl ("https://pics.me.me/looks-like-meats-back-on-the-menu-boys-when-you-37741962.png")
-*/
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
 #include "settings.h"
-
 /**
  * Handles movement throughout the user settings whilst also giving descriptive text for the user.
  * @param userData the struct in control of all the users data and modifies the data
- */
+*/
 void UserSettings(UserData* userData){
     char input = '!';
     
@@ -24,7 +18,12 @@ void UserSettings(UserData* userData){
                 break;
             case '2':
                 ClearScreen();
-                FoodExclusions(userData);
+                Weight(userData);
+                UserSettingsText();
+                break;
+            case '3':
+                ClearScreen();
+                Gender(userData);
                 UserSettingsText();
                 break;
             case '0':
@@ -40,84 +39,82 @@ void UserSettings(UserData* userData){
 }
 
 /**
- * Takes the users age from dialog and inputs it into the structure member age and clearing the buffer on invalid inputs.
+ * Takes the users weight from dialog and inputs it into the structure member weight and clearing the buffer on invalid inputs.
  * @param userData the struct in control of all the users data and modifies the data
  */
 void Age(UserData* userData){
     int scanres;
     printf("Please input your age: ");
-    scanres = scanf(" %lf", &userData->age);
+    scanres = scanf(" %i", &userData->age);
     while (scanres != 1){
         char buffer;
         while (buffer != '\n'){
             scanf("%c", &buffer);
         }
-        scanres = scanf(" %lf", &userData->age);
+        scanres = scanf(" %i", &userData->age);
     }
-    printf("Your age is now set to %.1lf\n\n", userData->age); 
+    printf("Your age is now set to %i\n\n", userData->age); 
     return;
 }
 
 /**
- * Allows the user to set and unset what ingredients must and must not be in the recipies.
+ * Takes the users gender from dialog and inputs it into the structure member gender and clearing the buffer on invalid inputs.
  * @param userData the struct in control of all the users data and modifies the data
  */
-void FoodExclusions(UserData* userData) {
-    const char* stringTags[] = {"All", "Tomato", "Nuts", "Gluten", "Soya"};
-    int i, input;
-    char sign;
-
-    /* Gives the user directions on what is possible */
-    printf("Type the '+' to must include or '-' to exclude the respective ingredients or '*' to remove in- or exclusion.\n");
-    for (i = 1; i < e_recipe_set_tags_size; i++){
-        printf(" (%d) %s\n", i, stringTags[i]);
-    }
-    printf(" (0) Return to the User Settings\n\n");
-    
-    /* Checks the users input and puts it into the foodexclusions member array using -, + and a nonvalid number*/
-    do {
-        if (CheckInput(&sign, &input) == -1){
+void Gender(UserData* userData){
+    char gender;
+    printf("Please input your gender (f)emale or (m)ale: ");
+    gender = tolower(_getche());
+    do{
+        switch (gender)
+        {
+        case 'm':
+            userData->gender = gender;
+            break;
+        case 'f':
+            userData->gender = gender;
+            break;
+        default:
+            printf("\nPlease input a valid gender: ");
+            gender = tolower(_getche());
             break;
         }
-        for (i = 0; i < e_recipe_set_tags_size-1; i++){
-            if (i == input-1){        
-                if (sign == '-'){
-                    userData->foodExclusions[i] = -input;
-                }else if (sign == '+'){
-                    userData->foodExclusions[i] = input;
-                } else if (sign == '*'){
-                    userData->foodExclusions[i] = -e_recipe_set_tags_size;
-                    printf("Food Exclusion %s now added/updated\n", stringTags[input]);
-                    break;
-                }else{
-                    break;
-                }
-                printf("Food Exclusion %c%s now added/updated\n", sign, stringTags[abs(userData->foodExclusions[i])]);
-                break;
-            }
-        }
-    } while (input != 0);
-
-    /* Gives feedback to the user on what ingredients are in- and excluded */
-    printf("\nFood in- and exclusions are now\n");
-    for (i = 0; i < e_recipe_set_tags_size-1; i++){
-        if (userData->foodExclusions[i] == -e_recipe_set_tags_size){
-            printf("   %s\n", stringTags[i+1]);
-        }else{
-            printf("  %c%s\n", Signed(userData->foodExclusions[i]), stringTags[i+1]);
-        }
-    }
-    printf("\n");
+    }while(gender != 'm' && gender != 'f');
+    printf("\nYour gender is now set to %c\n\n", userData->gender); 
+    return;
 }
+
+/**
+ * Takes the users weight from dialog and inputs it into the structure member weight and clearing the buffer on invalid inputs.
+ * @param userData the struct in control of all the users data and modifies the data
+ */
+void Weight(UserData* userData){
+    int scanres;
+    printf("Please input your weight: ");
+    scanres = scanf(" %lf", &userData->weight);
+    while (scanres != 1){
+        char buffer;
+        while (buffer != '\n'){
+            scanf("%c", &buffer);
+        }
+        scanres = scanf(" %lf", &userData->weight);
+    }
+    printf("Your age is now set to %.1lf\n\n", userData->weight); 
+    return;
+}
+
+
 
 /**
  * Prints the introductory text to user settings
  */
 void UserSettingsText(void){
     printf("You're at the User Settings page. \nType 1, 2 or 0 to get to the respective settings.\n");
-    printf("(1) Age\n");
-    printf("(2) Food Exclusions\n");
-    printf("(0) Return to the main menu\n");
+    printf(" (1) Age\n");
+    printf(" (2) Weight\n");
+    printf(" (3) Gender\n");
+    printf(" (4) Food Exclusions\n");
+    printf(" (0) Return to the main menu\n");
     return;
 }
 
@@ -190,7 +187,9 @@ void SaveUserData(UserData userData){
     file = fopen("User Data.ini", "w");
     
 
-    fprintf(file, "Age=%lf\n", userData.age);
+    fprintf(file, "Age=%i\n", userData.age);
+    fprintf(file, "Weight=%lf\n", userData.weight);
+    fprintf(file, "Gender=%c\n", userData.gender);
     for (i = 0; i < e_recipe_set_tags_size-1; i++){
         sign = Signed(userData.foodExclusions[i]);
         if (sign == '+'){
@@ -201,4 +200,3 @@ void SaveUserData(UserData userData){
     }
     fclose(file);
 }
-
