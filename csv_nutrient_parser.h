@@ -7,7 +7,7 @@
 #include "json_structs.h"
 
 #define MAX_LONG_MAX 30
-#define MAX_ARRAY_SIZE 84
+#define MAX_ARRAY_SIZE 82
 
 typedef struct ingredientsList_struct{
   char ingredient_name[MAX_LONG_MAX];

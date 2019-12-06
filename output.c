@@ -41,4 +41,6 @@ void NutrientOutput(UserData userdata){
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     printf("Nutrient: %lf\n", nutrient_count[i]);
   }
+
+  map_free(map);
 }
