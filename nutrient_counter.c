@@ -2,44 +2,6 @@
 #include "csv_nutrient_parser.h"
 #include <string.h>
 
-int main(void){
-  list_t *hash_lists[LETTER_COUNT];
-  map_t *map, *submap, *nutrient_map;
-  list_t *list;
-  int i;
-
-  /* init hash lists to null */
-  for(i = 0; i < LETTER_COUNT; ++i){
-    hash_lists[i] = NULL;
-  }
-
-  /* load recipes */
-  map = json_load(".\\output.json");
-  printf("json loaded.\n");
-
-  /* calculate nutrients for all recipes */
-  nutrient_map = ingredient_nutrients();
-
-  list = map_value(map, "recipes");
-  if (list != NULL){
-    recipe_nutrient_count_add(list_value(list, 0), nutrient_map);
-  }
-  FILE *file = fopen(".\\output.json", "w");
-  if (file == NULL){
-    return 1;
-  }
-  fprint_map(file, map, 0);
-  fclose(file);
-  submap = list_value(list, 0);
-  list = map_value(submap, "nutrients");
-  printf("::%lf::\n", *(double*) list_value(list, 5));
-
-  map_free(map);
-  map_free(nutrient_map);
-  printf("succes?\n");
-  return 0;
-}
-
 void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients){
   list_t *ingredient_element = map_value(recipe, "ingredients");
   double recipe_nutrients_array[NUTRIENT_COUNT];
@@ -72,34 +34,34 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
         
         /* Add ingredient nutrients to recipe nutrients */
         sscanf(ingredient_nutrients.calcium, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[mineral_calcium] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[mineral_calcium] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.iron, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[mineral_iron] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[mineral_iron] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.zinc, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[mineral_zinc] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[mineral_zinc] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.selenium, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[mineral_selenium] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[mineral_selenium] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.vitamin_B2, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[vitamin_B2] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[vitamin_B2] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.vitamin_B3, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[vitamin_B3] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[vitamin_B3] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.vitamin_B12, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[vitamin_B12] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[vitamin_B12] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.vitamin_A, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[vitamin_A] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[vitamin_A] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.vitamin_D, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[vitamin_D] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[vitamin_D] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
 
         sscanf(ingredient_nutrients.iodine, "%lf %s", &nutrient_amount, nutrient_unit);
-        recipe_nutrients_array[mineral_iodine] += nutrient_amount * unit_to_gram(nutrient_unit);
+        recipe_nutrients_array[mineral_iodine] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
       }
       else{
         printf("Error, nutrients for ingredient not found!\n");
@@ -176,7 +138,7 @@ double unit_to_gram(const char* unit){
   return 1.0;
 }
 
-int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, char* name){
+int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* name){
   int i;
   for(i = 0; i < MAX_ARRAY_SIZE; ++i){
     if(strcmp(nutrients[i].ingredient_name, name) == 0){
