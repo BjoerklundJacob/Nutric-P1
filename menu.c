@@ -131,10 +131,6 @@ void LoadUserData(UserData* userData){
     fscanf(file, " Age=%i", &userData->age);
     fscanf(file, " Weight=%lf", &userData->weight);
     fscanf(file, " Gender=%c", &userData->gender);
-    for (i = 0; i < e_recipe_set_tags_size-1; i++)
-    {
-        fscanf(file, " FoodExclusions[%d]=%d", &i,  &userData->foodExclusions[i]);
-    }
     fclose(file);
     return;
 }
