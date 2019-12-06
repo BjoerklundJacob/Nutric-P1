@@ -10,17 +10,17 @@
 #define NUTRIENT_COUNT 9
 
 typedef enum _eNUTRIENTS{
-  vitamin_D,
-  vitamin_B2,
-  vitamin_B3,
   mineral_calcium,
-  mineral_selenium,
-  vitamin_A,
   mineral_iron,
   mineral_zinc,
+  mineral_selenium,
   mineral_iodine,
-  vitamin_B12
-}eNUTRIENTS;
+  vitamin_B2,
+  vitamin_B3,
+  vitamin_B12,
+  vitamin_A,
+  vitamin_D,
+  }eNUTRIENTS;
 
 void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients);
 double unit_to_gram(const char* unit);
