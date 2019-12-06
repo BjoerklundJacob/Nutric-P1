@@ -1,13 +1,13 @@
 #include "json_structs.h"
 #include <stdio.h>/* for failed allocation error messages */
 
-/** Creates a pointer to a dynamic LIST
+/** Creates a pointer to a dynamic list_t
   * and sets the variables to NULL
-  * @return pointer to dynamic LIST
+  * @return pointer to dynamic list_t
   */
-LIST* list_create(void){
-  /* allocate memory for LIST */
-  LIST* list = malloc(sizeof(LIST));
+list_t* list_create(void){
+  /* allocate memory for list_t */
+  list_t* list = malloc(sizeof(list_t));
   /* if allocation fail */
   if(list == NULL){
     printf("Could not allocate memory for list.\n");
@@ -22,11 +22,11 @@ LIST* list_create(void){
 }
 
 /** Finds and returns the last element in a linked list
-  * @param list - LIST* to a element in a linked list
+  * @param list - list_t* to a element in a linked list
   * @return last element in linked list
   */
-LIST* list_last(LIST* list){
-  LIST* current_element = list;
+list_t* list_last(list_t* list){
+  list_t* current_element = list;
   /* find next element while next element exists */
   while (current_element->next_element != NULL){
     current_element = current_element->next_element;
@@ -36,13 +36,13 @@ LIST* list_last(LIST* list){
 
 /** Adds an element at the end of the linked list, if linked list is empty
   * an element will be created.
-  * @param list - Pointer to the LIST* that should be added to
+  * @param list - Pointer to the list_t* that should be added to
   * @param value - void* to the value of value_type
-  * @param value_type - eVALUE_TYPES value to specify what type value is 
+  * @param value_type - value_types_t value to specify what type value is 
   */
-void list_add(LIST** list, void* value, eVALUE_TYPES value_type){
-  LIST* new_element_p;
-  LIST* last_element;
+void list_add(list_t** list, void* value, value_types_t value_type){
+  list_t* new_element_p;
+  list_t* last_element;
   /* if linked list is empty, create the first element */
   if (*list == NULL){
     *list = list_create();
@@ -63,9 +63,9 @@ void list_add(LIST** list, void* value, eVALUE_TYPES value_type){
   * @param list - the linked list to find size of
   * @return size of list
   */
-int list_size(LIST* list){
+int list_size(list_t* list){
   int size = 0;
-  LIST* current_element = list;
+  list_t* current_element = list;
   while(current_element != NULL){
     size++;
     current_element = current_element->next_element;
@@ -78,18 +78,18 @@ int list_size(LIST* list){
   * @param index - 0 <= index < list_size
   * @return void* value
   */
-void* list_value(LIST* list, int index){
-  LIST* element = list_element(list, index);
+void* list_value(list_t* list, int index){
+  list_t* element = list_element(list, index);
   return element->value;
 }
 
 /** Returns the element of a list at index
   * @param list - linked list
   * @param index - 0 <= index < list_size
-  * @return LIST* to element at index
+  * @return list_t* to element at index
   */
-LIST* list_element(LIST* list, int index){
-  LIST* element = list;
+list_t* list_element(list_t* list, int index){
+  list_t* element = list;
   int i;
   for(i = 0; i < index; ++i){
     element = element->next_element;
@@ -98,10 +98,10 @@ LIST* list_element(LIST* list, int index){
 }
 
 /** Creates a map and sets values to default
-  * @return malloced MAP*
+  * @return malloced map_t*
   */
-MAP* map_create(void){
-  MAP* map = malloc(sizeof(MAP));
+map_t* map_create(void){
+  map_t* map = malloc(sizeof(map_t));
   if(map == NULL){
     printf("Could not allocate memory for map.\n");
     exit(EXIT_FAILURE);
@@ -111,16 +111,16 @@ MAP* map_create(void){
 }
 
 /** Returns the value associated with the key in the map
-  * @param map - MAP*
+  * @param map - map_t*
   * @param key - string key
   * @return void* value from the associated key (NULL if key is not in map)
   */
-void* map_value(MAP* map, char* key){
-  LIST* current_element = map->key_value_pairs;
-  KEY_VALUE_PAIR* key_val;
+void* map_value(map_t* map, const char* key){
+  list_t* current_element = map->key_value_pairs;
+  key_value_pair_t* key_val;
   /* loop through key-value pair list and search for the key */
   while(current_element != NULL && current_element->value != NULL){
-    key_val = (KEY_VALUE_PAIR*)current_element->value;
+    key_val = (key_value_pair_t*)current_element->value;
     /* check if key to search for equals the key of current key-value pair */
     if (strcmp(key_val->key, key) == 0){
       return key_val->value;
@@ -132,14 +132,14 @@ void* map_value(MAP* map, char* key){
 }
 
 /** Adds a key-value pair to the map
-  * @param map - MAP*
+  * @param map - map_t*
   * @param key - string key
   * @param value - void*
-  * @param value_type - eVALUE_TYPES to specify type of value
+  * @param value_type - value_types_t to specify type of value
   */
-void map_add(MAP* map, const char* key, void* value, eVALUE_TYPES value_type){
-  /* allocate memory for KEY_VALUE_PAIR, exit if fail */
-  KEY_VALUE_PAIR* key_val_p = malloc(sizeof(KEY_VALUE_PAIR));
+void map_add(map_t* map, const char* key, void* value, value_types_t value_type){
+  /* allocate memory for key_value_pair_t, exit if fail */
+  key_value_pair_t* key_val_p = malloc(sizeof(key_value_pair_t));
   if(key_val_p == NULL){
     exit(EXIT_FAILURE);
   }
@@ -153,11 +153,11 @@ void map_add(MAP* map, const char* key, void* value, eVALUE_TYPES value_type){
 
 /** Deletes an element from a list
   * @param list is a pointer to the list pointer being changes
-  * @param element is the element to be deleted of type LIST*
+  * @param element is the element to be deleted of type list_t*
   */
-void list_delete(LIST** list, LIST* element){
+void list_delete(list_t** list, list_t* element){
   int done = 0;
-  LIST *prev_element, *current_element;
+  list_t *prev_element, *current_element;
   /* if list or element is null - do nothing */
   if (*list == NULL || element == NULL){
     return;
@@ -199,7 +199,7 @@ void list_delete(LIST** list, LIST* element){
 /** Frees all memory allocated for a list and any nested data
   * @param list - linked list to free
   */
-void list_free(LIST* list){
+void list_free(list_t* list){
   while(list != NULL){
     list_delete(&list, list);
   }
@@ -208,7 +208,7 @@ void list_free(LIST* list){
 /** Frees all memory allocated for a map and any nested data
   * @param map - map to free
   */
-void map_free(MAP* map){
+void map_free(map_t* map){
   /* free all key_value pairs */
   list_free(map->key_value_pairs);
   free(map);
@@ -216,16 +216,16 @@ void map_free(MAP* map){
 
 /** Frees memory allocated for a value with a specified type
   * @param value - void*
-  * @param value_type - eVALUE_TYPES type of value to free
+  * @param value_type - value_types_t type of value to free
   */
-void free_value(void* value, eVALUE_TYPES value_type){
+void free_value(void* value, value_types_t value_type){
   if (value != NULL){
     /* free value based on its type */
     switch(value_type){
       case value_list: list_free(value); break;
       case value_map: map_free(value); break;
       case value_key_value_pair: 
-        free_value(((KEY_VALUE_PAIR*)value)->value, ((KEY_VALUE_PAIR*)value)->value_type);
+        free_value(((key_value_pair_t*)value)->value, ((key_value_pair_t*)value)->value_type);
         /* free key-value pair */
         free(value);
         break;

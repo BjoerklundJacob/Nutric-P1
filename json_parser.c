@@ -1,7 +1,7 @@
 #include "json_parser.h"
 
 /*int main(void){
-  MAP *map;
+  map_t *map;
 
   map = json_load(".\\test.json");
   printf("json loaded.\n");
@@ -15,11 +15,11 @@
 /** Parses a json file loading the data to a map, returning the loaded map
   * (simplified parsing - not full json parser)
   * @param file_dir directory to the .json file
-  * @return MAP* allocated
+  * @return map_t* allocated
   */
-MAP* json_load(char* file_dir){
+map_t* json_load(char* file_dir){
   FILE *file;
-  MAP *map;
+  map_t *map;
   char c;
 
   file = fopen(file_dir, "r");
@@ -60,13 +60,13 @@ char non_white_space_char(FILE* file){
 
 /** Parses json from an open file to a map returning the allocated map
   * @param file - FILE* to the open file to read from
-  * @return MAP* allocated
+  * @return map_t* allocated
   */
-MAP* json_parse_map(FILE* file){
-  MAP* map = map_create();
+map_t* json_parse_map(FILE* file){
+  map_t* map = map_create();
   char key[MAX_KEY_LEN];
   char c;
-  eVALUE_TYPES value_type;
+  value_types_t value_type;
   void* value;
 
   do{
@@ -81,7 +81,7 @@ MAP* json_parse_map(FILE* file){
     /* read ':' */
     c = non_white_space_char(file);
     /* parse value */
-    value_type = parse_value(file, &value);
+    value_type = json_parse_value(file, &value);
     /* add to map */
     map_add(map, key, value, value_type);
 
@@ -113,17 +113,17 @@ char json_read_key(FILE* file, char *key){
 
 /** Parses json from an open file to a list returning the allocated list
   * @param file - FILE* to the open file to read from
-  * @return LIST* to the first element in allocated linked list
+  * @return list_t* to the first element in allocated linked list
   */
-LIST* json_parse_list(FILE* file){
-  LIST* list = NULL;
+list_t* json_parse_list(FILE* file){
+  list_t* list = NULL;
   char c;
-  eVALUE_TYPES value_type;
+  value_types_t value_type;
   void* value;
 
   do{
     /* parse value */
-    value_type = parse_value(file, &value);
+    value_type = json_parse_value(file, &value);
     /* add to list */
     list_add(&list, value, value_type);
 
@@ -186,11 +186,11 @@ char file_string_read(FILE* file, char* buffer, int buffer_size, const char* sto
 /** Parses value from open file storing it in output parameter and returning its type
   * @param file - FILE* of open file to read from
   * @param value - adress to store value in
-  * @return eVALUE_TYPES type of value
+  * @return value_types_t type of value
   */
-eVALUE_TYPES parse_value(FILE* file, void** value){
+value_types_t json_parse_value(FILE* file, void** value){
   char c, buffer[BUFFER_LEN];
-  eVALUE_TYPES value_type;
+  value_types_t value_type;
   /* read first char of value */
   c = non_white_space_char(file);
   switch(c){
@@ -219,6 +219,7 @@ eVALUE_TYPES parse_value(FILE* file, void** value){
       strcpy(*value, buffer);
       value_type = value_string;
       break;
+      /* value is a double */
     case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9':case '0':
       ungetc(c, file);
       c = file_string_read(file, buffer, BUFFER_LEN, " ,", 0);
@@ -247,7 +248,7 @@ eVALUE_TYPES parse_value(FILE* file, void** value){
   * @param file_dir - directory of file to write to
   * @param map - map to parse to json
   */
-void json_write(const char* file_dir, MAP* map){
+void json_write(const char* file_dir, map_t* map){
   FILE* file = fopen(file_dir, "w");
   if (file == NULL){
     printf("Could not open file to write.\n");
@@ -262,7 +263,7 @@ void json_write(const char* file_dir, MAP* map){
   * @param map - to be printed
   * @param depth - depth of the nested data
   */
-void fprint_map(FILE* file, MAP* map, int depth){
+void fprint_map(FILE* file, map_t* map, int depth){
   int i;
   fprintf(file, "{\n");
   for(i = 0; i < list_size(map->key_value_pairs); ++i){
@@ -282,7 +283,7 @@ void fprint_map(FILE* file, MAP* map, int depth){
   * @param kv - key-value pair to print
   * @param depth - depth of the nested data
   */
-void fprint_key_value_pair(FILE* file, KEY_VALUE_PAIR* kv, int depth){
+void fprint_key_value_pair(FILE* file, key_value_pair_t* kv, int depth){
   fprintf(file, "\"%s\": ", kv->key);
   fprint_value(file, kv->value, kv->value_type, depth);
 }
@@ -290,10 +291,10 @@ void fprint_key_value_pair(FILE* file, KEY_VALUE_PAIR* kv, int depth){
 /** Prints a value to a file
   * @param file - FILE* to open file to write to
   * @param value - void* value to print
-  * @param type - eVALUE_TYPES type of value to print
+  * @param type - value_types_t type of value to print
   * @param depth - depth of the nested data
   */
-void fprint_value(FILE* file, void* value, eVALUE_TYPES type, int depth){
+void fprint_value(FILE* file, void* value, value_types_t type, int depth){
   if (value != NULL){
     switch(type){
       case value_list: fprint_list(file, value, depth); break;
@@ -312,9 +313,9 @@ void fprint_value(FILE* file, void* value, eVALUE_TYPES type, int depth){
   * @param list - list to be printed
   * @param depth - depth of the nested data
   */
-void fprint_list(FILE* file, LIST* list, int depth){
+void fprint_list(FILE* file, list_t* list, int depth){
   int i;
-  LIST* element;
+  list_t* element;
   fprintf(file, "[\n");
   for(i = 0; i < list_size(list); ++i){
     findent(file, depth+1);
