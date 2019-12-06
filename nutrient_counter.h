@@ -24,5 +24,5 @@ typedef enum _eNUTRIENTS{
 
 void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients);
 double unit_to_gram(const char* unit);
-int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, char* name);
+int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* name);
 #endif
