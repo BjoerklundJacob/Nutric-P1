@@ -7,7 +7,7 @@
 #define GENDERS (2)
 #define VITAMIN_RANGES (AGE_GROUPS *2 *GENDERS * VITAMINS)
 
-enum{VitaminA, Iron, VitaminD, Calcium, RiboflavinB2, NiacinB3, Selenium, Zinc, VitaminB12, Iodine,};
+enum{VitaminA, Iron, VitaminD, Calcium, RiboflavinB2, NiacinB3, Selenium, Zinc, VitaminB12, Iodine};
 
 void GetRange(double VitaminTabel[], double *minMax, int age, int vitamin, int gender, int weight);
 int AgeGroupe(int age);

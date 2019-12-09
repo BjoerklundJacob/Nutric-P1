@@ -69,11 +69,11 @@ void SetVitaminRanges(double VitaminTable[]){
 }
 
 void GetVitaminsTable(FILE *vitamins, double *VitaminTable){
-  int place;
+  int place, vitamin, gender, i;
 
-  for (int vitamin = 0; vitamin < VITAMINS; vitamin++){
-    for (int gender = 0; gender < GENDERS; gender++){
-      for (int i = 0; i < AGE_GROUPS; i++){
+  for (vitamin = 0; vitamin < VITAMINS; vitamin++){
+    for (gender = 0; gender < GENDERS; gender++){
+      for (i = 0; i < AGE_GROUPS; i++){
         place = PlaceIndTable(i,vitamin,gender);
         
         fscanf(vitamins,"%lf - %lf",&VitaminTable[place], &VitaminTable[place + 1]);
