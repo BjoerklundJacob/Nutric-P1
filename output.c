@@ -29,7 +29,7 @@ void NutrientOutput(UserData userdata){
   map = json_load(".\\Input.json");
 
   /* Load nutrient ranges */
-  SetVitaminRanges(nutrient_ranges);
+  SetVitaminRanges(nutrient_ranges, userdata);
 
   /* Load ingredient nutrients */
   get_ingredient_nutrients(ingredient_nutrients);
@@ -49,12 +49,73 @@ void NutrientOutput(UserData userdata){
     }
   }
 
+  printf("Nutrient      |   Value   |     Min     |     Max     |\n");
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
-    printf("%s: %lf %s\n", nutrient_names[i], GramToUnit(nutrient_count[i]), NutrientToUnit(nutrient_count[i]));
-  }
+    char *unit = calloc(3, sizeof(char)), 
+         *min_max_unit = calloc(3, sizeof(char));
+    double amount = nutrient_count[i], 
+           max_amount = nutrient_ranges[PlaceIndTable(AgeGroupe(userdata.age),i,userdata.gender == 'm' ? 0 : 1) + 1] , 
+           min_amount = nutrient_ranges[PlaceIndTable(AgeGroupe(userdata.age),i,userdata.gender == 'm' ? 0 : 1)];
 
+    if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_D){
+      strcpy(min_max_unit, "\xE6g");
+    }else{
+      strcpy(min_max_unit, "mg");
+    }
+
+    convert_unit_from_gram(&amount, unit);
+
+    if (amount == 0){
+      printf("%-13s |     -     | %8.1lf %s | %8.1lf %s |\n", 
+        nutrient_names[i], 
+        min_amount,
+        min_max_unit,
+        max_amount,
+        min_max_unit);
+    }else{
+      printf("%-13s | %6.1lf %s | %8.3lf %s | %8.1lf %s |\n", 
+        nutrient_names[i], 
+        amount,
+        unit,
+        min_amount,
+        min_max_unit,
+        max_amount,
+        min_max_unit);
+    }
+
+  }
   map_free(map);
+}
+
+void convert_unit_from_gram(double* amount, char* unit){
+  double minUnit = pow(10, -9);
+  int u = floor(log(*amount / minUnit) / log(1000)); 
+  switch(u){
+    case 0: strcpy(unit, "ng"); break;
+    case 1: strcpy(unit, "\xE6g"); break;
+    case 2: strcpy(unit, "mg"); break;
+    case 3: strcpy(unit, "g"); break;
+    case 4: strcpy(unit, "kg"); break;
+  }
+  *amount *= pow(1000, -u) / minUnit;
+}
+
+void convert_unit(double* amount, char* unit_from, const char* unit_to){
+    double mult = 1;
+    switch(unit_from[0]){
+        case 'n': mult = pow(10, -9); break;
+        case 'u': mult = pow(10, -6); break;
+        case 'm': mult = pow(10, -3); break;
+        case 'k': mult = pow(10, 3); break;
+    }
+    switch(unit_to[0]){
+        case 'n': *amount *= pow(10, 9) * mult; strcpy(unit_from, "ng"); break;
+        case 'u': *amount *= pow(10, 6) * mult; strcpy(unit_from, "\xE6g"); break;
+        case 'm': *amount *= pow(10, 3) * mult; strcpy(unit_from, "mg"); break;
+        case 'g': *amount *= mult; strcpy(unit_from, "g"); break;
+        case 'k': *amount *= pow(10, -3) * mult; strcpy(unit_from, "kg"); break;
+    }
 }
 
 double GramToUnit(double nutrient){
