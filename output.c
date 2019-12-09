@@ -7,6 +7,18 @@ void NutrientOutput(UserData userdata){
   double nutrient_count[NUTRIENT_COUNT];
   int i, j;
   ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
+  char *nutrient_names[NUTRIENT_COUNT] = {  
+    "Calcium",
+    "Iron",
+    "Zinc",
+    "Selenium",
+    "Iodine",
+    "Vitamin B2",
+    "Vitamin B3",
+    "Vitamin B12",
+    "Vitamin A",
+    "Vitamin D"
+    };
 
   /* Initialise nutrient count to 0 */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
@@ -39,8 +51,54 @@ void NutrientOutput(UserData userdata){
 
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
-    printf("Nutrient: %lf\n", nutrient_count[i]);
+    printf("%s: %lf %s\n", nutrient_names[i], GramToUnit(nutrient_count[i]), NutrientToUnit(nutrient_count[i]));
   }
 
   map_free(map);
+}
+
+double GramToUnit(double nutrient){
+  double convertedNutrients;
+  /* finds the lowest power and converts it up to the unit*/
+  if(nutrient < pow(10.0,-9)){
+    convertedNutrients = nutrient * pow(10.0,9);
+  }
+  else if(nutrient < pow(10.0,-6)){
+    convertedNutrients = nutrient * pow(10.0,6);
+  }
+  else if(nutrient < pow(10.0,-3)){
+    convertedNutrients = nutrient * pow(10.0,3);
+  }
+  else if(nutrient < pow(10.0,0)){
+    convertedNutrients = nutrient;
+  }
+  else if(nutrient < pow(10.0,3)){
+    convertedNutrients = nutrient * pow(10.0,-3);
+  }
+  return convertedNutrients;
+}
+
+char* NutrientToUnit(double nutrient){
+  /* finds the lowest power and gives the unit back*/
+  char *unit = calloc(3,sizeof(char));
+  if(nutrient == 0){
+    unit = "";
+  }
+  else if(nutrient < pow(10.0,-9)){
+    unit = "ng";
+  }
+  else if(nutrient < pow(10.0,-6)){
+    unit = "\xE6g";
+  }
+  else if(nutrient < pow(10.0,-3)){
+    unit = "mg";
+  }
+  else if(nutrient < pow(10.0,0)){
+    unit = "g";
+  }
+  else if(nutrient < pow(10.0,3)){
+    unit = "kg";
+  }
+  free(unit);
+  return unit;
 }
