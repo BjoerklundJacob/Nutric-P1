@@ -25,7 +25,7 @@ enum
 };
 
 void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight);
-int AgeGroupe(int age);
+int AgeGroup(int age);
 void SetVitaminRanges(double VitaminTable[], UserData userdata);
 void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata);
-int PlaceIndTable(int ageGroupe, int vitamin, int gender);
+int PlaceInTable(int ageGroupe, int vitamin, int gender);

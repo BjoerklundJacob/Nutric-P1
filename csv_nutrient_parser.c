@@ -49,4 +49,3 @@ void printing_the_choosen_in(ingredient_nutrients_t ingredientsList[MAX_ARRAY_SI
       printf("Iodine:           %s\n", ingredientsList[j].iodine);         
       printf("\n\n"); 
 }
-

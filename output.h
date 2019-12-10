@@ -8,8 +8,6 @@
 #include "data.h"
 
 void NutrientOutput(UserData userdata);
-char* NutrientToUnit(double gram);
-double GramToUnit(double nutrient);
 void convert_unit_from_gram(double* amount, char* unit);
 void convert_unit(double* amount, char* unit_from, const char* unit_to);
 #endif

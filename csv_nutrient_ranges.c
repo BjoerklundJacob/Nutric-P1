@@ -11,7 +11,7 @@
   return 0;
 */
 void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
-  int place = PlaceIndTable(AgeGroupe(age), vitamin, gender);
+  int place = PlaceInTable(AgeGroup(age), vitamin, gender);
 
   switch (vitamin){
   case VitaminA:
@@ -38,7 +38,7 @@ void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int g
   return;
 }
 
-int AgeGroupe(int age){
+int AgeGroup(int age){
   if (age<20) {return 0;}
   else if (age<30) {return 1;}
   else if (age<40) {return 2;}
@@ -72,7 +72,7 @@ void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
   for (vitamin = 0; vitamin < VITAMINS; vitamin++){
     for (gender = 0; gender < GENDERS; gender++){
       for (i = 0; i < AGE_GROUPS; i++){
-        place = PlaceIndTable(i,vitamin,gender);
+        place = PlaceInTable(i,vitamin,gender);
         
         fscanf(vitamins,"%lf - %lf",&VitaminTable[place], &VitaminTable[place + 1]);
         if (vitamin == VitaminA || vitamin == Iron || vitamin == Zinc || vitamin == Iodine){
@@ -86,6 +86,6 @@ void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
   }
 }
 
-int PlaceIndTable(int ageGroupe, int vitamin, int gender){
-  return ageGroupe *2 + (vitamin * (AGE_GROUPS*2*2))  + (gender * AGE_GROUPS*2); 
+int PlaceInTable(int ageGroup, int vitamin, int gender){
+  return ageGroup *2 + (vitamin * (AGE_GROUPS*2*2))  + (gender * AGE_GROUPS*2); 
 }

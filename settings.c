@@ -9,7 +9,7 @@ void UserSettings(UserData* userData){
     UserSettingsText();
 
     while (input != 0){
-        input = _getche();
+        input = getch();
         switch (input){
             case '1':
                 ClearScreen();
@@ -65,7 +65,7 @@ void Gender(UserData* userData){
     char gender;
     printf("Please input your gender (f)emale or (m)ale: ");
     do{
-        gender = tolower(_getche());
+        gender = tolower(getch());
         if (gender == 'm' || gender == 'f'){
             userData->gender = gender; 
         }else{
@@ -94,8 +94,6 @@ void Weight(UserData* userData){
     printf("Your weight is now set to %.1lf\n\n", userData->weight); 
     return;
 }
-
-
 
 /**
  * Prints the introductory text to user settings

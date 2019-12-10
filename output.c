@@ -55,16 +55,21 @@ void NutrientOutput(UserData userdata){
     char *unit = calloc(3, sizeof(char)), 
          *min_max_unit = calloc(3, sizeof(char));
     double amount = nutrient_count[i], 
-           max_amount = nutrient_ranges[PlaceIndTable(AgeGroupe(userdata.age),i,userdata.gender == 'm' ? 0 : 1) + 1] , 
-           min_amount = nutrient_ranges[PlaceIndTable(AgeGroupe(userdata.age),i,userdata.gender == 'm' ? 0 : 1)];
+           max_amount = nutrient_ranges[PlaceInTable(AgeGroup(userdata.age),i,userdata.gender == 'm' ? 0 : 1) + 1] , 
+           min_amount = nutrient_ranges[PlaceInTable(AgeGroup(userdata.age),i,userdata.gender == 'm' ? 0 : 1)];
+
+    strcpy(unit, "g");
 
     if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_D){
-      strcpy(min_max_unit, "\xE6g");
+      strcpy(min_max_unit, "ug");
     }else{
       strcpy(min_max_unit, "mg");
     }
 
-    convert_unit_from_gram(&amount, unit);
+    convert_unit(&amount, unit, min_max_unit);
+    if (strcmp(min_max_unit, "ug") == 0){
+      strcpy(min_max_unit, "\xE6g");
+    }
 
     if (amount == 0){
       printf("%-13s |     -     | %8.1lf %s | %8.1lf %s |\n", 
@@ -74,7 +79,7 @@ void NutrientOutput(UserData userdata){
         max_amount,
         min_max_unit);
     }else{
-      printf("%-13s | %6.1lf %s | %8.3lf %s | %8.1lf %s |\n", 
+      printf("%-13s | %6.3lf %s | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
@@ -88,7 +93,7 @@ void NutrientOutput(UserData userdata){
   map_free(map);
 }
 
-void convert_unit_from_gram(double* amount, char* unit){
+/*void convert_unit_from_gram(double* amount, char* unit){
   double minUnit = pow(10, -9);
   int u = floor(log(*amount / minUnit) / log(1000)); 
   switch(u){
@@ -99,7 +104,7 @@ void convert_unit_from_gram(double* amount, char* unit){
     case 4: strcpy(unit, "kg"); break;
   }
   *amount *= pow(1000, -u) / minUnit;
-}
+}*//* Maybe unneeded */
 
 void convert_unit(double* amount, char* unit_from, const char* unit_to){
     double mult = 1;
@@ -116,50 +121,4 @@ void convert_unit(double* amount, char* unit_from, const char* unit_to){
         case 'g': *amount *= mult; strcpy(unit_from, "g"); break;
         case 'k': *amount *= pow(10, -3) * mult; strcpy(unit_from, "kg"); break;
     }
-}
-
-double GramToUnit(double nutrient){
-  double convertedNutrients;
-  /* finds the lowest power and converts it up to the unit*/
-  if(nutrient < pow(10.0,-9)){
-    convertedNutrients = nutrient * pow(10.0,9);
-  }
-  else if(nutrient < pow(10.0,-6)){
-    convertedNutrients = nutrient * pow(10.0,6);
-  }
-  else if(nutrient < pow(10.0,-3)){
-    convertedNutrients = nutrient * pow(10.0,3);
-  }
-  else if(nutrient < pow(10.0,0)){
-    convertedNutrients = nutrient;
-  }
-  else if(nutrient < pow(10.0,3)){
-    convertedNutrients = nutrient * pow(10.0,-3);
-  }
-  return convertedNutrients;
-}
-
-char* NutrientToUnit(double nutrient){
-  /* finds the lowest power and gives the unit back*/
-  char *unit = calloc(3,sizeof(char));
-  if(nutrient == 0){
-    unit = "";
-  }
-  else if(nutrient < pow(10.0,-9)){
-    unit = "ng";
-  }
-  else if(nutrient < pow(10.0,-6)){
-    unit = "\xE6g";
-  }
-  else if(nutrient < pow(10.0,-3)){
-    unit = "mg";
-  }
-  else if(nutrient < pow(10.0,0)){
-    unit = "g";
-  }
-  else if(nutrient < pow(10.0,3)){
-    unit = "kg";
-  }
-  free(unit);
-  return unit;
 }
