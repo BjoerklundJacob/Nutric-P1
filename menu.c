@@ -25,7 +25,7 @@ void Page(void){
             ClearScreen();
             break;
         case INPUT_FILE_PAGE:
-            system("cmd /C \"Input.json\"");
+            system("start %windir%\\notepad.exe \"Input.json\"");
             break;
         case EXIT:
             ClearScreen();

@@ -100,6 +100,7 @@ void Weight(UserData* userData){
  */
 void UserSettingsText(void){
     printf("You're at the user settings page.\n");
+    printf("Input the respective number to go to the relevant page.\n");
     printf(" (1) Age\n");
     printf(" (2) Weight\n");
     printf(" (3) Gender\n");
@@ -130,7 +131,6 @@ void SaveUserData(UserData userData){
     
     /* Opens the file with write permissions and creates it if it does not exist*/
     file = fopen("User Data.ini", "w");
-    
 
     fprintf(file, "Age=%i\n", userData.age);
     fprintf(file, "Weight=%lf\n", userData.weight);
