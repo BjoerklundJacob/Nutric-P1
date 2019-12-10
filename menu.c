@@ -14,7 +14,7 @@ void Page(void){
         pageinput = getch();
 
         switch (pageinput){
-        case 3:
+        case NUTRIENT_PAGE:
             ClearScreen();
             NutrientPage(userData);
             ClearScreen();

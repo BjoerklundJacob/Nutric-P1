@@ -71,15 +71,25 @@ void NutrientOutput(UserData userdata){
       strcpy(min_max_unit, "\xE6g");
     }
 
+
     if (amount == 0){
-      printf("%-13s |     -     | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s |  " RED "\xC4\xC4\xC4\xC4\xC4\xC4\xC4" WHITE "  | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         min_amount,
         min_max_unit,
         max_amount,
         min_max_unit);
+    }else if (amount >= min_amount && amount <= max_amount){
+      printf("%-13s | " GREEN "%6.3lf %s" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+        nutrient_names[i], 
+        amount,
+        unit,
+        min_amount,
+        min_max_unit,
+        max_amount,
+        min_max_unit);
     }else{
-      printf("%-13s | %6.3lf %s | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " YELLOW "%6.3lf %s" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
@@ -88,7 +98,6 @@ void NutrientOutput(UserData userdata){
         max_amount,
         min_max_unit);
     }
-
   }
   map_free(map);
 }
