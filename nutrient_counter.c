@@ -27,13 +27,13 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
     /* Loop through each ingredient */
     while(ingredient_element != NULL){
       /* Parse the ingredient string to the values (fx "50 g carrot") */
-      sscanf(ingredient_element->value, "%lf %s %[^\0]", &ingredient.amount, ingredient.unit, ingredient.name);
+      sscanf(ingredient_element->value, "%lf %s %s", &ingredient.amount, ingredient.unit, ingredient.name);
       index = ingredient_nutriens_index(nutrients, ingredient.name);
       if(index != -1){
         ingredient_nutrients = nutrients[index];
         
         /* Add ingredient nutrients to recipe nutrients */
-        for (i = mineral_calcium; i <= vitamin_D; i++)
+        for (i = 0; i <= NUTRIENT_COUNT; i++)
         {
           sscanf(ingredient_nutrients.calcium + i * sizeof(ingredient_nutrients.calcium), "%lf %s", &nutrient_amount, nutrient_unit);
           recipe_nutrients_array[i] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
@@ -77,6 +77,9 @@ double unit_to_gram(const char* unit){
   }
   if(strstr(string, "miligram") != NULL){
     return 0.001;
+  }
+    if(strstr(string, "ug") != NULL){
+    return 0.000001;
   }
   if(strstr(string, "lb") != NULL || strstr(string, "pound") != NULL){
     return 453.592;
