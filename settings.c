@@ -9,7 +9,7 @@ void UserSettings(UserData* userData){
     UserSettingsText();
 
     while (input != 0){
-        input = _getche();
+        input = getch();
         switch (input){
             case '1':
                 ClearScreen();
@@ -65,7 +65,7 @@ void Gender(UserData* userData){
     char gender;
     printf("Please input your gender (f)emale or (m)ale: ");
     do{
-        gender = tolower(_getche());
+        gender = tolower(getch());
         if (gender == 'm' || gender == 'f'){
             userData->gender = gender; 
         }else{
@@ -95,13 +95,12 @@ void Weight(UserData* userData){
     return;
 }
 
-
-
 /**
  * Prints the introductory text to user settings
  */
 void UserSettingsText(void){
     printf("You're at the user settings page.\n");
+    printf("Input the respective number to go to the relevant page.\n");
     printf(" (1) Age\n");
     printf(" (2) Weight\n");
     printf(" (3) Gender\n");
@@ -132,7 +131,6 @@ void SaveUserData(UserData userData){
     
     /* Opens the file with write permissions and creates it if it does not exist*/
     file = fopen("User Data.ini", "w");
-    
 
     fprintf(file, "Age=%i\n", userData.age);
     fprintf(file, "Weight=%lf\n", userData.weight);

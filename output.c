@@ -6,6 +6,19 @@ void NutrientOutput(UserData userdata){
   double nutrient_ranges[VITAMIN_RANGES];
   double nutrient_count[NUTRIENT_COUNT];
   int i, j;
+  ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
+  char *nutrient_names[NUTRIENT_COUNT] = {  
+    "Calcium",
+    "Iron",
+    "Zinc",
+    "Selenium",
+    "Iodine",
+    "Vitamin B2",
+    "Vitamin B3",
+    "Vitamin B12",
+    "Vitamin A",
+    "Vitamin D"
+    };
 
   /* Initialise nutrient count to 0 */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
@@ -16,7 +29,7 @@ void NutrientOutput(UserData userdata){
   map = json_load(".\\Input.json");
 
   /* Load nutrient ranges */
-  SetVitaminRanges(nutrient_ranges);
+  SetVitaminRanges(nutrient_ranges, userdata);
 
   /* Load ingredient nutrients */
   get_ingredient_nutrients(&ingredient_nutrients);
@@ -36,11 +49,72 @@ void NutrientOutput(UserData userdata){
     }
   }
 
+  printf("Nutrient      |   Value   |     Min     |     Max     |\n");
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
-    printf("Nutrient: %lf\n", nutrient_count[i]);
-  }
+    char *unit = calloc(3, sizeof(char)), 
+         *min_max_unit = calloc(3, sizeof(char));
+    double amount = nutrient_count[i], 
+           max_amount = nutrient_ranges[PlaceInTable(AgeGroup(userdata.age),i,userdata.gender == 'm' ? 0 : 1) + 1] , 
+           min_amount = nutrient_ranges[PlaceInTable(AgeGroup(userdata.age),i,userdata.gender == 'm' ? 0 : 1)];
 
+    strcpy(unit, "g");
+
+    if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_D){
+      strcpy(min_max_unit, "ug");
+    }else{
+      strcpy(min_max_unit, "mg");
+    }
+
+    convert_unit(&amount, unit, min_max_unit);
+    if (strcmp(min_max_unit, "ug") == 0){
+      strcpy(min_max_unit, "\xE6g");
+    }
+
+
+    if (amount == 0){
+      printf("%-13s |  " RED "\xC4\xC4\xC4\xC4\xC4\xC4\xC4" WHITE "  | %8.1lf %s | %8.1lf %s |\n", 
+        nutrient_names[i], 
+        min_amount,
+        min_max_unit,
+        max_amount,
+        min_max_unit);
+    }else if (amount >= min_amount && amount <= max_amount){
+      printf("%-13s | " GREEN "%6.3lf %s" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+        nutrient_names[i], 
+        amount,
+        unit,
+        min_amount,
+        min_max_unit,
+        max_amount,
+        min_max_unit);
+    }else{
+      printf("%-13s | " YELLOW "%6.3lf %s" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+        nutrient_names[i], 
+        amount,
+        unit,
+        min_amount,
+        min_max_unit,
+        max_amount,
+        min_max_unit);
+    }
+  }
   map_free(map);
-  list_free(ingredient_nutrients);
+}
+
+void convert_unit(double* amount, char* unit_from, const char* unit_to){
+    double mult = 1;
+    switch(unit_from[0]){
+        case 'n': mult = pow(10, -9); break;
+        case 'u': mult = pow(10, -6); break;
+        case 'm': mult = pow(10, -3); break;
+        case 'k': mult = pow(10, 3); break;
+    }
+    switch(unit_to[0]){
+        case 'n': *amount *= pow(10, 9) * mult; strcpy(unit_from, "ng"); break;
+        case 'u': *amount *= pow(10, 6) * mult; strcpy(unit_from, "\xE6g"); break;
+        case 'm': *amount *= pow(10, 3) * mult; strcpy(unit_from, "mg"); break;
+        case 'g': *amount *= mult; strcpy(unit_from, "g"); break;
+        case 'k': *amount *= pow(10, -3) * mult; strcpy(unit_from, "kg"); break;
+    }
 }

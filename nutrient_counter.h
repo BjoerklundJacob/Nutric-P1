@@ -7,19 +7,19 @@
 #include "csv_nutrient_parser.h"
 
 #define LETTER_COUNT 26 /* english alphabet */
-#define NUTRIENT_COUNT 9
+#define NUTRIENT_COUNT 10
 
 typedef enum _eNUTRIENTS{
-  vitamin_D,
-  vitamin_B2,
-  vitamin_B3,
   mineral_calcium,
-  mineral_selenium,
-  vitamin_A,
   mineral_iron,
   mineral_zinc,
+  mineral_selenium,
   mineral_iodine,
-  vitamin_B12
+  vitamin_B2,
+  vitamin_B3,
+  vitamin_B12,
+  vitamin_A,
+  vitamin_D
 }eNUTRIENTS;
 
 void recipe_nutrient_count_add(map_t* recipe, list_t* nutrients);
