@@ -5,7 +5,7 @@ void NutrientOutput(UserData userdata){
   list_t *list, *nutrient_list, *ingredient_nutrients;
   double nutrient_ranges[VITAMIN_RANGES];
   double nutrient_count[NUTRIENT_COUNT];
-  int i, j;
+  int i, j, procentage;
   ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
   char *nutrient_names[NUTRIENT_COUNT] = {  
     "Calcium",
@@ -71,28 +71,34 @@ void NutrientOutput(UserData userdata){
       strcpy(min_max_unit, "\xE6g");
     }
 
+    procentage = Percentages(amount, min_amount, max_amount);
+
+    printf("%i%% here\n", procentage);
 
     if (amount == 0){
-      printf("%-13s |  " RED "\xC4\xC4\xC4\xC4\xC4\xC4\xC4" WHITE "  | %8.1lf %s | %8.1lf %s |\n", 
-        nutrient_names[i], 
+      printf("%-13s |  " RED "\xC4\xC4\xC4\xC4\xC4\xC4\xC4" "(%i%%)" WHITE "  | %8.1lf %s | %8.1lf %s |\n", 
+        nutrient_names[i],
+        procentage,
         min_amount,
         min_max_unit,
         max_amount,
         min_max_unit);
     }else if (amount >= min_amount && amount <= max_amount){
-      printf("%-13s | " GREEN "%6.3lf %s" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " GREEN "%6.3lf %s" "(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
+        procentage,
         min_amount,
         min_max_unit,
         max_amount,
         min_max_unit);
     }else{
-      printf("%-13s | " YELLOW "%6.3lf %s" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " YELLOW "%6.3lf %s" "(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
+        procentage,
         min_amount,
         min_max_unit,
         max_amount,
@@ -100,6 +106,15 @@ void NutrientOutput(UserData userdata){
     }
   }
   map_free(map);
+}
+
+int Percentages(double value, double min, double max){
+  if(value > max)
+    return (double)(value / max *100);
+  else if (value < min)
+    return (double)(value / min *100);
+  else
+    return 100;
 }
 
 void convert_unit(double* amount, char* unit_from, const char* unit_to){
