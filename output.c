@@ -1,5 +1,4 @@
 #include "output.h"
-
 void NutrientOutput(UserData userdata){
   map_t *map, *meal;
   list_t *list, *nutrient_list;
@@ -11,14 +10,14 @@ void NutrientOutput(UserData userdata){
   ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
   char *nutrient_names[NUTRIENT_COUNT] = {  
     "Calcium",
-    "Iron",
-    "Zinc",
-    "Selenium",
     "Iodine",
+    "Iron",
+    "Selenium",
+    "Zinc",
+    "Vitamin A",
     "Vitamin B2",
     "Vitamin B3",
     "Vitamin B12",
-    "Vitamin A",
     "Vitamin D"
     };
 
@@ -74,21 +73,16 @@ void NutrientOutput(UserData userdata){
     percentage = Percentages(amount, minMax[0], minMax[1]);
 
     if (percentage == 0){
-      for ( k = 0; k < 3; k++)
-      {
+      for ( k = 0; k < 3; k++){
         space[k] = ' ';
       }
       space[k] = '\0';
-
-    }else
-    {
-      for ( k = 0; k < 3 - (double)(floor(log10(percentage))); k++)
-      {
+    }else{
+      for ( k = 0; k < 3 - (double)(floor(log10(percentage))); k++){
         space[k] = ' ';
       }
       space[k] = '\0';
     }
-    
     if (amount == 0){
       printf("%-13s |  " RED  "        " "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i],
