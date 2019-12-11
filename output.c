@@ -5,7 +5,9 @@ void NutrientOutput(UserData userdata){
   list_t *list, *nutrient_list;
   double nutrient_ranges[VITAMIN_RANGES];
   double nutrient_count[NUTRIENT_COUNT];
-  int i, j;
+  int i, j, k, percentage;
+  char space[10];
+
   ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
   char *nutrient_names[NUTRIENT_COUNT] = {  
     "Calcium",
@@ -49,18 +51,16 @@ void NutrientOutput(UserData userdata){
     }
   }
 
-  printf("Nutrient      |   Value   |     Min     |     Max     |\n");
+  printf("Nutrient      |      Value       |     Min     |     Max     |\n");
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
-    char *unit = calloc(3, sizeof(char)), 
-         *min_max_unit = calloc(3, sizeof(char));
-    double amount = nutrient_count[i], 
-           max_amount = nutrient_ranges[PlaceInTable(AgeGroup(userdata.age),i,userdata.gender == 'm' ? 0 : 1) + 1] , 
-           min_amount = nutrient_ranges[PlaceInTable(AgeGroup(userdata.age),i,userdata.gender == 'm' ? 0 : 1)];
+    char *unit = calloc(3, sizeof(char)), *min_max_unit = calloc(3, sizeof(char));
+    double amount = nutrient_count[i], minMax[2]; 
 
+    GetRange(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
     strcpy(unit, "g");
 
-    if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_D){
+    if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_A || i == vitamin_D){
       strcpy(min_max_unit, "ug");
     }else{
       strcpy(min_max_unit, "mg");
@@ -71,40 +71,74 @@ void NutrientOutput(UserData userdata){
       strcpy(min_max_unit, "\xE6g");
     }
 
+    percentage = Percentages(amount, minMax[0], minMax[1]);
+
+    if (percentage == 0){
+      for ( k = 0; k < 3; k++)
+      {
+        space[k] = ' ';
+      }
+      space[k] = '\0';
+
+    }else
+    {
+      for ( k = 0; k < 3 - (double)(floor(log10(percentage))); k++)
+      {
+        space[k] = ' ';
+      }
+      space[k] = '\0';
+    }
+    
     if (amount == 0){
-      printf("%-13s |     -     | %8.1lf %s | %8.1lf %s |\n", 
-        nutrient_names[i], 
-        min_amount,
+      printf("%-13s |  " RED  "        " "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+        nutrient_names[i],
+        space,
+        percentage,
+        minMax[0],
         min_max_unit,
-        max_amount,
+        minMax[1],
         min_max_unit);
-    }else{
-      printf("%-13s | %6.3lf %s | %8.1lf %s | %8.1lf %s |\n", 
+    }else if (amount >= minMax[0] && amount <= minMax[1]){
+      printf("%-13s | " GREEN  "%6.1lf %s" " %s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
-        min_amount,
+        space,
+        percentage,
+        minMax[0],
         min_max_unit,
-        max_amount,
+        minMax[1],
+        min_max_unit);
+    }else{
+      printf("%-13s | " YELLOW  "%6.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+        nutrient_names[i], 
+        amount,
+        unit,
+        space,
+        percentage,
+        minMax[0],
+        min_max_unit,
+        minMax[1],
         min_max_unit);
     }
-
   }
   map_free(map);
 }
 
-/*void convert_unit_from_gram(double* amount, char* unit){
-  double minUnit = pow(10, -9);
-  int u = floor(log(*amount / minUnit) / log(1000)); 
-  switch(u){
-    case 0: strcpy(unit, "ng"); break;
-    case 1: strcpy(unit, "\xE6g"); break;
-    case 2: strcpy(unit, "mg"); break;
-    case 3: strcpy(unit, "g"); break;
-    case 4: strcpy(unit, "kg"); break;
+int Percentages(double value, double min, double max){
+  
+  if (value == 0)
+  {
+    return 0;
   }
-  *amount *= pow(1000, -u) / minUnit;
-}*//* Maybe unneeded */
+  
+  if(value > max)
+    return (double)(value / max *100);
+  else if (value < min)
+    return (double)(value / min *100);
+  else
+    return 100;
+}
 
 void convert_unit(double* amount, char* unit_from, const char* unit_to){
     double mult = 1;
