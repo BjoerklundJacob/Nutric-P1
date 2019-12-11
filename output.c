@@ -60,7 +60,7 @@ void NutrientOutput(UserData userdata){
     GetRange(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
     strcpy(unit, "g");
 
-    if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_D){
+    if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_A || i == vitamin_D){
       strcpy(min_max_unit, "ug");
     }else{
       strcpy(min_max_unit, "mg");

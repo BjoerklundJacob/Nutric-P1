@@ -36,7 +36,7 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
         for (i = 0; i < NUTRIENT_COUNT; i++)
         {
           sscanf(ingredient_nutrients.calcium + i * sizeof(ingredient_nutrients.calcium), "%lf %s", &nutrient_amount, nutrient_unit);
-          recipe_nutrients_array[i] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
+          recipe_nutrients_array[i] += nutrient_amount/100.0 * unit_to_gram(nutrient_unit) * ingredient.amount * unit_to_gram(ingredient.unit);
         }
       }
       else{
