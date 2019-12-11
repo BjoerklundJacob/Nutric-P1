@@ -121,7 +121,7 @@ double unit_to_gram(const char* unit){
 int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* name){
   int i;
   for(i = 0; i < MAX_ARRAY_SIZE; ++i){
-    if(strcmp(nutrients[i].ingredient_name, name) == 0){
+    if(strstr(name, nutrients[i].ingredient_name) != NULL){
       return i;
     }
   }

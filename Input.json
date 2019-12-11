@@ -1,14 +1,23 @@
 {
-  "meals": [
+  "source": "We have evey recipe from https://www.budgetbytes.com/category/recipes/vegetarian/vegan/",
+  "meals":[
     {
-      "name":"breakfast",
-      "ingredients":[
-        "100 g onion",
-        "45 g celery",
-        "400 g ground beef",
-        "30 g carrot",
-        "230 mL milk",
-        "2 oz cheese"
+      "name": "Test",
+      "ingredients": [
+        "2 Tbsp olive oil",
+        "1 yellow onion",
+        "4 cloves garlic",
+        "250 g carrots ",
+        "4 stalks celery",
+        "2 lbs potatoes",
+        "1 cup brown lentils",
+        "1 tsp dried rosemary",
+        "1/2 tsp dried thyme",
+        "2 Tbsp Dijon mustard",
+        "1.5 Tbsp soy sauce",
+        "1 Tbsp brown sugar",
+        "6 cups vegetable broth",
+        "1 cup frozen peas"
       ]
     }
   ]
