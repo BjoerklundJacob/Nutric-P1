@@ -75,10 +75,7 @@ void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
         place = PlaceInTable(i,vitamin,gender);
         
         fscanf(vitamins,"%lf - %lf",&VitaminTable[place], &VitaminTable[place + 1]);
-        if (vitamin == VitaminA || vitamin == Iron || vitamin == Zinc || vitamin == Iodine){
-          VitaminTable[place] *= userdata.weight;
-          VitaminTable[place + 1] *= userdata.weight;
-        }
+
         if(i != AGE_GROUPS-1) 
           fscanf(vitamins, " ;");
       }

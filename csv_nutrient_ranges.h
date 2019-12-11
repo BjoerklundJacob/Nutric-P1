@@ -12,16 +12,16 @@
 
 enum
 {
-    VitaminA,
-    Iron,
-    VitaminD,
     Calcium,
+    Iron,
+    Zinc,
+    Selenium,
+    Iodine,
     RiboflavinB2,
     NiacinB3,
-    Selenium,
-    Zinc,
     VitaminB12,
-    Iodine
+    VitaminA,
+    VitaminD
 };
 
 void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight);

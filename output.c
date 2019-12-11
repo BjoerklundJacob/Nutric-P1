@@ -52,12 +52,10 @@ void NutrientOutput(UserData userdata){
   printf("Nutrient      |   Value   |     Min     |     Max     |\n");
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
-    char *unit = calloc(3, sizeof(char)), 
-         *min_max_unit = calloc(3, sizeof(char));
-    double amount = nutrient_count[i], 
-           max_amount = nutrient_ranges[PlaceInTable(AgeGroup(userdata.age),i,userdata.gender == 'm' ? 0 : 1) + 1] , 
-           min_amount = nutrient_ranges[PlaceInTable(AgeGroup(userdata.age),i,userdata.gender == 'm' ? 0 : 1)];
+    char *unit = calloc(3, sizeof(char)), *min_max_unit = calloc(3, sizeof(char));
+    double amount = nutrient_count[i], minMax[2]; 
 
+    GetRange(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
     strcpy(unit, "g");
 
     if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_D){
@@ -71,27 +69,25 @@ void NutrientOutput(UserData userdata){
       strcpy(min_max_unit, "\xE6g");
     }
 
-    procentage = Percentages(amount, min_amount, max_amount);
-
-    printf("%i%% here\n", procentage);
+    procentage = Percentages(amount, minMax[0], minMax[1]);
 
     if (amount == 0){
       printf("%-13s |  " RED "\xC4\xC4\xC4\xC4\xC4\xC4\xC4" "(%i%%)" WHITE "  | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i],
         procentage,
-        min_amount,
+        minMax[0],
         min_max_unit,
-        max_amount,
+        minMax[1],
         min_max_unit);
-    }else if (amount >= min_amount && amount <= max_amount){
+    }else if (amount >= minMax[0] && amount <= minMax[1]){
       printf("%-13s | " GREEN "%6.3lf %s" "(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
         procentage,
-        min_amount,
+        minMax[0],
         min_max_unit,
-        max_amount,
+        minMax[1],
         min_max_unit);
     }else{
       printf("%-13s | " YELLOW "%6.3lf %s" "(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
@@ -99,9 +95,9 @@ void NutrientOutput(UserData userdata){
         amount,
         unit,
         procentage,
-        min_amount,
+        minMax[0],
         min_max_unit,
-        max_amount,
+        minMax[1],
         min_max_unit);
     }
   }
