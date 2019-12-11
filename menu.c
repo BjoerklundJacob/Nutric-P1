@@ -10,25 +10,27 @@ void Page(void){
     LoadUserData(&userData);
 
     do{
-        ClearScreen();
         StartText();
-        pageinput = _getche();
+        pageinput = getch();
 
         switch (pageinput){
         case NUTRIENT_PAGE:
             ClearScreen();
             NutrientPage(userData);
+            ClearScreen();
             break;
         case USER_SETTINGS_PAGE:
             ClearScreen();
             UserSettings(&userData);
+            ClearScreen();
             break;
         case INPUT_FILE_PAGE:
-            system("cmd /C \"Input.json\"");
+            system("start %windir%\\notepad.exe \"Input.json\"");
             break;
         case EXIT:
             ClearScreen();
             Exit();
+            ClearScreen();
             break;
         default:
             printf("The following page was not found. Please try again.\n");
@@ -46,8 +48,7 @@ void NutrientPage(UserData userdata){
         /* Output nutrients */
         NutrientOutput(userdata);
         printf("Press 0 to return to main menu.\n");
-    } while (_getche() != '0');
-
+    } while (getch() != '0');
     return;
 }
 
