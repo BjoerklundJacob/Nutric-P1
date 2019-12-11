@@ -41,7 +41,7 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
         }
       }
       else{
-        printf("Error, nutrients for ingredient not found!\n");
+        printf("Error, nutrients for <%s> not found! (Not included in nutrient count)\n ", ingredient.name);
       }
       ingredient_element = ingredient_element->next_element;
     }
