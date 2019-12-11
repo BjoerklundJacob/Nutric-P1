@@ -1,5 +1,4 @@
 #include "json_parser.h"
-
 /*int main(void){
   map_t *map;
 
@@ -10,13 +9,12 @@
 
   map_free(map);
   return 0;
-}*/
-
+*/
 /** Parses a json file loading the data to a map, returning the loaded map
   * (simplified parsing - not full json parser)
   * @param file_dir directory to the .json file
   * @return map_t* allocated
-  */
+*/
 map_t* json_load(char* file_dir){
   FILE *file;
   map_t *map;
