@@ -14,7 +14,7 @@
 #define WHITE "\x1b[37m"
 
 
-void NutrientOutput(UserData userdata);
+void nutrient_output(UserData userdata);
 void convert_unit_from_gram(double* amount, char* unit);
 void convert_unit(double* amount, char* unit_from, const char* unit_to);
 int Percentages(double value, double min, double max);

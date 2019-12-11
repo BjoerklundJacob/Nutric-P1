@@ -24,8 +24,8 @@ enum
     VitaminD
 };
 
-void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight);
-int AgeGroup(int age);
-void SetVitaminRanges(double VitaminTable[], UserData userdata);
-void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata);
-int PlaceInTable(int ageGroupe, int vitamin, int gender);
+void get_range(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight);
+int age_group(int age);
+void load_vitamin_ranges(double VitaminTable[], UserData userdata);
+void get_vitamins_table(FILE *vitamins, double *VitaminTable, UserData userdata);
+int place_in_table(int ageGroupe, int vitamin, int gender);

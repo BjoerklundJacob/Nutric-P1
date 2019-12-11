@@ -11,13 +11,13 @@
 #define INPUT_FILE_PAGE '3'
 #define EXIT '0'
 
-void UserSettings(UserData* userData);
-void RecipeOutput(void);
-void Page(void);
-void NutrientPage(UserData);
-void Exit(void);
-void StartText(void);
-void ClearScreen(void);
-void LoadUserData(UserData* userData);
-void NutrientOutput(UserData userdata);
+void user_settings(UserData* userData);
+void recipe_output(void);
+void menu(void);
+void nutrient_page(UserData);
+void exit_message(void);
+void start_text(void);
+void clear_screen(void);
+void load_user_data(UserData* userData);
+void nutrient_output(UserData userdata);
 #endif

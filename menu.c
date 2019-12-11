@@ -2,35 +2,35 @@
 /**
  * Sets the users data as a backup and then tries to get it from the file and goes to the relevant page using dialogue with the user.
 */
-void Page(void){
+void menu(void){
     UserData userData;
     char pageinput = '!';
     
-    ClearScreen();
-    LoadUserData(&userData);
+    load_user_data(&userData);
 
     do{
-        StartText();
+        clear_screen();
+        start_text();
         pageinput = getch();
 
         switch (pageinput){
         case NUTRIENT_PAGE:
-            ClearScreen();
-            NutrientPage(userData);
-            ClearScreen();
+            clear_screen();
+            nutrient_page(userData);
+            clear_screen();
             break;
         case USER_SETTINGS_PAGE:
-            ClearScreen();
-            UserSettings(&userData);
-            ClearScreen();
+            clear_screen();
+            user_settings(&userData);
+            clear_screen();
             break;
         case INPUT_FILE_PAGE:
             system("start %windir%\\notepad.exe \"Input.json\"");
             break;
         case EXIT:
-            ClearScreen();
-            Exit();
-            ClearScreen();
+            clear_screen();
+            exit_message();
+            clear_screen();
             break;
         default:
             printf("The following page was not found. Please try again.\n");
@@ -42,11 +42,11 @@ void Page(void){
 /**
  * Goes to the recipe page
  */
-void NutrientPage(UserData userdata){
+void nutrient_page(UserData userdata){
     do{
         printf("You're at the nutrient page.\n");
         /* Output nutrients */
-        NutrientOutput(userdata);
+        nutrient_output(userdata);
         printf("Press 0 to return to main menu.\n");
     } while (getch() != '0');
     return;
@@ -55,7 +55,7 @@ void NutrientPage(UserData userdata){
 /**
  * Exits the program
  */
-void Exit(void){
+void exit_message(void){
     printf("See you next time.\n");
     return;
 }
@@ -63,7 +63,7 @@ void Exit(void){
 /**
  * Displays the VeGen ascii art and the instructions to the users
  */
-void StartText(void){
+void start_text(void){
     /*
      __      __   _____
      \ \    / /  / ____|
@@ -88,7 +88,7 @@ void StartText(void){
 /**
  * Clears the screen on both console and bash
  */
-void ClearScreen(void){
+void clear_screen(void){
     system("@cls||clear");
 }
 
@@ -96,11 +96,11 @@ void ClearScreen(void){
  * Load the data stored in an ini file into the userData struct
  * @param userData the struct in control of all the users data and modifies the data
  */
-void LoadUserData(UserData* userData){
+void load_user_data(UserData* userData){
     FILE *file;
     
-    /* Checks if the file exists if it does not go back to Page and use the initial settings*/
-    if ((file = fopen("User Data.ini", "r")) == NULL){
+    /* Checks if the file exists if it does not go back to menu and use the initial settings*/
+    if ((file = fopen("User_Data.ini", "r")) == NULL){
         printf("\x1b[32m" "It is recommended to input your specifics in User Settings for optimal perfomance" "\x1b[0m\n\n");
         userData->age = 20;
         userData->weight = 80;

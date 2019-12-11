@@ -6,12 +6,11 @@
 #include <ctype.h>
 #include "data.h"
 
-void UserSettings(UserData* userData);
-void Age(UserData* userData);
-void Gender(UserData* userData);
-void Weight(UserData* userData);
-void UserSettingsText(void);
-char Signed(int input);
-void SaveUserData(UserData userData);
-void ClearScreen(void);
+void user_settings(UserData* userData);
+void get_age_input(UserData* userData);
+void get_gender_input(UserData* userData);
+void get_weight_input(UserData* userData);
+void user_settings_text(void);
+void save_user_data(UserData userData);
+void clear_screen(void);
 #endif
