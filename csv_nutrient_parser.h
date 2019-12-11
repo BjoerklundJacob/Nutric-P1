@@ -6,7 +6,7 @@
 #include "json_structs.h"
 
 #define MAX_LONG_MAX 30
-#define MAX_ARRAY_SIZE 10
+#define MAX_ARRAY_SIZE 82
 
 typedef struct ingredientsList_struct{
   char ingredient_name[MAX_LONG_MAX];
@@ -24,4 +24,4 @@ typedef struct ingredientsList_struct{
 
 
 void printing_the_choosen_in(ingredient_nutrients_t ingredientsList[MAX_ARRAY_SIZE], int j);
-void get_ingredient_nutrients(list_t** output_list);
+void get_ingredient_nutrients(ingredient_nutrients_t* output_array);

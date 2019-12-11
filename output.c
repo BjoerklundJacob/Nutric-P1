@@ -2,7 +2,7 @@
 
 void NutrientOutput(UserData userdata){
   map_t *map, *meal;
-  list_t *list, *nutrient_list, *ingredient_nutrients;
+  list_t *list, *nutrient_list;
   double nutrient_ranges[VITAMIN_RANGES];
   double nutrient_count[NUTRIENT_COUNT];
   int i, j, procentage;
@@ -32,7 +32,7 @@ void NutrientOutput(UserData userdata){
   SetVitaminRanges(nutrient_ranges, userdata);
 
   /* Load ingredient nutrients */
-  get_ingredient_nutrients(&ingredient_nutrients);
+  get_ingredient_nutrients(ingredient_nutrients);
 
   /* Calculate nutrients for the user input */
   list = map_value(map, "meals");

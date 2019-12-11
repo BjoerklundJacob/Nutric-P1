@@ -2,7 +2,7 @@
 #include "csv_nutrient_parser.h"
 #include <string.h>
 
-void recipe_nutrient_count_add(map_t* recipe, list_t* nutrients){
+void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients){
   list_t *ingredient_element = map_value(recipe, "ingredients");
   double recipe_nutrients_array[NUTRIENT_COUNT];
   ingredient_nutrients_t ingredient_nutrients;
@@ -30,13 +30,14 @@ void recipe_nutrient_count_add(map_t* recipe, list_t* nutrients){
       sscanf(ingredient_element->value, "%lf %s %[a-zA-Z ]", &ingredient.amount, ingredient.unit, ingredient.name);
       index = ingredient_nutriens_index(nutrients, ingredient.name);
       if(index != -1){
-        ingredient_nutrients = *(ingredient_nutrients_t*) list_value(nutrients, index);
+        ingredient_nutrients = nutrients[index];
         
         /* Add ingredient nutrients to recipe nutrients */
         for (i = 0; i < NUTRIENT_COUNT; i++)
         {
           sscanf(ingredient_nutrients.calcium + i * sizeof(ingredient_nutrients.calcium), "%lf %s", &nutrient_amount, nutrient_unit);
-          recipe_nutrients_array[i] += nutrient_amount/100 * unit_to_gram(nutrient_unit);
+
+          recipe_nutrients_array[i] += nutrient_amount/100.0 * unit_to_gram(nutrient_unit) * ingredient.amount * unit_to_gram(ingredient.unit);
         }
       }
       else{
@@ -117,10 +118,10 @@ double unit_to_gram(const char* unit){
   return 1.0;
 }
 
-int ingredient_nutriens_index(list_t* nutrients, const char* name){
+int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* name){
   int i;
   for(i = 0; i < MAX_ARRAY_SIZE; ++i){
-    if(strcmp(((ingredient_nutrients_t*) list_value(nutrients, i))->ingredient_name, name) == 0){
+    if(strcmp(nutrients[i].ingredient_name, name) == 0){
       return i;
     }
   }

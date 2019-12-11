@@ -6,32 +6,28 @@
 
 #include "csv_nutrient_parser.h"
 
-void get_ingredient_nutrients(list_t** output_list){
+void get_ingredient_nutrients(ingredient_nutrients_t* output_array){
   FILE *f = fopen("Ingredient_Nutrients.csv", "r"); 
   int i;
-  ingredient_nutrients_t ingredient_nutrients;
-  void* value;
 
   if(f != NULL){
-    while(fscanf(f, " %[a-zA-Z() ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] \n", 
-            ingredient_nutrients.ingredient_name, 
-            ingredient_nutrients.calcium, 
-            ingredient_nutrients.iron,
-            ingredient_nutrients.zinc, 
-            ingredient_nutrients.selenium, 
-            ingredient_nutrients.vitamin_B2,
-            ingredient_nutrients.vitamin_B3, 
-            ingredient_nutrients.vitamin_B12, 
-            ingredient_nutrients.vitamin_A,
-            ingredient_nutrients.vitamin_D, 
-            ingredient_nutrients.iodine
-      ) > 0){
-        value = malloc(sizeof(ingredient_nutrients_t));
-        if(value != NULL){
-          memcpy(value, &ingredient_nutrients, sizeof(ingredient_nutrients));
-          list_add(output_list, value, value_undefined);
-        }
-      }
+    /* Funktionen afleaser CSV filen og skaber array'et */
+    for (i = 0; i < MAX_ARRAY_SIZE ; i++){
+
+      fscanf(f, " %[a-zA-Z() ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] \n", 
+          output_array[i].ingredient_name, 
+          output_array[i].calcium, 
+          output_array[i].iron,
+          output_array[i].zinc, 
+          output_array[i].selenium, 
+          output_array[i].vitamin_B2,
+          output_array[i].vitamin_B3, 
+          output_array[i].vitamin_B12, 
+          output_array[i].vitamin_A,
+          output_array[i].vitamin_D, 
+          output_array[i].iodine
+      );
+    }
     fclose(f);
   }
 
