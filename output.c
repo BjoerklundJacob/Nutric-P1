@@ -5,7 +5,7 @@ void NutrientOutput(UserData userdata){
   list_t *list, *nutrient_list;
   double nutrient_ranges[VITAMIN_RANGES];
   double nutrient_count[NUTRIENT_COUNT];
-  int i, j, procentage;
+  int i, j, k, percentage;
   char space[10];
 
   ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
@@ -51,7 +51,7 @@ void NutrientOutput(UserData userdata){
     }
   }
 
-  printf("Nutrient      |   Value   |     Min     |     Max     |\n");
+  printf("Nutrient      |      Value       |     Min     |     Max     |\n");
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     char *unit = calloc(3, sizeof(char)), *min_max_unit = calloc(3, sizeof(char));
@@ -71,49 +71,51 @@ void NutrientOutput(UserData userdata){
       strcpy(min_max_unit, "\xE6g");
     }
 
-    procentage = Percentages(amount, minMax[0], minMax[1]);
-      
-    if (procentage != 0){
-      for ( i = 0; i < 5 - (floor(log10(abs(procentage))) + 1); i++)
-      {
-        space[i] = ' ';
-      }
-    }
-    else
-    {
-      space[0] = ' ';
-    }
-    space[i+1] = '\0';
-    
-    
+    percentage = Percentages(amount, minMax[0], minMax[1]);
 
+    if (percentage == 0){
+      for ( k = 0; k < 3; k++)
+      {
+        space[k] = ' ';
+      }
+      space[k] = '\0';
+
+    }else
+    {
+      for ( k = 0; k < 3 - (double)(floor(log10(percentage))); k++)
+      {
+        space[k] = ' ';
+      }
+      space[k] = '\0';
+    }
+    
     if (amount == 0){
-      printf("%-13s |  " RED "%s" "\xC4\xC4\xC4\xC4\xC4\xC4\xC4" " (%i%%)" WHITE "  | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s |  " RED  "        " "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i],
         space,
-        procentage,
+        percentage,
         minMax[0],
         min_max_unit,
         minMax[1],
         min_max_unit);
     }else if (amount >= minMax[0] && amount <= minMax[1]){
-      printf("%-13s | " GREEN "%s" "%6.3lf %s" " (%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " GREEN  "%6.1lf %s" " %s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
-        space,
         amount,
         unit,
-        procentage,
+        space,
+        percentage,
         minMax[0],
         min_max_unit,
         minMax[1],
         min_max_unit);
     }else{
-      printf("%-13s | " YELLOW "%s" "%6.3lf %s" " (%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " YELLOW  "%6.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
-        space,
         amount,
         unit,
-        procentage,
+        space,
+        percentage,
         minMax[0],
         min_max_unit,
         minMax[1],
@@ -124,6 +126,12 @@ void NutrientOutput(UserData userdata){
 }
 
 int Percentages(double value, double min, double max){
+  
+  if (value == 0)
+  {
+    return 0;
+  }
+  
   if(value > max)
     return (double)(value / max *100);
   else if (value < min)
