@@ -18,4 +18,5 @@ void Exit(void);
 void StartText(void);
 void ClearScreen(void);
 void LoadUserData(UserData* userData);
+void UserSettings(UserData* userData);
 #endif
