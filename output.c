@@ -1,4 +1,5 @@
 #include "output.h"
+
 void nutrient_output(UserData userdata){
   map_t *map, *meal;
   list_t *list, *nutrient_list;
@@ -72,7 +73,7 @@ void nutrient_output(UserData userdata){
     }
 
     /*Get the percentages of the nutrients the user have*/
-    percentage = Percentages(amount, minMax[0], minMax[1]);
+    percentage = percentages(amount, minMax[0], minMax[1]);
 
     /*This is to make a chr array(string) of spaces,
       so the diffrent number of digits of the percentage dont go out of order*/
@@ -126,7 +127,7 @@ void nutrient_output(UserData userdata){
 }
 
 /*The function to get the percentages of the a value of a ranges*/
-int Percentages(double value, double min, double max){
+int percentages(double value, double min, double max){
   
   if (value == 0)
     return 0;

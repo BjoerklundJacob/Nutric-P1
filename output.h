@@ -15,5 +15,5 @@
 
 void nutrient_output(UserData userdata);
 void convert_unit(double* amount, char* unit_from, const char* unit_to);
-int Percentages(double value, double min, double max);
+int percentages(double value, double min, double max);
 #endif

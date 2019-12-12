@@ -14,7 +14,7 @@
 /*This function set a output array paremeter to too ranges*/
 /*From the inputs that it gets*/
 void get_range(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
-  int place = PlaceInTable(AgeGroup(age), vitamin, gender);
+  int place = place_in_table(age_group(age), vitamin, gender);
 
   switch (vitamin){
   case mineral_iodine:

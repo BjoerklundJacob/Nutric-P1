@@ -32,7 +32,7 @@ map_t* json_load(char* file_dir){
   
   /* if first char is not a '{' the json is formatted wrong */
   if (c != '{'){
-    printf("Could not parse JSON file.\n");
+    printf("Could not parse JSON file. Missing initial <{>\n");
     exit(EXIT_FAILURE);
   }
 
@@ -71,7 +71,7 @@ map_t* json_parse_map(FILE* file){
     /* get first white space character */
     c = non_white_space_char(file);
     if(c != '\"'){
-      printf("Invalid key formatting in json.\n");
+      printf("Invalid key formatting in json. The keys should be wrapped in <\">\n");
       exit(EXIT_FAILURE);
     }
     /* read key*/
@@ -88,7 +88,7 @@ map_t* json_parse_map(FILE* file){
   }
   while(c == ',');
   if(c != '}'){
-    printf("Missing '}' at the end of map.\n");
+    printf("Missing <}> at the end of map.\n");
     exit(EXIT_FAILURE);
   }
 
@@ -130,7 +130,7 @@ list_t* json_parse_list(FILE* file){
   }
   while(c == ',');
   if(c != ']'){
-    printf("Missing ']' at the end of list.\n");
+    printf("Missing <]> at the end of list.\n");
     exit(EXIT_FAILURE);
   }
 
@@ -206,7 +206,7 @@ value_types_t json_parse_value(FILE* file, void** value){
     case '\"':
       c = file_string_read(file, buffer, BUFFER_LEN, "\"", 0);
       if (c != '\"'){
-        printf("Could not parse value string.\n");
+        printf("Missing <\">. Could not parse value string.\n");
         exit(EXIT_FAILURE);
       }
       *value = malloc(strlen(buffer)+1);
