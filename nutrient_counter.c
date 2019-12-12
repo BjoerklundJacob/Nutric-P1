@@ -103,6 +103,9 @@ double unit_to_gram(const char* unit){
   if(strstr(string, "cup") != NULL){
     return 237;
   }
+  if(strstr(string, "can") != NULL){
+    return
+  }
   if(strstr(string, "pint") != NULL){
     return 473;
   }
