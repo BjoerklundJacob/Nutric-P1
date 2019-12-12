@@ -56,6 +56,7 @@ void nutrient_output(UserData userdata){
     char *unit = calloc(3, sizeof(char)), *min_max_unit = calloc(3, sizeof(char));
     double amount = nutrient_count[i], minMax[2];
 
+    /* Gets the recommended range of the vitamin */
     get_range(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
     strcpy(unit, "g");
 
@@ -70,8 +71,11 @@ void nutrient_output(UserData userdata){
       strcpy(min_max_unit, "\xE6g");
     }
 
+    /*Get the percentages of the nutrients the user have*/
     percentage = Percentages(amount, minMax[0], minMax[1]);
 
+    /*This is to make a chr array(string) of spaces,
+      so the diffrent number of digits of the percentage dont go out of order*/
     if (percentage == 0){
       for ( k = 0; k < 3; k++){
         space[k] = ' ';
@@ -83,6 +87,8 @@ void nutrient_output(UserData userdata){
       }
       space[k] = '\0';
     }
+
+    /*Prints the line needed for the amount, whith all the necessary values*/
     if (amount == 0){
       printf("%-13s |  " RED  "        " "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i],
@@ -93,7 +99,7 @@ void nutrient_output(UserData userdata){
         minMax[1],
         min_max_unit);
     }else if (amount >= minMax[0] && amount <= minMax[1]){
-      printf("%-13s | " GREEN  "%6.1lf %s" " %s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " GREEN  "%6.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
@@ -119,12 +125,11 @@ void nutrient_output(UserData userdata){
   map_free(map);
 }
 
+/*The function to get the percentages of the a value of a ranges*/
 int Percentages(double value, double min, double max){
   
   if (value == 0)
-  {
     return 0;
-  }
   
   if(value > max)
     return (double)(value / max *100);
@@ -134,6 +139,7 @@ int Percentages(double value, double min, double max){
     return 100;
 }
 
+/*Converts a amount of a unit to another unit*/
 void convert_unit(double* amount, char* unit_from, const char* unit_to){
     double mult = 1;
     switch(unit_from[0]){
