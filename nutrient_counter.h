@@ -11,14 +11,14 @@
 
 typedef enum _eNUTRIENTS{
   mineral_calcium,
-  mineral_iron,
-  mineral_zinc,
-  mineral_selenium,
   mineral_iodine,
+  mineral_iron,
+  mineral_selenium,
+  mineral_zinc,
+  vitamin_A,
   vitamin_B2,
   vitamin_B3,
   vitamin_B12,
-  vitamin_A,
   vitamin_D
 }eNUTRIENTS;
 

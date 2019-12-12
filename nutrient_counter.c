@@ -41,7 +41,7 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
         }
       }
       else{
-        printf("Error, nutrients for ingredient not found!\n");
+        printf("Error, nutrients for <%s> not found! (Not included in nutrient count)\n", ingredient.name);
       }
       ingredient_element = ingredient_element->next_element;
     }
@@ -60,73 +60,58 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
   }
 }
 
+/*Give the correct number to convert a unit to gram*/
 double unit_to_gram(const char* unit){
   int i;
   char string[50];
+
   strcpy(string, unit);
-  for(i = 0; i < strlen(string); ++i){
+
+  for(i = 0; i < strlen(string); ++i)
     string[i] = tolower(string[i]);
-  }
-  if(strstr(string, "kg") != NULL){
+
+  if(strstr(string, "kg") != NULL)
     return 1000;
-  }
-  if(strstr(string, "kilo") != NULL){
+  if(strstr(string, "kilo") != NULL)
     return 1000;
-  }
-  if(strstr(string, "mg") != NULL){
+  if(strstr(string, "mg") != NULL)
     return 0.001;
-  }
-  if(strstr(string, "miligram") != NULL){
+  if(strstr(string, "miligram") != NULL)
     return 0.001;
-  }
-    if(strstr(string, "ug") != NULL){
+  if(strstr(string, "ug") != NULL)
     return 0.000001;
-  }
-  if(strstr(string, "lb") != NULL || strstr(string, "pound") != NULL){
+  if(strstr(string, "lb") != NULL || strstr(string, "pound") != NULL)
     return 453.592;
-  }
-  if(strstr(string, "dl") != NULL){
+  if(strstr(string, "dl") != NULL)
     return 100;
-  }
-  if(strstr(string, "cl") != NULL){
+  if(strstr(string, "cl") != NULL)
     return 10;
-  }
-  if(strstr(string, "tsp") != NULL || strstr(string, "teaspoon") != NULL){
+  if(strstr(string, "tsp") != NULL || strstr(string, "teaspoon") != NULL)
     return 4.9;
-  }
-  if(strstr(string, "tbs") != NULL || strstr(string, "tablespoon") != NULL){
+  if(strstr(string, "tbs") != NULL || strstr(string, "tablespoon") != NULL)
     return 14.78;
-  }
-  if(strstr(string, "oz") != NULL || strstr(string, "ounc") != NULL){
+  if(strstr(string, "oz") != NULL || strstr(string, "ounc") != NULL)
     return 14.78*2;
-  }
-  if(strstr(string, "cup") != NULL){
+  if(strstr(string, "cup") != NULL)
     return 237;
-  }
-  if(strstr(string, "can") != NULL){
-    return
-  }
-  if(strstr(string, "pint") != NULL){
+  if(strstr(string, "pint") != NULL)
     return 473;
-  }
-  if(strstr(string, "quart") != NULL){
+  if(strstr(string, "quart") != NULL)
     return 960;
-  }
-  if(strstr(string, "gallon") != NULL){
+  if(strstr(string, "gallon") != NULL)
     return 3800;
-  }
-  if(strstr(unit, "l") != NULL){
+  if(strstr(unit, "l") != NULL)
     return 1000;
-  }
   return 1.0;
 }
 
+/*Gives the index number of a given nutrien*/
 int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* name){
   int i;
+
   for(i = 0; i < MAX_ARRAY_SIZE; ++i){
-    if(strcmp(nutrients[i].ingredient_name, name) == 0){
+    if(strstr(name, nutrients[i].ingredient_name) != NULL)
       return i;
-    }
   }
   return -1;
 }

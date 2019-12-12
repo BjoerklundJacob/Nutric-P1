@@ -1,22 +1,24 @@
 #include "output.h"
 
-void NutrientOutput(UserData userdata){
+void nutrient_output(UserData userdata){
   map_t *map, *meal;
   list_t *list, *nutrient_list;
   double nutrient_ranges[VITAMIN_RANGES];
   double nutrient_count[NUTRIENT_COUNT];
-  int i, j, procentage;
+  int i, j, k, percentage;
+  char space[10];
+
   ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
-  char *nutrient_names[NUTRIENT_COUNT] = {  
+  char *nutrient_names[NUTRIENT_COUNT] = {
     "Calcium",
-    "Iron",
-    "Zinc",
-    "Selenium",
     "Iodine",
+    "Iron",
+    "Selenium",
+    "Zinc",
+    "Vitamin A",
     "Vitamin B2",
     "Vitamin B3",
     "Vitamin B12",
-    "Vitamin A",
     "Vitamin D"
     };
 
@@ -24,12 +26,12 @@ void NutrientOutput(UserData userdata){
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     nutrient_count[i] = 0.0;
   }
-  
+
   /* Load user input */
   map = json_load(".\\Input.json");
 
   /* Load nutrient ranges */
-  SetVitaminRanges(nutrient_ranges, userdata);
+  load_vitamin_ranges(nutrient_ranges, userdata);
 
   /* Load ingredient nutrients */
   get_ingredient_nutrients(ingredient_nutrients);
@@ -49,13 +51,14 @@ void NutrientOutput(UserData userdata){
     }
   }
 
-  printf("Nutrient      |   Value   |     Min     |     Max     |\n");
+  printf("Nutrient      |       Value        |     Min     |     Max     |\n");
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     char *unit = calloc(3, sizeof(char)), *min_max_unit = calloc(3, sizeof(char));
-    double amount = nutrient_count[i], minMax[2]; 
+    double amount = nutrient_count[i], minMax[2];
 
-    GetRange(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
+    /* Gets the recommended range of the vitamin */
+    get_range(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
     strcpy(unit, "g");
 
     if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_A || i == vitamin_D){
@@ -69,32 +72,51 @@ void NutrientOutput(UserData userdata){
       strcpy(min_max_unit, "\xE6g");
     }
 
-    procentage = Percentages(amount, minMax[0], minMax[1]);
+    /*Get the percentages of the nutrients the user have*/
+    percentage = percentages(amount, minMax[0], minMax[1]);
 
+    /*This is to make a chr array(string) of spaces,
+      so the diffrent number of digits of the percentage dont go out of order*/
+    if (percentage == 0){
+      for ( k = 0; k < 3; k++){
+        space[k] = ' ';
+      }
+      space[k] = '\0';
+    }else{
+      for ( k = 0; k < 3 - (double)(floor(log10(percentage))); k++){
+        space[k] = ' ';
+      }
+      space[k] = '\0';
+    }
+
+    /*Prints the line needed for the amount, whith all the necessary values*/
     if (amount == 0){
-      printf("%-13s |  " RED "\xC4\xC4\xC4\xC4\xC4\xC4\xC4" "(%i%%)" WHITE "  | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s |  " RED  "          " "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i],
-        procentage,
+        space,
+        percentage,
         minMax[0],
         min_max_unit,
         minMax[1],
         min_max_unit);
     }else if (amount >= minMax[0] && amount <= minMax[1]){
-      printf("%-13s | " GREEN "%6.3lf %s" "(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " GREEN  "%8.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
-        procentage,
+        space,
+        percentage,
         minMax[0],
         min_max_unit,
         minMax[1],
         min_max_unit);
     }else{
-      printf("%-13s | " YELLOW "%6.3lf %s" "(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " YELLOW  "%8.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
-        procentage,
+        space,
+        percentage,
         minMax[0],
         min_max_unit,
         minMax[1],
@@ -104,7 +126,12 @@ void NutrientOutput(UserData userdata){
   map_free(map);
 }
 
-int Percentages(double value, double min, double max){
+/*The function to get the percentages of the a value of a ranges*/
+int percentages(double value, double min, double max){
+  
+  if (value == 0)
+    return 0;
+  
   if(value > max)
     return (double)(value / max *100);
   else if (value < min)
@@ -113,6 +140,7 @@ int Percentages(double value, double min, double max){
     return 100;
 }
 
+/*Converts a amount of a unit to another unit*/
 void convert_unit(double* amount, char* unit_from, const char* unit_to){
     double mult = 1;
     switch(unit_from[0]){
