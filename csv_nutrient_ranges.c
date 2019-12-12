@@ -14,19 +14,19 @@ void get_range(double VitaminTable[], double *minMax, int age, int vitamin, int 
   int place = place_in_table(age_group(age), vitamin, gender);
 
   switch (vitamin){
-  case VitaminA:
-  case Iron:
-  case Zinc:
-  case Iodine:
+  case mineral_iodine:
+  case mineral_iron:
+  case mineral_zinc:
+  case vitamin_A:
     minMax[0] = VitaminTable[place] * weight;
     minMax[1] = VitaminTable[place+1] * weight;
     break;
-  case VitaminD:
-  case Calcium:
-  case RiboflavinB2:
-  case NiacinB3:
-  case Selenium:
-  case VitaminB12:
+  case mineral_calcium:
+  case mineral_selenium:
+  case vitamin_B2:
+  case vitamin_B3:
+  case vitamin_B12:
+  case vitamin_D:
     minMax[0] = VitaminTable[place];
     minMax[1] = VitaminTable[place+1];
     break;

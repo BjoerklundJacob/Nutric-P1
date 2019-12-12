@@ -17,15 +17,15 @@ void get_ingredient_nutrients(ingredient_nutrients_t* output_array){
       fscanf(f, " %[a-zA-Z() ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] \n", 
           output_array[i].ingredient_name, 
           output_array[i].calcium, 
+          output_array[i].iodine,
           output_array[i].iron,
-          output_array[i].zinc, 
           output_array[i].selenium, 
+          output_array[i].zinc, 
+          output_array[i].vitamin_A,
           output_array[i].vitamin_B2,
           output_array[i].vitamin_B3, 
           output_array[i].vitamin_B12, 
-          output_array[i].vitamin_A,
-          output_array[i].vitamin_D, 
-          output_array[i].iodine
+          output_array[i].vitamin_D
       );
     }
     fclose(f);
