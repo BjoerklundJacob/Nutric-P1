@@ -1,77 +1,73 @@
 #include "thomas_database.h"
 int main(void){
-  printf("%i", get_ingredient_id("tomato"));
+  printf("%i", get_ingredient_id("chicken wing"));
   return 0;
 }
 
-int get_ingredient_id(char *ingredient_name){
-  char **id;
-  int i, chosen, id_val, j;
-  char **options;
-  char found_name[200];
+int get_ingredient_id(char *search_string){
+  int i, chosen, id_val, j, words, search_score = 0;
+  char csv_options[SEARCH_OPTIONS][MAX_LINE_LENGTH], csv_ids[SEARCH_OPTIONS][ID_LENGTH];
+  char **search_words;
+
+  search_words = calloc(50, sizeof(char*));
+  for(i = 0; i < 50; ++i){
+    search_words[i] = calloc(50, sizeof(char));
+  }
+
+  printf("Search is <%s>\n", search_string);
 
   /*Acessing the food lookup file*/
-  FILE *fp = fopen("Food.csv", "r");
+  FILE *fp = fopen("food.csv", "r");
   id_val = 0;
 
-  id = malloc(20 * sizeof(char*));
-  for (i = 0; i < 20; i++)
-      id[i] = malloc((400+1) * sizeof(char));
-
-
-  options = malloc(20 * sizeof(char*));
-    for (i = 0; i < 20; i++)
-      options[i] = malloc((400+1) * sizeof(char));
-
-
-  i = 0;
   /*Checking if the file was opened*/
   if(fp != NULL){
-    /*Checking the current character*/
-    int ch = getc(fp);
-    /*Looking until the ingredient is found or until the end of the file*/
-    while(ch != EOF){
-      if(i == 20){
-        printf("We break\n");
-        break;
+    words = string_to_words(search_string, search_words);
+    i = 0;
+    while(i < words && fscanf(fp, " %[^;]; %s\n", csv_options[i], csv_ids[i]) == 2){
+      search_score = 0;
+      for(j = 0; j < words; ++j){
+        search_score += strstr(csv_options[i], search_words[j]) != NULL ? 1 : 0;
       }
-      /*finding the file and getting the id*/
-      fscanf(fp," %[a-zA-Z() ]", found_name);
-      if(strstr(found_name, ingredient_name)){
-        printf("Found:");
-        strcpy(options[i], found_name);
-        printf("%s ", options[i]);
-        fscanf(fp," ; %[^\n] ", id[i]);
-        printf("%s\n", id[i]);
+      if(search_score == words)
         i++;
-        printf("%i",i);
-      }
-      /*for(j = 0; j < i; j++){
-        printf("%s\n", options[j]);
-      }
-      */
-      ch = getc(fp);
     }
     fclose(fp);
   }
-  for(i = 0; i < 20; i++){
-    printf("%s\n", options[i]);
+
+  for(i = 0; i < SEARCH_OPTIONS; i++){
+    printf("%s\n", csv_options[i]);
   }
-  chosen = choose_ingredient(options, ingredient_name);
-  id_val = atoi(id[chosen]);
-  free(id);
-  free(options);
+  //chosen = choose_ingredient(csv_options, search_string);
+  //id_val = atoi(csv_ids[chosen]);
+
+  for(i = 0; i < 50; ++i){
+    free(search_words[i]);
+  }
+  free(search_words);
+
   return id_val;
 }
 
-int choose_ingredient(char **options, char *ingredient_name){
+int choose_ingredient(char options[SEARCH_OPTIONS][MAX_LINE_LENGTH], const char *search_string){
   int choice;
   int i;
   choice = 0;
-  printf("There are multiple matches to this: %s, search. Please choose the right one\n", ingredient_name);
-  for(i = 0; i < 20; i++){
+  printf("The matches to <%s> is shown below. Please choose the right one\n", search_string);
+  for(i = 0; i < SEARCH_OPTIONS; i++){
     printf("Number %i: %s\n", i + 1, options[i]);
   }
   scanf("%i", &choice);
   return choice-1;
+}
+
+int string_to_words(char* string, char** words){
+  int i = 0;
+  char* cp = string;
+  while(sscanf(cp, "%[a-zA-Z0-9]", words[i])){
+    cp += strlen(words[i])+1;
+    printf("%s\n", words[i]);
+    ++i;
+  }
+  return i;
 }
