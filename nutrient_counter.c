@@ -41,7 +41,7 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
         }
       }
       else{
-        printf("Error, nutrients for <%s> not found! (Not included in nutrient count)\n ", ingredient.name);
+        printf("Error, nutrients for <%s> not found! (Not included in nutrient count)\n", ingredient.name);
       }
       ingredient_element = ingredient_element->next_element;
     }
@@ -78,7 +78,7 @@ double unit_to_gram(const char* unit){
     return 0.001;
   if(strstr(string, "miligram") != NULL)
     return 0.001;
-    if(strstr(string, "ug") != NULL)
+  if(strstr(string, "ug") != NULL)
     return 0.000001;
   if(strstr(string, "lb") != NULL || strstr(string, "pound") != NULL)
     return 453.592;
@@ -110,7 +110,7 @@ int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* nam
   int i;
 
   for(i = 0; i < MAX_ARRAY_SIZE; ++i){
-    if(strstr(name, nutrients[i].ingredient_name) != NULL){
+    if(strstr(name, nutrients[i].ingredient_name) != NULL)
       return i;
   }
   return -1;

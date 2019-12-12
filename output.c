@@ -51,7 +51,7 @@ void nutrient_output(UserData userdata){
     }
   }
 
-  printf("Nutrient      |      Value       |     Min     |     Max     |\n");
+  printf("Nutrient      |       Value        |     Min     |     Max     |\n");
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     char *unit = calloc(3, sizeof(char)), *min_max_unit = calloc(3, sizeof(char));
@@ -91,7 +91,7 @@ void nutrient_output(UserData userdata){
 
     /*Prints the line needed for the amount, whith all the necessary values*/
     if (amount == 0){
-      printf("%-13s |  " RED  "        " "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s |  " RED  "          " "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i],
         space,
         percentage,
@@ -100,7 +100,7 @@ void nutrient_output(UserData userdata){
         minMax[1],
         min_max_unit);
     }else if (amount >= minMax[0] && amount <= minMax[1]){
-      printf("%-13s | " GREEN  "%6.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " GREEN  "%8.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
@@ -111,7 +111,7 @@ void nutrient_output(UserData userdata){
         minMax[1],
         min_max_unit);
     }else{
-      printf("%-13s | " YELLOW  "%6.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
+      printf("%-13s | " YELLOW  "%8.1lf %s" "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i], 
         amount,
         unit,
