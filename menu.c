@@ -39,7 +39,7 @@ void menu(void){
     } while (pageinput != EXIT);
 }
 
-/**
+/*
  * Goes to the recipe page
  */
 void nutrient_page(UserData userdata){
@@ -60,24 +60,22 @@ void exit_message(void){
     return;
 }
 
-/**
+/*
  * Displays the VeGen ascii art and the instructions to the users
  */
 void start_text(void){
     /*
-     __      __   _____
-     \ \    / /  / ____|
-      \ \  / /__| |  __  ___ _ __
-       \ \/ / _ \ | |_ |/ _ \ '_ \
-        \  /  __/ |__| |  __/ | | |
-         \/ \___|\_____|\___|_| |_|
+         __       _        _      
+      /\ \ \_   _| |_ _ __(_) ___ 
+     /  \/ / | | | __| '__| |/ __|
+    / /\  /| |_| | |_| |  | | (__ 
+    \_\ \/  \__,_|\__|_|  |_|\___|
     */
-    printf(" __      __   _____\n");
-    printf(" \\ \\    / /  / ____|\n");
-    printf("  \\ \\  / /__| |  __  ___ _ __\n");
-    printf("   \\ \\/ / _ \\ | |_ |/ _ \\ '_ \\\n");
-    printf("    \\  /  __/ |__| |  __/ | | |\n");
-    printf("     \\/ \\___|\\_____|\\___|_| |_|\n\n");
+    printf("     __       _        _\n");
+    printf("  /\\ \\ \\_   _| |_ _ __(_) ___\n");
+    printf(" /  \\/ / | | | __| '__| |/ __|\n");
+    printf("/ /\\  /| |_| | |_| |  | | (__ \n");
+    printf("\\_\\ \\/  \\__,_|\\__|_|  |_|\\___|\n");
 
     printf("(1) Nutrients\n");
     printf("(2) User Settings\n");
@@ -85,14 +83,14 @@ void start_text(void){
     printf("(0) Exit\n");
 }
 
-/**
+/*
  * Clears the screen on both console and bash
  */
 void clear_screen(void){
     system("@cls||clear");
 }
 
-/**
+/*
  * Load the data stored in an ini file into the userData struct
  * @param userData the struct in control of all the users data and modifies the data
  */

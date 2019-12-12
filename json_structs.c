@@ -91,9 +91,9 @@ void* list_value(list_t* list, int index){
 list_t* list_element(list_t* list, int index){
   list_t* element = list;
   int i;
-  for(i = 0; i < index; ++i){
+  for(i = 0; i < index; ++i)
     element = element->next_element;
-  }
+
   return element;
 }
 
@@ -122,9 +122,9 @@ void* map_value(map_t* map, const char* key){
   while(current_element != NULL && current_element->value != NULL){
     key_val = (key_value_pair_t*)current_element->value;
     /* check if key to search for equals the key of current key-value pair */
-    if (strcmp(key_val->key, key) == 0){
+    if (strcmp(key_val->key, key) == 0)
       return key_val->value;
-    }
+
     /* iterate to next element in key-value pair list */
     current_element = current_element->next_element;
   }
@@ -140,9 +140,9 @@ void* map_value(map_t* map, const char* key){
 void map_add(map_t* map, const char* key, void* value, value_types_t value_type){
   /* allocate memory for key_value_pair_t, exit if fail */
   key_value_pair_t* key_val_p = malloc(sizeof(key_value_pair_t));
-  if(key_val_p == NULL){
+  if(key_val_p == NULL)
     exit(EXIT_FAILURE);
-  }
+
   /* copy key to add to the key-value pairs key and store value+type*/
   strcpy(key_val_p->key, key);
   key_val_p->value = value;
@@ -159,9 +159,9 @@ void list_delete(list_t** list, list_t* element){
   int done = 0;
   list_t *prev_element, *current_element;
   /* if list or element is null - do nothing */
-  if (*list == NULL || element == NULL){
+  if (*list == NULL || element == NULL)
     return;
-  }
+
   /* if deleting first element of list */
   if (element == *list){
     *list = (*list)->next_element;
@@ -200,9 +200,8 @@ void list_delete(list_t** list, list_t* element){
   * @param list - linked list to free
   */
 void list_free(list_t* list){
-  while(list != NULL){
+  while(list != NULL)
     list_delete(&list, list);
-  }
 }
 
 /** Frees all memory allocated for a map and any nested data

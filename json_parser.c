@@ -309,9 +309,8 @@ void fprint_value(FILE* file, void* value, value_types_t type, int depth){
       default: fprintf(file, "\"%s\"", value);
     }
   }
-  else{
+  else
     fprintf(file, "(null)");
-  }
 }
 
 /** Prints a list to a file
@@ -327,9 +326,8 @@ void fprint_list(FILE* file, list_t* list, int depth){
     findent(file, depth+1);
     element = list_element(list, i);
     fprint_value(file, element->value, element->value_type, depth+1);
-    if (i < list_size(list)-1){
+    if (i < list_size(list)-1)
       fprintf(file, ",\n");
-    }
   }
   fprintf(file, "\n");
   findent(file, depth);
@@ -342,7 +340,6 @@ void fprint_list(FILE* file, list_t* list, int depth){
   */
 void findent(FILE* file, int depth){
   int i;
-  for(i = 0; i < depth; ++i){
+  for(i = 0; i < depth; ++i)
     fprintf(file, "  ");
-  }
 }

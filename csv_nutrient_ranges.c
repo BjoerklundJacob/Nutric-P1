@@ -1,15 +1,4 @@
 #include "csv_nutrient_ranges.h"
-/*int main(void){
-  double VitaminTable[ALLVITAMINS];
-
-  SetVitamins(VitaminTable);
-
-  double minMax[2];
-  int age = 19, vitamin = 1, gender = 1, weight = 100;
-  get_range(VitaminTable, minMax, age, vitamin, gender, weight);
-
-  return 0;
-*/
 
 /*This function set a output array paremeter to too ranges*/
 /*From the inputs that it gets*/
