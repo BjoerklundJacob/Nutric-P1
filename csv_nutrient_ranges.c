@@ -51,7 +51,7 @@ int age_group(int age){
 }
 
 /* Loads the CSVs of ranges to a double array of 400 numbers */
-void set_vitamin_ranges(double VitaminTable[], UserData userdata){
+void load_vitamin_ranges(double VitaminTable[], UserData userdata){
   /*Open the file*/
   FILE *vitamins = fopen(".\\Vitamins.csv", "r");
 

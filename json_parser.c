@@ -235,7 +235,15 @@ value_types_t json_parse_value(FILE* file, void** value){
       break;
     /* value not being parsed by simplified json parser or invalid input */
     default:
-      printf("Unexpected value format in json. <%c>\n", c);
+      if(c == ']'){
+        printf("Error: Excess comma after last value in list\n", c);
+      }
+      else if(c == '}'){
+        printf("Error: Excess comma after last value in map\n", c);
+      }
+      else{
+        printf("Unexpected value format in json. <%c>\n", c);
+      }
       exit(EXIT_FAILURE);
   }
 
