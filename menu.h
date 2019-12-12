@@ -12,11 +12,11 @@
 #define EXIT '0'
 #define NUTRIENT_PAGE '1'
 
-void Page(void);
-void NutrientPage(UserData userdata);
-void Exit(void);
-void StartText(void);
-void ClearScreen(void);
-void LoadUserData(UserData* userData);
-void UserSettings(UserData* userData);
+void user_settings(UserData* userData);
+void menu(void);
+void nutrient_page(UserData);
+void exit_message(void);
+void start_text(void);
+void clear_screen(void);
+void load_user_data(UserData* userData);
 #endif

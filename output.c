@@ -1,5 +1,5 @@
 #include "output.h"
-void NutrientOutput(UserData userdata){
+void nutrient_output(UserData userdata){
   map_t *map, *meal;
   list_t *list, *nutrient_list;
   double nutrient_ranges[VITAMIN_RANGES];
@@ -8,7 +8,7 @@ void NutrientOutput(UserData userdata){
   char space[10];
 
   ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
-  char *nutrient_names[NUTRIENT_COUNT] = {  
+  char *nutrient_names[NUTRIENT_COUNT] = {
     "Calcium",
     "Iodine",
     "Iron",
@@ -25,12 +25,12 @@ void NutrientOutput(UserData userdata){
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     nutrient_count[i] = 0.0;
   }
-  
+
   /* Load user input */
   map = json_load(".\\Input.json");
 
   /* Load nutrient ranges */
-  SetVitaminRanges(nutrient_ranges, userdata);
+  load_vitamin_ranges(nutrient_ranges, userdata);
 
   /* Load ingredient nutrients */
   get_ingredient_nutrients(ingredient_nutrients);
@@ -54,10 +54,10 @@ void NutrientOutput(UserData userdata){
   /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     char *unit = calloc(3, sizeof(char)), *min_max_unit = calloc(3, sizeof(char));
-    double amount = nutrient_count[i], minMax[2]; 
+    double amount = nutrient_count[i], minMax[2];
 
-    /*Gets the right range of the vitamin*/
-    GetRange(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
+    /* Gets the recommended range of the vitamin */
+    get_range(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
     strcpy(unit, "g");
 
     if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_A || i == vitamin_D){

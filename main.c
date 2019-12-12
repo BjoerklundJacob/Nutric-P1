@@ -1,7 +1,7 @@
 #include "menu.h"
 
 int main(void){
-  Page();
+  menu();
   
   return 0;
 }

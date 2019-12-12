@@ -6,14 +6,14 @@
 
   double minMax[2];
   int age = 19, vitamin = 1, gender = 1, weight = 100;
-  GetRange(VitaminTable, minMax, age, vitamin, gender, weight);
+  get_range(VitaminTable, minMax, age, vitamin, gender, weight);
 
   return 0;
 */
 
 /*This function set a output array paremeter to too ranges*/
 /*From the inputs that it gets*/
-void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
+void get_range(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
   int place = PlaceInTable(AgeGroup(age), vitamin, gender);
 
   switch (vitamin){
@@ -36,8 +36,8 @@ void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int g
   }
 }
 
-/*Returns the age group of age*/
-int AgeGroup(int age){
+/* Returns the age group of age */
+int age_group(int age){
   if (age<20) {return 0;}
   else if (age<30) {return 1;}
   else if (age<40) {return 2;}
@@ -50,8 +50,8 @@ int AgeGroup(int age){
   else {return 9;}
 }
 
-/*Loads the CSVc of ranges to a double array of 400 for all the numbers*/
-void SetVitaminRanges(double VitaminTable[], UserData userdata){
+/* Loads the CSVs of ranges to a double array of 400 numbers */
+void set_vitamin_ranges(double VitaminTable[], UserData userdata){
   /*Open the file*/
   FILE *vitamins = fopen(".\\Vitamins.csv", "r");
 
@@ -60,20 +60,20 @@ void SetVitaminRanges(double VitaminTable[], UserData userdata){
     exit(EXIT_FAILURE);
   }
 
-  GetVitaminsTable(vitamins, VitaminTable, userdata);
+  get_vitamins_table(vitamins, VitaminTable, userdata);
 
   fclose(vitamins);
 
   return;
 }
 
-void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
+void get_vitamins_table(FILE *vitamins, double *VitaminTable, UserData userdata){
   int place, vitamin, gender, i;
   /*Go through all the vitamins for both genders and all the age groups, to the array*/
   for (vitamin = 0; vitamin < VITAMINS; vitamin++){
     for (gender = 0; gender < GENDERS; gender++){
       for (i = 0; i < AGE_GROUPS; i++){
-        place = PlaceInTable(i,vitamin,gender);
+        place = place_in_table(i,vitamin,gender);
         
         fscanf(vitamins,"%lf - %lf",&VitaminTable[place], &VitaminTable[place + 1]);
 
@@ -84,7 +84,7 @@ void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
   }
 }
 
-/*A function to get to a place in the array*/
-int PlaceInTable(int ageGroup, int vitamin, int gender){
+/* A function to get to a place in the array */
+int place_in_table(int ageGroup, int vitamin, int gender){
   return ageGroup *2 + (vitamin * (AGE_GROUPS*2*2))  + (gender * AGE_GROUPS*2); 
 }

@@ -41,7 +41,7 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
         }
       }
       else{
-        printf("Error, nutrients for ingredient not found!\n");
+        printf("Error, nutrients for <%s> not found! (Not included in nutrient count)\n ", ingredient.name);
       }
       ingredient_element = ingredient_element->next_element;
     }
@@ -110,7 +110,7 @@ int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* nam
   int i;
 
   for(i = 0; i < MAX_ARRAY_SIZE; ++i){
-    if(strcmp(nutrients[i].ingredient_name, name) == 0)
+    if(strstr(name, nutrients[i].ingredient_name) != NULL){
       return i;
   }
   return -1;

@@ -1,9 +1,22 @@
 {
-  "meals": [
+  "meals":[
     {
-      "name":"breakfast",
-      "ingredients":[
-        "100 g carrot"
+      "name": "Test",
+      "ingredients": [
+        "2 Tbsp olive oil",
+        "1 yellow onion",
+        "4 cloves garlic",
+        "250 g carrots ",
+        "4 stalks celery",
+        "2 lbs potatoes",
+        "1 cup brown lentils",
+        "1 tsp dried rosemary",
+        "1/2 tsp dried thyme",
+        "2 Tbsp Dijon mustard",
+        "1.5 Tbsp soy sauce",
+        "1 Tbsp brown sugar",
+        "6 cups vegetable broth",
+        "1 cup frozen peas"
       ]
     }
   ]

@@ -23,6 +23,7 @@ typedef struct ingredientsList_struct{
   char vitamin_D[MAX_LONG_MAX];
 }ingredient_nutrients_t;
 
+
+/*void printing_the_choosen_in(ingredient_nutrients_t ingredientsList[MAX_ARRAY_SIZE], int j);*/
 void get_ingredient_nutrients(ingredient_nutrients_t* output_array);
-void printing_the_choosen_in(ingredient_nutrients_t ingredientsList[MAX_ARRAY_SIZE], int j);
 #endif
