@@ -10,6 +10,9 @@
 
   return 0;
 */
+
+/*This function set a output array paremeter to too ranges*/
+/*From the inputs that it gets*/
 void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
   int place = PlaceInTable(AgeGroup(age), vitamin, gender);
 
@@ -30,14 +33,10 @@ void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int g
     minMax[0] = VitaminTable[place];
     minMax[1] = VitaminTable[place+1];
     break;
-  
-  default:
-    break;
   }
-
-  return;
 }
 
+/*Returns the age group of age*/
 int AgeGroup(int age){
   if (age<20) {return 0;}
   else if (age<30) {return 1;}
@@ -51,7 +50,9 @@ int AgeGroup(int age){
   else {return 9;}
 }
 
+/*Loads the CSVc of ranges to a double array of 400 for all the numbers*/
 void SetVitaminRanges(double VitaminTable[], UserData userdata){
+  /*Open the file*/
   FILE *vitamins = fopen(".\\Vitamins.csv", "r");
 
   if (vitamins == NULL){
@@ -68,7 +69,7 @@ void SetVitaminRanges(double VitaminTable[], UserData userdata){
 
 void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
   int place, vitamin, gender, i;
-
+  /*Go through all the vitamins for both genders and all the age groups, to the array*/
   for (vitamin = 0; vitamin < VITAMINS; vitamin++){
     for (gender = 0; gender < GENDERS; gender++){
       for (i = 0; i < AGE_GROUPS; i++){
@@ -83,6 +84,7 @@ void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
   }
 }
 
+/*A function to get to a place in the array*/
 int PlaceInTable(int ageGroup, int vitamin, int gender){
   return ageGroup *2 + (vitamin * (AGE_GROUPS*2*2))  + (gender * AGE_GROUPS*2); 
 }
