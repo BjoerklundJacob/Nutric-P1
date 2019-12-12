@@ -7,20 +7,20 @@
 #include <stdio.h>
 
 #define MAX_ARRAY_SIZE 82
-#define MAX_LONG_MAX 30
+#define MAX_INGRIDIENT_NUTRIENT_STRING_LEN 30
 
 typedef struct ingredientsList_struct{
-  char ingredient_name[MAX_LONG_MAX];
-  char calcium[MAX_LONG_MAX];
-  char iodine[MAX_LONG_MAX];
-  char iron[MAX_LONG_MAX];
-  char selenium[MAX_LONG_MAX];
-  char zinc[MAX_LONG_MAX];
-  char vitamin_A[MAX_LONG_MAX];
-  char vitamin_B2[MAX_LONG_MAX];
-  char vitamin_B3[MAX_LONG_MAX];
-  char vitamin_B12[MAX_LONG_MAX];
-  char vitamin_D[MAX_LONG_MAX];
+  char ingredient_name[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char calcium[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char iodine[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char iron[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char selenium[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char zinc[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char vitamin_A[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char vitamin_B2[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char vitamin_B3[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char vitamin_B12[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
+  char vitamin_D[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
 }ingredient_nutrients_t;
 
 
