@@ -1,6 +1,6 @@
 #include "thomas_database.h"
 int main(void){
-  printf("%i", get_ingredient_id("boiled potato"));
+  printf("%i", get_ingredient_id("boiled skin potato"));
   return 0;
 }
 
@@ -54,15 +54,11 @@ int get_ingredient_id(char *search_string){
     }
     fclose(fp);
   }
-  printf("Options: %d\n", list_size(options));
-
-  for(i = 0; i < list_size(options)-1; i++){
-    option = list_value(options, i);
-    printf("%s\n", map_value(option, "text"));
-  }
   chosen = choose_ingredient(options, search_string);
-  option = list_value(options, chosen);
-  id_val = atoi(map_value(option, "id"));
+  if(chosen != -1){
+    option = list_value(options, chosen);
+    id_val = atoi(map_value(option, "id"));
+  }
 
   for(i = 0; i < 50; ++i){
     free(search_words[i]);
@@ -79,11 +75,16 @@ int choose_ingredient(list_t* options, const char *search_string){
   map_t* option;
   choice = 0;
   printf("The matches to <%s> is shown below. Please choose the right one\n", search_string);
-  for(i = 0; i < list_size(options); i++){
-    option = list_value(options, i);
-    printf("Number %i: %s\n", i + 1, map_value(option, "text"));
+  if(list_size(options) > 0){
+    for(i = 0; i < list_size(options); i++){
+      option = list_value(options, i);
+      printf("Number %i: %s\n", i + 1, map_value(option, "text"));
+    }
+    scanf("%i", &choice);
   }
-  scanf("%i", &choice);
+  else{
+    printf("No matches to <%s> was found.\n", search_string);
+  }
   return choice-1;
 }
 
