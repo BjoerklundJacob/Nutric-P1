@@ -16,9 +16,9 @@
 #define MAX_INGRIDIENT_NUTRIENT_STRING_LEN 20
 #define NO_RESULTS -2
 #define MAX_NUTRIENT_COUNT 137
-#define MAX_NUTRIENT_SIZE 22
+#define MAX_NUTRIENT_SIZE 24
 #define MAX_ID_SIZE 7
-#define JUMP_PER_ID_DIFFERENCE 2877/* 2877 = 137 * strlen("666666;4444;4444.333\n") */
+#define JUMP_PER_ID_DIFFERENCE 3288/* = 137 * strlen("666666;4444;666666.333\n\r") */
 #define FIRST_ID 167512
 
 typedef struct ingredientsList_struct{
@@ -36,9 +36,8 @@ typedef struct ingredientsList_struct{
 }ingredient_nutrients_t;
 
 typedef struct nutrient_arrays{
-  char **nutrient_id;
-  char **nutrient_amount;
-  int nutrients_found;
+  int *nutrient_id;
+  double *nutrient_amount;
 }nutrient_arrays_t;
 
 int get_ingredient_id(const char *search_string);
