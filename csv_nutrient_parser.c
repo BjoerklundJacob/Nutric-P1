@@ -114,6 +114,7 @@ int choose_ingredient(list_t* options, const char *search_string){
     choice = getch();
     while(!(choice >= '1' && choice < '1' + size)){
       printf("Error, please input a valid option number.\n");
+      choice = getch();
     }
   }
   else{
