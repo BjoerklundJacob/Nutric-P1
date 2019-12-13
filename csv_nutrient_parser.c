@@ -1,6 +1,6 @@
 /*
- * Data paser to ingredientsList, makes a struct of ingredientsList
- * Bemeark den er ikke general med specefik lavet til denne opgave   
+ * Data parser to ingredientsList, makes a struct of ingredientsList
+ * Bemaerk den er ikke general med specifikt lavet til denne opgave   
  *  
 */
 
