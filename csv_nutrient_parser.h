@@ -5,9 +5,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <conio.h>
+#include "nutrient_counter.h"
+#include "menu.h"
 
+#define ID_LENGTH 7
+#define MAX_LINE_LENGTH 128
+#define MAX_SEARCH_OPTIONS 5
 #define MAX_ARRAY_SIZE 82
 #define MAX_INGRIDIENT_NUTRIENT_STRING_LEN 30
+#define NO_RESULTS -2
 
 typedef struct ingredientsList_struct{
   char ingredient_name[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
@@ -23,7 +30,8 @@ typedef struct ingredientsList_struct{
   char vitamin_D[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
 }ingredient_nutrients_t;
 
-
-/*void printing_the_choosen_in(ingredient_nutrients_t ingredientsList[MAX_ARRAY_SIZE], int j);*/
-void get_ingredient_nutrients(ingredient_nutrients_t* output_array);
+int get_ingredient_id(const char *search_string);
+int choose_ingredient(list_t* options, const char *search_string);
+int string_to_words(const char* string, char** words);
+ingredient_nutrients_t get_ingredient_nutrients(const char* name);
 #endif

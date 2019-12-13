@@ -33,15 +33,12 @@ void nutrient_output(UserData userdata){
   /* Load nutrient ranges */
   load_vitamin_ranges(nutrient_ranges, userdata);
 
-  /* Load ingredient nutrients */
-  get_ingredient_nutrients(ingredient_nutrients);
-
   /* Calculate nutrients for the user input */
   list = map_value(map, "meals");
   if (list != NULL){
     for(i = 0; i < list_size(list); ++i){
       meal = list_value(list, i);
-      recipe_nutrient_count_add(meal, ingredient_nutrients);
+      meal_nutrient_count_add(meal);
       nutrient_list = map_value(meal, "nutrients");
       if (nutrient_list != NULL){
         for(j = 0; j < NUTRIENT_COUNT; ++j){
