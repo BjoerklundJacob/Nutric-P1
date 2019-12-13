@@ -43,10 +43,10 @@ nutrient_arrays_t get_nurient_values(int ingredient_id_number){
   if(fp != NULL){
     do{
       /* Checking id's for the search id */
-      fscanf(fp," %[^;]\n", id);
-      if(strstr(id, ingredient_id)){
+      fscanf(fp," %[^;];", id);
+      if(strcmp(id, ingredient_id) == 0){
         /* While we are looking at the correct string read the amounts */
-        while(strstr(id,ingredient_id)){
+        while(strcmp(id, ingredient_id) == 0){
           fscanf(fp," %[^;];", nutrients.nutrient_id[nutrient_count]);
           fscanf(fp,"%[^\n]", nutrients.nutrient_amount[nutrient_count]);
 
@@ -54,6 +54,12 @@ nutrient_arrays_t get_nurient_values(int ingredient_id_number){
           fscanf(fp," %[^;\n];", id);
           nutrient_count++;
         }
+        break;
+      }
+      else{
+        /* 14 is from 10 from the two ids (6+4) and 2 from ; and 1 from min of next digit and 1 from \n */
+        fseek(fp, 14 * (atoi(ingredient_id) - atoi(id)-1), SEEK_CUR);
+        fscanf(fp," %*[^\n]");
       }
       ch = getc(fp);
     }while(ch != EOF); /* Making sure we are not at the end of the file*/
