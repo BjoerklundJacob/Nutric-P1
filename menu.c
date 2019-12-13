@@ -44,12 +44,12 @@ int main(void){
  * @param userData the struct in control of all the users data and modifies the data
  */
 void nutrient_page(UserData userdata){
-    do{
-        printf("You're at the nutrient page.\n");
-        /* Output nutrients */
-        nutrient_output(userdata);
-        printf("Press 0 to return to main menu.\n");
-    } while (getch() != '0');
+    printf("You're at the nutrient page.\n");
+    /* Output nutrients */
+    nutrient_output(userdata);
+    printf("Press 0 to return to main menu.\n");
+    /* Return if pressing '0' */
+    while (getch() != '0');
     return;
 }
 

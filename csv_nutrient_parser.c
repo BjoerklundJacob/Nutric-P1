@@ -63,7 +63,7 @@ int get_ingredient_id(const char *search_string){
         if(value == NULL){exit(EXIT_FAILURE);}
         strcpy(value, csv_text);
         map_add(option, "text", value, value_string);
-        //Text
+        //Id
         value = calloc(ID_LENGTH, sizeof(char));
         if(value == NULL){exit(EXIT_FAILURE);}
         strcpy(value, csv_id);
@@ -75,7 +75,7 @@ int get_ingredient_id(const char *search_string){
       }
     }
     fclose(fp);
-    while(chosen = choose_ingredient(options, search_string) == -1){
+    while((chosen = choose_ingredient(options, search_string)) == -1){
       clear_screen();
       printf("Error, please input a valid option number.\n");
     }
@@ -95,7 +95,6 @@ int get_ingredient_id(const char *search_string){
   }
   free(search_words);
   list_free(options);
-
   return id_val;
 }
 
@@ -103,7 +102,6 @@ int choose_ingredient(list_t* options, const char *search_string){
   int choice;
   int i, size;
   map_t* option;
-  choice = 0;
   printf("The matches to <%s> is shown below. Please choose the right one\n", search_string);
   size = list_size(options);
   if(size > 0){
@@ -119,13 +117,14 @@ int choose_ingredient(list_t* options, const char *search_string){
   }
   else{
     printf("No matches to <%s> was found.\n", search_string);
-    choice = -1;
+    return NO_RESULTS;
   }
   if(choice != -1){
-    option = list_value(options, size - ('1' + size - choice));
-    printf("Selected <%s>\n\n", map_value(option, "text"));
+    option = list_value(options, (choice - '1'));
+    printf("Selected <%s> (%d)\n\n", map_value(option, "text"), (choice - '1')+1);
+    return (choice - '1');
   }
-  return choice-1;
+  return -1;
 }
 
 int string_to_words(const char* string, char** words){
