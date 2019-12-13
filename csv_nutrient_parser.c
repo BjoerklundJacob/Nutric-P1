@@ -156,33 +156,16 @@ nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
   nutrients.nutrient_amount = calloc(MAX_NUTRIENT_COUNT, sizeof(char*));
   for (i = 0; i < MAX_NUTRIENT_COUNT; i++)
       nutrients.nutrient_amount[i] = calloc(MAX_NUTRIENT_SIZE, sizeof(char));
-  /* initialising variables */
-  nutrient_count = 0;
-  /* Converting the base 10 integer id to ascii (a string) */
-  itoa(ingredient_id_number, ingredient_id, 10);
   if(fp != NULL){
-    do{
-      /* Checking id's for the search id */
-      fscanf(fp," %[^;];", id);
-      if(strcmp(id, ingredient_id) == 0){
-        /* While we are looking at the correct string read the amounts */
-        while(strcmp(id, ingredient_id) == 0){
-          fscanf(fp," %[^;];", nutrients.nutrient_id[nutrient_count]);
-          fscanf(fp,"%[^\n]", nutrients.nutrient_amount[nutrient_count]);
-
-          /*find the ingredient id again and check it's still the same*/
-          if(fscanf(fp," %[^;\n];", id) <= 0){break;}
-          nutrient_count++;
-        }
-        break;
-      }
-      else{
-        fseek(fp, MAX_JUMP_PER_ID_DIFFERENCE * (atoi(ingredient_id) - atoi(id)-1), SEEK_CUR);
-        fscanf(fp," %*[^\n]");
-      }
-      printf(".");
-      ch = getc(fp);
-    }while(ch != EOF); /* Making sure we are not at the end of the file*/
+    /* Jump to id position in file */
+    printf("success %d\n", fseek(fp, JUMP_PER_ID_DIFFERENCE * (ingredient_id_number - FIRST_ID), SEEK_CUR));
+    printf("ID: %d\n", ingredient_id_number);
+    for(nutrient_count = 0; nutrient_count < MAX_NUTRIENT_COUNT; ++nutrient_count){
+      char str[22];
+      //fscanf(fp, "%[^\n]\n", str);
+      fscanf(fp,"%s;%s;%[^\n]\n", str, nutrients.nutrient_id[nutrient_count], nutrients.nutrient_amount[nutrient_count]);
+      printf("%s\n", str);
+    }
     /* Remembering to close the file */
     fclose(fp);
   }
