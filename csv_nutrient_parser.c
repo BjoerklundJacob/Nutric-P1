@@ -178,8 +178,7 @@ nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
         break;
       }
       else{
-        /* 14 is from 10 from the two ids (6+4) and 2 from ; and 1 from min of next digit and 1 from \n */
-        fseek(fp, 14 * (atoi(ingredient_id) - atoi(id)-1), SEEK_CUR);
+        fseek(fp, MAX_JUMP_PER_ID_DIFFERENCE * (atoi(ingredient_id) - atoi(id)-1), SEEK_CUR);
         fscanf(fp," %*[^\n]");
       }
       ch = getc(fp);

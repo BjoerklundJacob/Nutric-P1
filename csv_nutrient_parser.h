@@ -18,6 +18,7 @@
 #define MAX_NUTRIENT_COUNT 150
 #define MAX_NUTRIENT_SIZE 20
 #define MAX_ID_SIZE 20
+#define MAX_JUMP_PER_ID_DIFFERENCE 14 /* 6 (id) + 1 (;) + 4 (id) + 1 (;) + 1(min bytes for val) + 1 (\n) */
 
 typedef struct ingredientsList_struct{
   char ingredient_name[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
