@@ -20,6 +20,7 @@ ingredient_nutrients_t get_ingredient_nutrients(const char* name){
   id = get_ingredient_id(name);
   if(id != 0){
     /* Load ingredient nutrients */
+    printf("We have this id: %i", id);
     nutrients = nutrient_array_to_struct(get_nutrient_values(id));
     strcpy(nutrients.ingredient_name, name);
   }
@@ -248,9 +249,14 @@ ingredient_nutrients_t nutrient_array_to_struct(nutrient_arrays_t nutrients){
       default: break;
     }
   }
+
   /* There is no iodine in the database */
   strcpy(ingredient_nutrients.iodine,"0 g");
-
+  /* Freeing the calloced arrays */
+  for(i = 0; i < MAX_NUTRIENT_COUNT; i++){
+    free(nutrients.nutrient_amount[i]);
+    free(nutrients.nutrient_id[i]);
+  }
   free(nutrients.nutrient_amount);
   free(nutrients.nutrient_id);
   return ingredient_nutrients;
