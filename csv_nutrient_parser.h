@@ -15,6 +15,9 @@
 #define MAX_ARRAY_SIZE 82
 #define MAX_INGRIDIENT_NUTRIENT_STRING_LEN 30
 #define NO_RESULTS -2
+#define MAX_NUTRIENT_COUNT 150
+#define MAX_NUTRIENT_SIZE 20
+#define MAX_ID_SIZE 20
 
 typedef struct ingredientsList_struct{
   char ingredient_name[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
@@ -30,8 +33,16 @@ typedef struct ingredientsList_struct{
   char vitamin_D[MAX_INGRIDIENT_NUTRIENT_STRING_LEN];
 }ingredient_nutrients_t;
 
+typedef struct nutrient_arrays{
+  char **nutrient_id;
+  char **nutrient_amount;
+  int nutrients_found;
+}nutrient_arrays_t;
+
 int get_ingredient_id(const char *search_string);
 int choose_ingredient(list_t* options, const char *search_string);
 int string_to_words(const char* string, char** words);
 ingredient_nutrients_t get_ingredient_nutrients(const char* name);
+nutrient_arrays_t get_nutrient_values(int ingredient_id_number);
+ingredient_nutrients_t nutrient_array_to_struct(nutrient_arrays_t nutrients);
 #endif
