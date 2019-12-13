@@ -20,7 +20,6 @@ ingredient_nutrients_t get_ingredient_nutrients(const char* name){
   id = get_ingredient_id(name);
   if(id != 0){
     /* Load ingredient nutrients */
-    printf("We have this id: %i", id);
     nutrients = nutrient_array_to_struct(get_nutrient_values(id));
     strcpy(nutrients.ingredient_name, name);
   }
@@ -172,7 +171,7 @@ nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
           fscanf(fp,"%[^\n]", nutrients.nutrient_amount[nutrient_count]);
 
           /*find the ingredient id again and check it's still the same*/
-          fscanf(fp," %[^;\n];", id);
+          if(fscanf(fp," %[^;\n];", id) <= 0){break;}
           nutrient_count++;
         }
         break;
@@ -181,6 +180,7 @@ nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
         fseek(fp, MAX_JUMP_PER_ID_DIFFERENCE * (atoi(ingredient_id) - atoi(id)-1), SEEK_CUR);
         fscanf(fp," %*[^\n]");
       }
+      printf(".");
       ch = getc(fp);
     }while(ch != EOF); /* Making sure we are not at the end of the file*/
     /* Remembering to close the file */
