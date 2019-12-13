@@ -22,7 +22,6 @@ typedef enum _eNUTRIENTS{
   vitamin_D
 }eNUTRIENTS;
 
-void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients);
+void meal_nutrient_count_add(map_t* recipe);
 double unit_to_gram(const char* unit);
-int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* name);
 #endif

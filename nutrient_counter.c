@@ -2,9 +2,9 @@
 #include "csv_nutrient_parser.h"
 #include <string.h>
 
-void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients){
-  list_t *ingredient_element = map_value(recipe, "ingredients");
-  double recipe_nutrients_array[NUTRIENT_COUNT];
+void meal_nutrient_count_add(map_t* meal){
+  list_t *ingredient_element = map_value(meal, "ingredients");
+  double meal_nutrients_array[NUTRIENT_COUNT];
   ingredient_nutrients_t ingredient_nutrients;
   struct _INGREDIENT{
     double amount;
@@ -20,29 +20,24 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
 
   /* Initialise recipe nutrient array to 0 */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
-    recipe_nutrients_array[i] = 0.0;
+    meal_nutrients_array[i] = 0.0;
   }
 
-  if (map_value(recipe, "nutrients") == NULL){
+  if (map_value(meal, "nutrients") == NULL){
     /* Loop through each ingredient */
     while(ingredient_element != NULL){
-      /* Parse the ingredient string to the values (fx "50 g carrot") */
+      /* Parse the ingredient string to the values (fx "50 g raw carrot") */
       sscanf(ingredient_element->value, "%lf %s %[a-zA-Z ]", &ingredient.amount, ingredient.unit, ingredient.name);
-      index = ingredient_nutriens_index(nutrients, ingredient.name);
-      if(index != -1){
-        ingredient_nutrients = nutrients[index];
 
-        /* Add ingredient nutrients to recipe nutrients */
-        for (i = 0; i < NUTRIENT_COUNT; i++)
-        {
-          /*The nutrient amount is divided by 100, because the amount is pr. 100 grams*/
-          sscanf(ingredient_nutrients.calcium + i * sizeof(ingredient_nutrients.calcium), "%lf %s", &nutrient_amount, nutrient_unit);
-          recipe_nutrients_array[i] += nutrient_amount/100.0 * unit_to_gram(nutrient_unit) * ingredient.amount * unit_to_gram(ingredient.unit);
-        }
+      ingredient_nutrients = get_ingredient_nutrients(ingredient.name);
+      /* Add ingredient nutrients to recipe nutrients */
+      for (i = 0; i < NUTRIENT_COUNT; i++)
+      {
+        /* The nutrient amount is divided by 100, because the amount is per 100 grams */
+        sscanf(ingredient_nutrients.calcium + i * sizeof(ingredient_nutrients.calcium), "%lf %s", &nutrient_amount, nutrient_unit);
+        meal_nutrients_array[i] += nutrient_amount/100.0 * unit_to_gram(nutrient_unit) * ingredient.amount * unit_to_gram(ingredient.unit);
       }
-      else{
-        printf("Error, nutrients for <%s> not found! (Not included in nutrient count)\n", ingredient.name);
-      }
+      /* Go to next ingredient */
       ingredient_element = ingredient_element->next_element;
     }
     /* turn into json structure */
@@ -52,11 +47,11 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
         printf("Could not allocate memory.\n");
         exit(EXIT_FAILURE);
       }
-      *(double*) value = recipe_nutrients_array[i];
+      *(double*) value = meal_nutrients_array[i];
       list_add(&nutrient_list, value, value_double);
     }
-    /* add to recipe map */
-    map_add(recipe, "nutrients", nutrient_list, value_list);
+    /* add to meal map */
+    map_add(meal, "nutrients", nutrient_list, value_list);
   }
 }
 
@@ -103,15 +98,4 @@ double unit_to_gram(const char* unit){
   if(strstr(unit, "l") != NULL)
     return 1000;
   return 1.0;
-}
-
-/*Gives the index number of a given nutrien*/
-int ingredient_nutriens_index(ingredient_nutrients_t* nutrients, const char* name){
-  int i;
-
-  for(i = 0; i < MAX_ARRAY_SIZE; ++i){
-    if(strstr(name, nutrients[i].ingredient_name) != NULL)
-      return i;
-  }
-  return -1;
 }
