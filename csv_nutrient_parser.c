@@ -55,7 +55,6 @@ int get_ingredient_id(const char *search_string){
         search_score += strstr(csv_text, search_words[j]) != NULL ? 1 : 0;
       }
       if(search_score == words){
-        printf("%s\n", csv_text);
         //Add text and id to list
         option = map_create();
         //Text
