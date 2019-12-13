@@ -3,7 +3,7 @@
 int main(void){
   nutrient_arrays_t my_nutrients;
   ingredient_nutrients_t nutrients_final;
-  my_nutrients = get_nurient_values(170216);
+  my_nutrients = get_nurient_values(167516);
   nutrients_final = nutrient_id_to_struct(my_nutrients);
   printf("Calcium nutrient: %s\n", nutrients_final.calcium);
   printf("Iron nutrient: %s\n", nutrients_final.iron);
@@ -22,12 +22,12 @@ nutrient_arrays_t get_nurient_values(int ingredient_id_number){
   char ch, id[MAX_ID_SIZE], ingredient_id[MAX_NUTRIENT_SIZE];
   nutrient_arrays_t nutrients;
   /* Opening the file */
-  FILE *fp = fopen("food_nutrient.csv", "r");
+  FILE *fp = fopen("Food_nutrient.csv", "r");
 
   /* Allocating space for the nutrients id's */
   nutrients.nutrient_id = calloc(MAX_NUTRIENT_COUNT, sizeof(char*));
   for (i = 0; i < MAX_NUTRIENT_COUNT; i++)
-      nutrients.nutrient_id[i] = calloc(MAX_NUTRIENT_SIZE,sizeof(char));
+      nutrients.nutrient_id[i] = calloc(MAX_NUTRIENT_SIZE, sizeof(char));
 
   /* Allocating space for the nutrient values */
   nutrients.nutrient_amount = calloc(MAX_NUTRIENT_COUNT, sizeof(char*));
