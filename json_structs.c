@@ -27,6 +27,7 @@ list_t* list_create(void){
   */
 list_t* list_last(list_t* list){
   list_t* current_element = list;
+  if(list == NULL) return 0;
   /* find next element while next element exists */
   while (current_element->next_element != NULL){
     current_element = current_element->next_element;

@@ -5,15 +5,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "json_structs.h"
 
 #define THOMAS
 
 #define ID_LENGTH 7
 #define MAX_LINE_LENGTH 128
-#define SEARCH_OPTIONS 10
+#define MAX_SEARCH_OPTIONS 5
 
 
 int get_ingredient_id(char *search_string);
-int choose_ingredient(char options[SEARCH_OPTIONS][MAX_LINE_LENGTH], const char *search_string);
+int choose_ingredient(list_t* options, const char *search_string);
 int string_to_words(char* string, char** words);
 #endif
