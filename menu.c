@@ -1,8 +1,8 @@
 #include "menu.h"
 /**
- * Sets the users data as a backup and then tries to get it from the file and goes to the relevant page using dialogue with the user.
+ * Goes to the relevant submenu using dialogue with the user.
 */
-void menu(void){
+int main(void){
     UserData userData;
     char pageinput = '!';
     
@@ -29,18 +29,19 @@ void menu(void){
             break;
         case EXIT:
             clear_screen();
-            exit_message();
-            clear_screen();
+            printf("See you next time.\n");
             break;
         default:
             printf("The following page was not found. Please try again.\n");
             break;
         }
     } while (pageinput != EXIT);
+    return EXIT_SUCCESS;
 }
 
-/*
- * Goes to the recipe page
+/**
+ * Goes to the nutrient submenu
+ * @param userData the struct in control of all the users data and modifies the data
  */
 void nutrient_page(UserData userdata){
     do{
@@ -52,16 +53,9 @@ void nutrient_page(UserData userdata){
     return;
 }
 
-/**
- * Exits the program
- */
-void exit_message(void){
-    printf("See you next time.\n");
-    return;
-}
 
-/*
- * Displays the VeGen ascii art and the instructions to the users
+/**
+ * Displays the Nutric ascii art and the instructions to the users
  */
 void start_text(void){
     /*
@@ -83,14 +77,14 @@ void start_text(void){
     printf("(0) Exit\n");
 }
 
-/*
+/**
  * Clears the screen on both console and bash
  */
 void clear_screen(void){
     system("@cls||clear");
 }
 
-/*
+/**
  * Load the data stored in an ini file into the userData struct
  * @param userData the struct in control of all the users data and modifies the data
  */

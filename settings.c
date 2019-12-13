@@ -58,7 +58,7 @@ void get_age_input(UserData* userData){
 }
 
 /**
- * Takes the users gender from dialog and inputs it into the structure member gender and clearing the buffer on invalid inputs.
+ * Takes the users gender from dialog and inputs it into the structure member gender and check for invalid inputs.
  * @param userData the struct in control of all the users data and modifies the data
  */
 void get_gender_input(UserData* userData){
