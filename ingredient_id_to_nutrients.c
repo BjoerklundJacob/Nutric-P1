@@ -3,7 +3,7 @@
 int main(void){
   nutrient_arrays_t my_nutrients;
   ingredient_nutrients_t nutrients_final;
-  my_nutrients = get_nurient_values(167516);
+  my_nutrients = get_nurient_values(174348);
   nutrients_final = nutrient_id_to_struct(my_nutrients);
   printf("Calcium nutrient: %s\n", nutrients_final.calcium);
   printf("Iron nutrient: %s\n", nutrients_final.iron);
@@ -43,7 +43,7 @@ nutrient_arrays_t get_nurient_values(int ingredient_id_number){
   if(fp != NULL){
     do{
       /* Checking id's for the search id */
-      fscanf(fp," %[^;\n];", id);
+      fscanf(fp," %[^;]\n", id);
       if(strstr(id, ingredient_id)){
         /* While we are looking at the correct string read the amounts */
         while(strstr(id,ingredient_id)){
