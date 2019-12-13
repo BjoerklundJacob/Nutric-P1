@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "output.h": "c",
-        "json_parser.h": "c"
+        "json_parser.h": "c",
+        "cstdio": "cpp"
     }
 }

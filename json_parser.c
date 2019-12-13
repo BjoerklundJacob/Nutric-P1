@@ -1,15 +1,5 @@
 #include "json_parser.h"
-/*int main(void){
-  map_t *map;
 
-  map = json_load(".\\test.json");
-  printf("json loaded.\n");
-
-  json_write(".\\test.json", map);
-
-  map_free(map);
-  return 0;
-*/
 /** Parses a json file loading the data to a map, returning the loaded map
   * (simplified parsing - not full json parser)
   * @param file_dir directory to the .json file
