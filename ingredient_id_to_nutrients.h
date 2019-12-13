@@ -7,6 +7,9 @@
 #include <ctype.h>
 #define MAX_ARRAY_SIZE 82
 #define MAX_INGRIDIENT_NUTRIENT_STRING_LEN 30
+#define MAX_NUTRIENT_COUNT 100
+#define MAX_NUTRIENT_SIZE 7
+#define MAX_ID_SIZE 8
 
 typedef struct nutrient_arrays{
   char **nutrient_id;

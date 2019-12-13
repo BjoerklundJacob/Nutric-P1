@@ -3,7 +3,7 @@
 int main(void){
   nutrient_arrays_t my_nutrients;
   ingredient_nutrients_t nutrients_final;
-  my_nutrients = get_nurient_values(174499);
+  my_nutrients = get_nurient_values(170216);
   nutrients_final = nutrient_id_to_struct(my_nutrients);
   printf("Calcium nutrient: %s\n", nutrients_final.calcium);
   printf("Iron nutrient: %s\n", nutrients_final.iron);
@@ -18,23 +18,23 @@ int main(void){
 }
 
 nutrient_arrays_t get_nurient_values(int ingredient_id_number){
-  int i, x;
-  char ch;
-  char id[20];
-  char ingredient_id[7];
-  FILE *fp = fopen("food_nutrient.csv", "r");
+  int i, nutrient_count;
+  char ch, id[MAX_ID_SIZE], ingredient_id[MAX_NUTRIENT_SIZE];
   nutrient_arrays_t nutrients;
+  /* Opening the file */
+  FILE *fp = fopen("food_nutrient.csv", "r");
+
   /* Allocating space for the nutrients id's */
-  nutrients.nutrient_id = calloc(150, sizeof(char*));
-  for (i = 0; i < 80; i++)
-      nutrients.nutrient_id[i] = calloc((10),sizeof(char));
+  nutrients.nutrient_id = calloc(MAX_NUTRIENT_COUNT, sizeof(char*));
+  for (i = 0; i < MAX_NUTRIENT_COUNT; i++)
+      nutrients.nutrient_id[i] = calloc(MAX_NUTRIENT_SIZE,sizeof(char));
 
   /* Allocating space for the nutrient values */
-  nutrients.nutrient_amount = calloc(150, sizeof(char*));
-  for (i = 0; i < 80; i++)
-      nutrients.nutrient_amount[i] = calloc((10), sizeof(char));
+  nutrients.nutrient_amount = calloc(MAX_NUTRIENT_COUNT, sizeof(char*));
+  for (i = 0; i < MAX_NUTRIENT_COUNT; i++)
+      nutrients.nutrient_amount[i] = calloc(MAX_NUTRIENT_SIZE, sizeof(char));
   /* initialising variables */
-  x = 0;
+  nutrient_count = 0;
   /*
     Converting the base 10 integer id to ascii,
     that is to say a string.
@@ -42,33 +42,33 @@ nutrient_arrays_t get_nurient_values(int ingredient_id_number){
   itoa(ingredient_id_number, ingredient_id, 10);
   if(fp != NULL){
     do{
-      //ungetc(ch, fp);
       /* Checking id's for the search id */
       fscanf(fp," %[^;\n];", id);
       if(strstr(id, ingredient_id)){
-        printf("We founds %s\n", id);
         /* While we are looking at the correct string read the amounts */
         while(strstr(id,ingredient_id)){
-          fscanf(fp," %[^;];", nutrients.nutrient_id[x]);
-          printf("Nutrient Id: %s\n", nutrients.nutrient_id[x]);
-          fscanf(fp,"%[^\n]", nutrients.nutrient_amount[x]);
-          printf("Nutrient Value: %s\n", nutrients.nutrient_amount[x]);
+          fscanf(fp," %[^;];", nutrients.nutrient_id[nutrient_count]);
+          fscanf(fp,"%[^\n]", nutrients.nutrient_amount[nutrient_count]);
+
           /*find the ingredient id again and check it's still the same*/
           fscanf(fp," %[^;\n];", id);
-          x++;
+          nutrient_count++;
         }
       }
       ch = getc(fp);
-    }while(ch != EOF);
+    }while(ch != EOF); /* Making sure we are not at the end of the file*/
   }
-  nutrients.nutrients_found = x;
+  /* Saving how many nutrients found to loop through them later */
+  nutrients.nutrients_found = nutrient_count;
+  /* Remembering to close the file */
+  fclose(fp);
   return nutrients;
 }
 
 ingredient_nutrients_t nutrient_id_to_struct(nutrient_arrays_t nutrients){
   ingredient_nutrients_t ingredient_nutrients;
   int i;
-
+  /* initialising the nutrients in case we find none in the database */
   strcpy(ingredient_nutrients.calcium, "0 g");
   strcpy(ingredient_nutrients.iron, "0 g");
   strcpy(ingredient_nutrients.zinc, "0 g");
@@ -82,54 +82,50 @@ ingredient_nutrients_t nutrient_id_to_struct(nutrient_arrays_t nutrients){
   for(i = 0; i < nutrients.nutrients_found; i++){
     /* Looking through all ingredients found */
     switch(atoi(nutrients.nutrient_id[i])){
-      /* calcium */
-      case 1087:
+      case 1087: /* Id for calcium */
         strcpy(ingredient_nutrients.calcium, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.calcium, " mg");
       break;
-      /* Iron */
-      case 1089:
+      case 1089: /* Id for Iron */
         strcpy(ingredient_nutrients.iron, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.iron, " mg");
       break;
-      /* Zinc */
-      case 1095:
+      case 1095:  /* Id for Zinc */
         strcpy(ingredient_nutrients.zinc, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.zinc, " mg");
       break;
-      /* Selenium */
-      case 1103:
+
+      case 1103:  /* Id for Selenium */
         strcpy(ingredient_nutrients.selenium, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.selenium, " ug");
       break;
-      /* Vitamin A */
-      case 1105:
+      case 1105:  /* Id for Vitamin A */
         strcpy(ingredient_nutrients.vitamin_A, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.vitamin_A, " ug");
       break;
-      /* Vitamin D */
-      case 1112:
+      case 1112:  /* Id for Vitamin D */
         strcpy(ingredient_nutrients.vitamin_D, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.vitamin_D, " ug");
       break;
-      /* Vitamin B2 */
-      case 1166:
+      case 1166: /* Id for Vitamin B2 */
         strcpy(ingredient_nutrients.vitamin_B2, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.vitamin_B2, " mg");
       break;
-      /* Vitamin B3 */
-      case 1167:
+      case 1167: /* Id for Vitamin B3 */
         strcpy(ingredient_nutrients.vitamin_B3, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.vitamin_B3, " mg");
       break;
-      /* Vitamin B12 */
-      case 1178:
+      case 1178: /* Id for Vitamin B12 */
         strcpy(ingredient_nutrients.vitamin_B12, nutrients.nutrient_amount[i]);
         strcat(ingredient_nutrients.vitamin_B12, " ug");
       break;
       default: break;
     }
   }
+  /* There is no iodine in the database */
   strcpy(ingredient_nutrients.iodine,"0 g");
+
+  free(nutrients.nutrient_amount);
+  free(nutrients.nutrient_id);
   return ingredient_nutrients;
 }
