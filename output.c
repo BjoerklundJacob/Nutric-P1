@@ -1,14 +1,19 @@
 #include "output.h"
-
+/** 
+  * Uses the user input to get the correct nutrient ranges
+  * Uses the ingredient nutrients and compares them to the ingredients in a meal
+  * Calculates whether the user is within their recommended nutrient range
+  */
 void nutrient_output(UserData userdata){
   map_t *map, *meal;
   list_t *list, *nutrient_list;
+  ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
+  int i, j, k, percentage;
   double nutrient_ranges[VITAMIN_RANGES];
   double nutrient_count[NUTRIENT_COUNT];
-  int i, j, k, percentage;
-  char space[10];
-
-  ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
+  char space[10], *unit, *min_max_unit;
+  double amount, minMax[2];
+  
   char *nutrient_names[NUTRIENT_COUNT] = {
     "Calcium",
     "Iodine",
@@ -22,11 +27,13 @@ void nutrient_output(UserData userdata){
     "Vitamin D"
     };
 
+  unit = calloc(3, sizeof(char)); 
+  min_max_unit = calloc(3, sizeof(char));
+
   /* Initialise nutrient count to 0 */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     nutrient_count[i] = 0.0;
   }
-
   /* Load user input */
   map = json_load(".\\Input.json");
 
@@ -52,13 +59,11 @@ void nutrient_output(UserData userdata){
   }
 
   printf("Nutrient      |       Value        |     Min     |     Max     |\n");
-  /* Print nutrients */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
-    char *unit = calloc(3, sizeof(char)), *min_max_unit = calloc(3, sizeof(char));
-    double amount = nutrient_count[i], minMax[2];
+    amount = nutrient_count[i];
 
     /* Gets the recommended range of the vitamin */
-    get_range(nutrient_ranges, minMax, userdata.age, i, userdata.weight == 'm' ? 0 : 1,userdata.gender);
+    get_range(nutrient_ranges, minMax, userdata.age, i, userdata.gender == 'm' ? 0 : 1,userdata.weight);
     strcpy(unit, "g");
 
     if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_A || i == vitamin_D){
@@ -72,11 +77,9 @@ void nutrient_output(UserData userdata){
       strcpy(min_max_unit, "\xE6g");
     }
 
-    /*Get the percentages of the nutrients the user have*/
     percentage = percentages(amount, minMax[0], minMax[1]);
 
-    /*This is to make a chr array(string) of spaces,
-      so the diffrent number of digits of the percentage dont go out of order*/
+    /* makes a chr array(string) of \0's to limit the length of the percentage (98.600% to 98.6%) */ 
     if (percentage == 0){
       for ( k = 0; k < 3; k++){
         space[k] = ' ';
@@ -89,7 +92,7 @@ void nutrient_output(UserData userdata){
       space[k] = '\0';
     }
 
-    /*Prints the line needed for the amount, whith all the necessary values*/
+    /* Print nutrients and their amounts*/
     if (amount == 0){
       printf("%-13s |  " RED  "          " "%s(%i%%)" WHITE " | %8.1lf %s | %8.1lf %s |\n", 
         nutrient_names[i],
@@ -126,7 +129,9 @@ void nutrient_output(UserData userdata){
   map_free(map);
 }
 
-/*The function to get the percentages of the a value of a ranges*/
+/**
+  * gets the percentage of a value compared to the nearest range limiter (minimum or maximum)
+  */
 int percentages(double value, double min, double max){
   
   if (value == 0)
@@ -140,7 +145,9 @@ int percentages(double value, double min, double max){
     return 100;
 }
 
-/*Converts a amount of a unit to another unit*/
+/** 
+  * Converts an amount of a unit to another unit
+  */
 void convert_unit(double* amount, char* unit_from, const char* unit_to){
     double mult = 1;
     switch(unit_from[0]){

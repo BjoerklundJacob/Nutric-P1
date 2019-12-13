@@ -117,7 +117,7 @@ void save_user_data(UserData userData){
     
     /* Opens the file with write permissions and creates it if it does not exist*/
     file = fopen("User_Data.ini", "w");
-
+    
     fprintf(file, "Age=%i\n", userData.age);
     fprintf(file, "Weight=%lf\n", userData.weight);
     fprintf(file, "Gender=%c\n", userData.gender);

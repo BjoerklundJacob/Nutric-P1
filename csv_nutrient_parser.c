@@ -1,6 +1,6 @@
 /*
- * Data paser to ingredientsList, makes a struct of ingredientsList
- * Bemeark den er ikke general med specefik lavet til denne opgave   
+ * Data parser to ingredientsList, makes a struct of ingredientsList
+ * Bemaerk den er ikke general med specifikt lavet til denne opgave   
  *  
 */
 
@@ -11,7 +11,7 @@ void get_ingredient_nutrients(ingredient_nutrients_t* output_array){
   int i;
 
   if(f != NULL){
-    /* Funktionen afleaser CSV filen og skaber array'et */
+    /* Reads the CSV-file and makes the nutrient arr */
     for (i = 0; i < MAX_ARRAY_SIZE ; i++){
 
       fscanf(f, " %[a-zA-Z() ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] ; %[a-zA-Z0-9. ] \n", 
@@ -33,7 +33,7 @@ void get_ingredient_nutrients(ingredient_nutrients_t* output_array){
 
 }
 
-/*void printing_the_choosen_in(ingredient_nutrients_t ingredientsList[MAX_ARRAY_SIZE], int j){
+/*void printing_the_chosen_in(ingredient_nutrients_t ingredientsList[MAX_ARRAY_SIZE], int j){
   printf("Ingredient: %d\n", j);
       printf("-------------------------------------------------\n");
       printf("Ingredients navn: %s\n", ingredientsList[j].ingredient_name);
