@@ -15,10 +15,10 @@
 #define MAX_ARRAY_SIZE 82
 #define MAX_INGRIDIENT_NUTRIENT_STRING_LEN 20
 #define NO_RESULTS -2
-#define MAX_NUTRIENT_COUNT 137
+#define MAX_NUTRIENT_COUNT 9
 #define MAX_NUTRIENT_SIZE 24
 #define MAX_ID_SIZE 7
-#define JUMP_PER_ID_DIFFERENCE 3288/* = 137 * strlen("666666;4444;666666.333\n\r") */
+#define JUMP_PER_ID_DIFFERENCE (9 * MAX_NUTRIENT_SIZE)
 #define FIRST_ID 167512
 
 typedef struct ingredientsList_struct{

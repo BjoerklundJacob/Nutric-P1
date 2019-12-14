@@ -40,8 +40,6 @@ int get_ingredient_id(const char *search_string){
     search_words[i] = calloc(50, sizeof(char));
   }
 
-  printf("Search is <%s>\n", search_string);
-
   /*Accessing the food lookup file*/
   FILE *fp = fopen("Food.csv", "r");
   id_val = 0;
@@ -102,7 +100,8 @@ int choose_ingredient(list_t* options, const char *search_string){
   int choice;
   int i, size;
   map_t* option;
-  printf("The matches to <%s> is shown below. Please choose the right one\n", search_string);
+  printf("The matches to <%s> is shown below. Please choose the right one\n"
+         "If none of the options are correct, please specify ingredient and try again.\n", search_string);
   size = list_size(options);
   if(size > 0){
     for(i = 0; i < size; i++){
@@ -154,8 +153,8 @@ nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
   
   if(fp != NULL){
     /* Jump to id position in file */
-    printf("success %d\n", fseek(fp, JUMP_PER_ID_DIFFERENCE * (ingredient_id_number - FIRST_ID) + MAX_NUTRIENT_SIZE, SEEK_CUR));
-    printf("ID: %d\n", ingredient_id_number);
+    fseek(fp, JUMP_PER_ID_DIFFERENCE * (ingredient_id_number - FIRST_ID), SEEK_SET);
+    /* Load nutrients for id */
     for(nutrient_count = 0; nutrient_count < MAX_NUTRIENT_COUNT; ++nutrient_count){
       fscanf(fp," %*[^;];%d;%lf", &nutrients.nutrient_id[nutrient_count], &nutrients.nutrient_amount[nutrient_count]);
     }
