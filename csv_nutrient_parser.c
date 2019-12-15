@@ -144,7 +144,7 @@ nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
   char ch, id[MAX_ID_SIZE], ingredient_id[MAX_NUTRIENT_SIZE];
   nutrient_arrays_t nutrients;
   /* Opening the file */
-  FILE *fp = fopen("Food_Nutrient.csv", "r");
+  FILE *fp = fopen("Food_Nutrients.csv", "r");
 
   /* Allocating space for the nutrients id's */
   nutrients.nutrient_id = calloc(MAX_NUTRIENT_COUNT, sizeof(int));
