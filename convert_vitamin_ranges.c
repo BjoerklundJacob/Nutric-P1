@@ -12,7 +12,7 @@ int main(void){
   int i;
 
   file_input = fopen("Food_Nutrient_Old.csv", "r");
-  file_output = fopen("Food_Nutrient.csv", "w");
+  file_output = fopen("Food_Nutrients.csv", "w");
   if(file_input != NULL){
     current_nutrient_count = 0;
     while(fscanf(file_input, "%[^\n]\n", line) > 0){
