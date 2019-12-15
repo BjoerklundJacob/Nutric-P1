@@ -72,6 +72,8 @@ void start_text(void){
     printf("/ /\\  /| |_| | |_| |  | | (__ \n");
     printf("\\_\\ \\/  \\__,_|\\__|_|  |_|\\___|\n");
 
+    printf("Press the number corresponding to an option:\n");
+
     printf("(1) Nutrients\n");
     printf("(2) User Settings\n");
     printf("(3) Open the input file\n");

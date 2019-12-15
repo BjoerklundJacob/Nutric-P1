@@ -102,11 +102,12 @@ int choose_ingredient(list_t* options, const char *search_string){
   map_t* option;
   printf("The matches to <%s> is shown below. Please choose the right one\n"
          "If none of the options are correct, please specify ingredient and try again.\n", search_string);
+  printf("Press the number corresponding to an option:\n");
   size = list_size(options);
   if(size > 0){
     for(i = 0; i < size; i++){
       option = list_value(options, i);
-      printf("Number %i: %s\n", i + 1, map_value(option, "text"));
+      printf("(%i) %s\n", i + 1, map_value(option, "text"));
     }
     choice = getch();
     while(!(choice >= '1' && choice < '1' + size)){
