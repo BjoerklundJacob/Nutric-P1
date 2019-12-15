@@ -43,4 +43,5 @@ void map_add(map_t* map, const char* key, void* value, value_types_t value_type)
 void* map_value(map_t* map, const char* key);
 void map_free(map_t* map);
 void free_value(void* value, value_types_t value_type);
+char* allocate_string(const char* string);
 #endif

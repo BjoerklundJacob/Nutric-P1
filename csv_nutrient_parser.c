@@ -194,7 +194,7 @@ ingredient_nutrients_t nutrient_array_to_struct(nutrient_arrays_t nutrients){
       case 1103:  /* Id for Selenium */
         sprintf(ingredient_nutrients.selenium, "%lf %s", nutrients.nutrient_amount[i], "ug");
         break;
-      case 1105:  /* Id for Vitamin A */
+      case 1106:  /* Id for Vitamin A */
         sprintf(ingredient_nutrients.vitamin_A, "%lf %s", nutrients.nutrient_amount[i], "ug");
         break;
       case 1112:  /* Id for Vitamin D */
