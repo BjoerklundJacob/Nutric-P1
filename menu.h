@@ -18,4 +18,5 @@ void nutrient_page(UserData);
 void start_text(void);
 void clear_screen(void);
 void load_user_data(UserData* userData);
+void open_input_file();
 #endif

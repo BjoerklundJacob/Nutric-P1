@@ -30,7 +30,7 @@ int main(void){
             case 1089: /* Id for Iron */
             case 1095: /* Id for Zinc */
             case 1103: /* Id for Selenium */
-            case 1105: /* Id for Vitamin A */
+            case 1106: /* Id for Vitamin A */
             case 1112: /* Id for Vitamin D */
             case 1166: /* Id for Vitamin B2 */
             case 1167: /* Id for Vitamin B3 */
