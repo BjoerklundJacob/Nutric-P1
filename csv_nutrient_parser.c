@@ -33,6 +33,7 @@ int get_ingredient_id(const char *search_string){
   map_t* option;
   void* value;
   char csv_text[MAX_LINE_LENGTH], csv_id[ID_LENGTH];
+  FILE *fp;
 
   /* Make string array for splitting search into words */
   search_words = calloc(50, sizeof(char*));
@@ -41,7 +42,7 @@ int get_ingredient_id(const char *search_string){
   }
 
   /*Accessing the food lookup file*/
-  FILE *fp = fopen("Food.csv", "r");
+  fp = fopen("Food.csv", "r");
   id_val = 0;
 
   /*Checking if the file was opened*/
@@ -54,21 +55,21 @@ int get_ingredient_id(const char *search_string){
         search_score += strstr(csv_text, search_words[j]) != NULL ? 1 : 0;
       }
       if(search_score == words){
-        //Add text and id to list
+        /* Add text and id to list */
         option = map_create();
-        //Text
+        /* Text */
         value = calloc(strlen(csv_text)+1, sizeof(char));
         if(value == NULL){exit(EXIT_FAILURE);}
         strcpy(value, csv_text);
         map_add(option, "text", value, value_string);
-        //Id
+        /* Id */
         value = calloc(ID_LENGTH, sizeof(char));
         if(value == NULL){exit(EXIT_FAILURE);}
         strcpy(value, csv_id);
         map_add(option, "id", value, value_string);
-        //Add to options
+        /* Add to options */
         list_add(&options, option, value_map);
-        //Increment i to make sure to stop if max matches is found;
+        /* Increment i to make sure to stop if max matches is found; */
         ++i;
       }
     }
@@ -129,7 +130,7 @@ int choose_ingredient(list_t* options, const char *search_string){
 
 int string_to_words(const char* string, char** words){
   int i = 0;
-  char _string[strlen(string)+1];
+  char* _string = malloc(strlen(string)+1*sizeof(char));
   char* cp;
   strcpy(_string, string);
   cp = _string;
@@ -141,8 +142,7 @@ int string_to_words(const char* string, char** words){
 }
 
 nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
-  int i, nutrient_count;
-  char ch, id[MAX_ID_SIZE], ingredient_id[MAX_NUTRIENT_SIZE];
+  int nutrient_count;
   nutrient_arrays_t nutrients;
   /* Opening the file */
   FILE *fp = fopen("Food_Nutrients.csv", "r");

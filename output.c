@@ -7,7 +7,6 @@
 void nutrient_output(UserData userdata){
   map_t *map, *meal;
   list_t *list, *nutrient_list;
-  ingredient_nutrients_t ingredient_nutrients[MAX_ARRAY_SIZE];
   int i, j, k, percentage;
   double nutrient_ranges[VITAMIN_RANGES];
   double nutrient_count[NUTRIENT_COUNT];

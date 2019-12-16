@@ -1,11 +1,9 @@
 {
   "meals": [
     {
-      "name": "Snack",
+      "name": "Breakfast",
       "ingredients": [
-        "50 g carrot",
-        "75 g banana",
-	"60 g chocolate 50%"
+        "255 g granola"
       ]
     }
   ]

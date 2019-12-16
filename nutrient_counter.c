@@ -14,7 +14,7 @@ void meal_nutrient_count_add(map_t* meal){
   struct _INGREDIENT ingredient;
   double nutrient_amount;
   char nutrient_unit[10];
-  int i, index;
+  int i;
   void* value;
   list_t *nutrient_list = NULL;
 
