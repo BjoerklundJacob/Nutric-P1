@@ -46,9 +46,6 @@ int age_group(int age){
   * Loads the CSV-file with ranges to a double array
   */
 void load_vitamin_ranges(double VitaminTable[], UserData userdata){
-  /*Open the file*/
-  FILE *vitamins = fopen(".\\Vitamin_Ranges.csv", "r");
-=======
   FILE *vitamins = fopen(".\\Vitamin_Ranges.csv", "r");
   if (vitamins == NULL){
     printf("File Vitamin_Ranges.csv could not be opened.\n");

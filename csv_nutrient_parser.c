@@ -42,11 +42,9 @@ int get_ingredient_id(const char *search_string){
     search_words[i] = calloc(50, sizeof(char));
   }
 
-  /*Accessing the food lookup file*/
   fp = fopen("Food.csv", "r");
   id_val = 0;
 
-  /*Checking if the file was opened*/
   if(fp != NULL){
     words = string_to_words(search_string, search_words);
     i = 0;
@@ -70,7 +68,6 @@ int get_ingredient_id(const char *search_string){
         map_add(option, "id", value, value_string);
         /* Add to options */
         list_add(&options, option, value_map);
-        /* Increment i to make sure to stop if max matches is found; */
         ++i;
       }
     }
@@ -134,6 +131,9 @@ int choose_ingredient(list_t* options, const char *search_string){
   return -1;
 }
 
+/**
+  * Converts a string of chars to a word
+  */ 
 int string_to_words(const char* string, char** words){
   int i = 0;
   char* _string = malloc(strlen(string)+1*sizeof(char));
@@ -147,16 +147,14 @@ int string_to_words(const char* string, char** words){
   free(_string);
   return i;
 }
-
+/**
+  * Gets the nutritional values for specific ingredients
+  */ 
 nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
   int nutrient_count;
   nutrient_arrays_t nutrients;
-  /* Opening the file */
   FILE *fp = fopen("Food_Nutrients.csv", "r");
-
-  /* Allocating space for the nutrients id's */
   nutrients.nutrient_id = calloc(MAX_NUTRIENT_COUNT, sizeof(int));
-  /* Allocating space for the nutrient values */
   nutrients.nutrient_amount = calloc(MAX_NUTRIENT_COUNT, sizeof(double));
   
   if(fp != NULL){
@@ -166,12 +164,15 @@ nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
     for(nutrient_count = 0; nutrient_count < MAX_NUTRIENT_COUNT; ++nutrient_count){
       fscanf(fp," %*[^;];%d;%lf", &nutrients.nutrient_id[nutrient_count], &nutrients.nutrient_amount[nutrient_count]);
     }
-    /* Remembering to close the file */
     fclose(fp);
   }
   return nutrients;
 }
 
+/**
+  * Loads the nutrients in a nutrient arr
+  * Finds the specific place in the file where the nutrient is and uses it in the nutrient arr
+  */ 
 ingredient_nutrients_t nutrient_array_to_struct(nutrient_arrays_t nutrients){
   ingredient_nutrients_t ingredient_nutrients;
   int i;

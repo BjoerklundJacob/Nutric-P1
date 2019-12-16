@@ -2,6 +2,11 @@
 #include "csv_nutrient_parser.h"
 #include <string.h>
 
+/**
+  * Counts the nutrients in the recipe inputted by the user
+  * e.g. if the user input 50 g carrot and 100 g mint chocolate 
+  * it counts the nutrients for both and adds them together
+  */ 
 void meal_nutrient_count_add(map_t* meal){
   list_t *ingredient_element = map_value(meal, "ingredients");
   double meal_nutrients_array[NUTRIENT_COUNT];
@@ -17,8 +22,6 @@ void meal_nutrient_count_add(map_t* meal){
   int i;
   void* value;
   list_t *nutrient_list = NULL;
-
-  /* Initialise recipe nutrient array to 0 */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     meal_nutrients_array[i] = 0.0;
   }
@@ -55,7 +58,9 @@ void meal_nutrient_count_add(map_t* meal){
   }
 }
  
-/*Give the correct number to convert a unit to gram*/
+/**
+  *  Gives the correct number to convert a unit to gram 
+  */
 double unit_to_gram(const char* unit){
   int i;
   char string[50];
