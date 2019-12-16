@@ -138,6 +138,7 @@ int string_to_words(const char* string, char** words){
     cp += strlen(words[i])+1;
     ++i;
   }
+  free(_string);
   return i;
 }
 
