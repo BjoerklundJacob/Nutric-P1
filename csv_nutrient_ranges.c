@@ -3,16 +3,21 @@
 /**
   * Gets user data as input and uses these to calculate the nutrient requirements
   */
-void get_range(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
-  int place = place_in_table(age_group(age), vitamin, gender);
+void get_range(double VitaminTable[], double *minMax, int vitamin, UserData userdata){
+  int place = place_in_table(age_group(userdata.age), vitamin, userdata.gender == 'm' ? 1 : 0);
 
   switch (vitamin){
-  case mineral_iodine:
   case mineral_iron:
+    if (userdata.vegan == 'y'){
+      minMax[0] = VitaminTable[place] * IRON_FOR_VEGANS_MULT * userdata.weight;
+      minMax[1] = VitaminTable[place+1] * IRON_FOR_VEGANS_MULT * userdata.weight;
+      break;
+    }
+  case mineral_iodine:
   case mineral_zinc:
   case vitamin_A:
-    minMax[0] = VitaminTable[place] * weight;
-    minMax[1] = VitaminTable[place+1] * weight;
+    minMax[0] = VitaminTable[place] * userdata.weight;
+    minMax[1] = VitaminTable[place+1] * userdata.weight;
     break;
   case mineral_calcium:
   case mineral_selenium:
