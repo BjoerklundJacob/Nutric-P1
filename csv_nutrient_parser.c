@@ -57,14 +57,12 @@ int get_ingredient_id(const char *search_string){
         /* Add text and id to list */
         option = map_create();
         /* Text */
-        value = calloc(strlen(csv_text)+1, sizeof(char));
+        value = allocate_string(csv_text);
         if(value == NULL){exit(EXIT_FAILURE);}
-        strcpy(value, csv_text);
         map_add(option, "text", value, value_string);
         /* Id */
-        value = calloc(ID_LENGTH, sizeof(char));
+        value = allocate_string(csv_id);
         if(value == NULL){exit(EXIT_FAILURE);}
-        strcpy(value, csv_id);
         map_add(option, "id", value, value_string);
         /* Add to options */
         list_add(&options, option, value_map);

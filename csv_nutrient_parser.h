@@ -10,7 +10,7 @@
 #include "menu.h"
 
 #define ID_LENGTH 7
-#define MAX_LINE_LENGTH 128
+#define MAX_LINE_LENGTH 256
 #define MAX_SEARCH_OPTIONS 5
 #define MAX_ARRAY_SIZE 82
 #define MAX_INGRIDIENT_NUTRIENT_STRING_LEN 20
