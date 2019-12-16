@@ -233,3 +233,15 @@ void free_value(void* value, value_types_t value_type){
     }
   }
 }
+
+/** Creates a allocated copy of a string
+  * @param string - string to copy
+  */
+char* allocate_string(const char* string){
+  char* _string = malloc(strlen(string)+1);
+  if (_string != NULL){
+    strcpy(_string, string);
+    _string[strlen(string)] = 0;
+  }
+  return _string;
+}

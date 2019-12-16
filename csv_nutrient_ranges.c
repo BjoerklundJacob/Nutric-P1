@@ -46,15 +46,12 @@ int age_group(int age){
   * Loads the CSV-file with ranges to a double array
   */
 void load_vitamin_ranges(double VitaminTable[], UserData userdata){
-<<<<<<< Updated upstream
   /*Open the file*/
-  FILE *vitamins = fopen(".\\Vitamins.csv", "r");
+  FILE *vitamins = fopen(".\\Vitamin_Ranges.csv", "r");
 =======
   FILE *vitamins = fopen(".\\Vitamin_Ranges.csv", "r");
->>>>>>> Stashed changes
-
   if (vitamins == NULL){
-    printf("File Vitamins.csv was not found");
+    printf("File Vitamin_Ranges.csv could not be opened.\n");
     exit(EXIT_FAILURE);
   }
   get_vitamins_table(vitamins, VitaminTable, userdata);

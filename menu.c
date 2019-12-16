@@ -1,8 +1,8 @@
 #include "menu.h"
 /**
- * Sets the users data as a backup and then tries to get it from the file and goes to the relevant page using dialogue with the user.
+ * Goes to the relevant submenu using dialogue with the user.
 */
-void menu(void){
+int main(void){
     UserData userData;
     char pageinput = '!';
     
@@ -25,43 +25,38 @@ void menu(void){
             clear_screen();
             break;
         case INPUT_FILE_PAGE:
-            system("start %windir%\\notepad.exe \"Input.json\"");
+            clear_screen();
+            open_input_file();
             break;
         case EXIT:
             clear_screen();
-            exit_message();
-            clear_screen();
+            printf("See you next time.\n");
             break;
         default:
             printf("The following page was not found. Please try again.\n");
             break;
         }
     } while (pageinput != EXIT);
-}
-
-/*
- * Goes to the recipe page
- */
-void nutrient_page(UserData userdata){
-    do{
-        printf("You're at the nutrient page.\n");
-        /* Output nutrients */
-        nutrient_output(userdata);
-        printf("Press 0 to return to main menu.\n");
-    } while (getch() != '0');
-    return;
+    return EXIT_SUCCESS;
 }
 
 /**
- * Exits the program
+ * Goes to the nutrient submenu
+ * @param userData the struct in control of all the users data and modifies the data
  */
-void exit_message(void){
-    printf("See you next time.\n");
+void nutrient_page(UserData userdata){
+    printf("You're at the nutrient page.\n");
+    /* Output nutrients */
+    nutrient_output(userdata);
+    printf("Press 0 to return to main menu.\n");
+    /* Return if pressing '0' */
+    while (getch() != '0');
     return;
 }
 
-/*
- * Displays the VeGen ascii art and the instructions to the users
+
+/**
+ * Displays the Nutric ascii art and the instructions to the users
  */
 void start_text(void){
     /*
@@ -77,20 +72,22 @@ void start_text(void){
     printf("/ /\\  /| |_| | |_| |  | | (__ \n");
     printf("\\_\\ \\/  \\__,_|\\__|_|  |_|\\___|\n");
 
+    printf("Press the number corresponding to an option:\n");
+
     printf("(1) Nutrients\n");
     printf("(2) User Settings\n");
-    printf("(3) Open the recipe list\n");
+    printf("(3) Open the input file\n");
     printf("(0) Exit\n");
 }
 
-/*
+/**
  * Clears the screen on both console and bash
  */
 void clear_screen(void){
     system("@cls||clear");
 }
 
-/*
+/**
  * Load the data stored in an ini file into the userData struct
  * @param userData the struct in control of all the users data and modifies the data
  */
@@ -111,4 +108,44 @@ void load_user_data(UserData* userData){
     fscanf(file, " Gender=%c", &userData->gender);
     fclose(file);
     return;
+}
+
+/** 
+ * Opens the input file creating a template if the file doesn't exist
+ */
+void open_input_file(){
+  FILE *file;
+  map_t *map, *meal;
+  list_t *meals = NULL, *ingredients = NULL;
+  char *str;
+
+  file = fopen("Input.json", "r");
+  if(file == NULL){
+    map = map_create();
+    meal = map_create();
+    /* Add name */
+    str = allocate_string("Snack");
+    if(str != NULL){
+      map_add(meal, "name", str, value_string);
+    }
+    /* Add ingredients */
+    str = allocate_string("50 g carrot");
+    if(str != NULL){
+      list_add(&ingredients, str, value_string);
+    }
+    str = allocate_string("75 g banana");
+    if(str != NULL){
+      list_add(&ingredients, str, value_string);
+    }
+    map_add(meal, "ingredients", ingredients, value_list);
+    /* Add meal to meals list */
+    list_add(&meals, meal, value_map);
+    /* Add meals to json map */
+    map_add(map, "meals", meals, value_list);
+    /* Write to file */
+    json_write("Input.json", map);
+    /* Free */
+    map_free(map);
+  }
+  system("start %windir%\\notepad.exe \"Input.json\"");
 }

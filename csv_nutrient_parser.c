@@ -9,14 +9,14 @@ ingredient_nutrients_t get_ingredient_nutrients(const char* name){
   int i;
   char* cp;
   strcpy(nutrients.ingredient_name, name);
-
+  /* Initialise all nutrients to 0 g */
   for(i = 0; i < NUTRIENT_COUNT; ++i){
     cp = nutrients.calcium + i * MAX_INGRIDIENT_NUTRIENT_STRING_LEN;
     strcpy(cp, "0.0 g");
   }
-
   id = get_ingredient_id(name);
   if(id != 0){
+    /* Load ingredient nutrients */
     nutrients = nutrient_array_to_struct(get_nutrient_values(id));
     strcpy(nutrients.ingredient_name, name);
   }
@@ -34,36 +34,43 @@ int get_ingredient_id(const char *search_string){
   map_t* option;
   void* value;
   char csv_text[MAX_LINE_LENGTH], csv_id[ID_LENGTH];
+  FILE *fp;
 
+  /* Make string array for splitting search into words */
   search_words = calloc(50, sizeof(char*));
   for(i = 0; i < 50; ++i){
     search_words[i] = calloc(50, sizeof(char));
   }
-  FILE *fp = fopen("Food.csv", "r");
 
+  /*Accessing the food lookup file*/
+  fp = fopen("Food.csv", "r");
+  id_val = 0;
+
+  /*Checking if the file was opened*/
   if(fp != NULL){
     words = string_to_words(search_string, search_words);
     i = 0;
-    while(MAX_SEARCH_OPTIONS > i && fscanf(fp, " %[^;]; %s\n", csv_text, csv_id) == 2){
+    while(i < MAX_SEARCH_OPTIONS && fscanf(fp, " %[^;]; %s\n", csv_text, csv_id) == 2){
       search_score = 0;
       for(j = 0; j < words; ++j){
         search_score += strstr(csv_text, search_words[j]) != NULL ? 1 : 0;
       }
       if(search_score == words){
+        /* Add text and id to list */
         option = map_create();
-        /*Text*/
+        /* Text */
         value = calloc(strlen(csv_text)+1, sizeof(char));
         if(value == NULL){exit(EXIT_FAILURE);}
         strcpy(value, csv_text);
         map_add(option, "text", value, value_string);
-        /*Id*/
+        /* Id */
         value = calloc(ID_LENGTH, sizeof(char));
         if(value == NULL){exit(EXIT_FAILURE);}
         strcpy(value, csv_id);
         map_add(option, "id", value, value_string);
-        /*Add to options*/
+        /* Add to options */
         list_add(&options, option, value_map);
-        /*Increment i to make sure to stop if max matches is found*/
+        /* Increment i to make sure to stop if max matches is found; */
         ++i;
       }
     }
@@ -127,12 +134,9 @@ int choose_ingredient(list_t* options, const char *search_string){
   return -1;
 }
 
-/**
-  *
-  */  
 int string_to_words(const char* string, char** words){
   int i = 0;
-  char _string[strlen(string)+1];
+  char* _string = malloc(strlen(string)+1*sizeof(char));
   char* cp;
   strcpy(_string, string);
   cp = _string;
@@ -140,13 +144,12 @@ int string_to_words(const char* string, char** words){
     cp += strlen(words[i])+1;
     ++i;
   }
+  free(_string);
   return i;
 }
 
-
 nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
-  int i, nutrient_count;
-  char ch, id[MAX_ID_SIZE], ingredient_id[MAX_NUTRIENT_SIZE];
+  int nutrient_count;
   nutrient_arrays_t nutrients;
   /* Opening the file */
   FILE *fp = fopen("Food_Nutrients.csv", "r");
@@ -168,7 +171,6 @@ nutrient_arrays_t get_nutrient_values(int ingredient_id_number){
   }
   return nutrients;
 }
-
 
 ingredient_nutrients_t nutrient_array_to_struct(nutrient_arrays_t nutrients){
   ingredient_nutrients_t ingredient_nutrients;

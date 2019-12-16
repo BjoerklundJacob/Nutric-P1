@@ -15,8 +15,8 @@
 void user_settings(UserData* userData);
 void menu(void);
 void nutrient_page(UserData);
-void exit_message(void);
 void start_text(void);
 void clear_screen(void);
 void load_user_data(UserData* userData);
+void open_input_file();
 #endif
