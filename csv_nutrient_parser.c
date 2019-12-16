@@ -90,10 +90,8 @@ int get_ingredient_id(const char *search_string){
     printf("Ingredient nutrient data file could not be opened!\n");
     exit(EXIT_FAILURE);
   }
-
-  /** 
-    * Free allocated memory 
-    */
+  
+  /* Free allocated memory */
   for(i = 0; i < 50; ++i){
     free(search_words[i]);
   }
@@ -114,10 +112,12 @@ int choose_ingredient(list_t* options, const char *search_string){
   printf("Press the number corresponding to an option:\n");
   size = list_size(options);
   if(size > 0){
+    /* Print options */
     for(i = 0; i < size; i++){
       option = list_value(options, i);
       printf("(%i) %s\n", i + 1, map_value(option, "text"));
     }
+    /* Get input option choice */
     choice = getch();
     while(!(choice >= '1' && choice < '1' + size)){
       printf("Error, please input a valid option number.\n");
@@ -128,6 +128,7 @@ int choose_ingredient(list_t* options, const char *search_string){
     printf("No matches to <%s> was found.\n\n", search_string);
     return NO_RESULTS;
   }
+  /* If there was a valid choice */
   if(choice != -1){
     option = list_value(options, (choice - '1'));
     printf("Selected <%s> (%d)\n\n", map_value(option, "text"), (choice - '1')+1);
@@ -141,13 +142,18 @@ int choose_ingredient(list_t* options, const char *search_string){
   */ 
 int string_to_words(const char* string, char** words){
   int i = 0;
-  char* _string = malloc(strlen(string)+1*sizeof(char));
+  char* _string = malloc((strlen(string)+1)*sizeof(char));
   char* cp;
+  if(_string == NULL){exit(EXIT_FAILURE);}
   strcpy(_string, string);
   cp = _string;
-  while(sscanf(cp, "%[a-zA-Z0-9]", words[i])){
+  while(sscanf(cp, " %[a-zA-Z0-9]", words[i])){
     cp += strlen(words[i])+1;
     ++i;
+    /* Break if read all string */
+    if(cp > _string + strlen(_string)){
+      break;
+    }
   }
   free(_string);
   return i;
