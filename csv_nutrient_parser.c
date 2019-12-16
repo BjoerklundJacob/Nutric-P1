@@ -28,7 +28,7 @@ ingredient_nutrients_t get_ingredient_nutrients(const char* name){
   * Search options are limited to 5 
   */ 
 int get_ingredient_id(const char *search_string){
-  int i, chosen, id_val = 0, j, words, search_score = 0;
+  int i, chosen, id_val = 0, j, words, search_score;
   char **search_words;
   list_t* options = NULL;
   map_t* option;
@@ -48,11 +48,18 @@ int get_ingredient_id(const char *search_string){
   if(fp != NULL){
     words = string_to_words(search_string, search_words);
     i = 0;
-    while(i < MAX_SEARCH_OPTIONS && fscanf(fp, " %[^;]; %s\n", csv_text, csv_id) == 2){
+    /* Loop through file while there is things to read or until max search options has been found */
+    while(i < MAX_SEARCH_OPTIONS && fscanf(fp, " %[^;]; %s", csv_text, csv_id) == 2){
       search_score = 0;
       for(j = 0; j < words; ++j){
-        search_score += strstr(csv_text, search_words[j]) != NULL ? 1 : 0;
+        if(strstr(csv_text, search_words[j]) != NULL){
+          ++search_score;
+        }
+        else{
+          break;
+        }
       }
+      /* If all search words were found in the string, the search is a succes (Save it) */
       if(search_score == words){
         /* Add text and id to list */
         option = map_create();
@@ -118,7 +125,7 @@ int choose_ingredient(list_t* options, const char *search_string){
     }
   }
   else{
-    printf("No matches to <%s> was found.\n", search_string);
+    printf("No matches to <%s> was found.\n\n", search_string);
     return NO_RESULTS;
   }
   if(choice != -1){
