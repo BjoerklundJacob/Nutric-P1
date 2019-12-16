@@ -94,7 +94,7 @@ void clear_screen(void){
 void load_user_data(UserData* userData){
     FILE *file;
     
-    /* Checks if the file exists if it does not go back to menu and use the initial settings*/
+    /* Checks if the file exists if it does not exist, go back to menu and use the initial settings*/
     if ((file = fopen("User_Data.ini", "r")) == NULL){
         printf("\x1b[32m" "It is recommended to input your specifics in User Settings for optimal perfomance" "\x1b[0m\n\n");
         userData->age = 20;
