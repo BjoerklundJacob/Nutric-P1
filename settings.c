@@ -44,10 +44,10 @@ void user_settings(UserData* userData){
  */
 void get_age_input(UserData* userData){
     int scanres;
+    char buffer;
     printf("Please input your age: ");
     scanres = scanf(" %i", &userData->age);
     while (scanres != 1){
-        char buffer;
         while (buffer != '\n'){
             scanf("%c", &buffer);
         }
@@ -82,10 +82,10 @@ void get_gender_input(UserData* userData){
  */
 void get_weight_input(UserData* userData){
     int scanres;
+    char buffer;
     printf("Please input your weight: ");
     scanres = scanf(" %lf", &userData->weight);
     while (scanres != 1){
-        char buffer;
         while (buffer != '\n'){
             scanf("%c", &buffer);
         }
