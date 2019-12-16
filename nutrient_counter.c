@@ -59,7 +59,7 @@ void recipe_nutrient_count_add(map_t* recipe, ingredient_nutrients_t* nutrients)
     map_add(recipe, "nutrients", nutrient_list, value_list);
   }
 }
-
+ 
 /*Give the correct number to convert a unit to gram*/
 double unit_to_gram(const char* unit){
   int i;

@@ -1,7 +1,8 @@
 #include "csv_nutrient_ranges.h"
 
-/*This function set a output array paremeter to too ranges*/
-/*From the inputs that it gets*/
+/**
+  * Gets user data as input and uses these to calculate the nutrient requirements
+  */
 void get_range(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
   int place = place_in_table(age_group(age), vitamin, gender);
 
@@ -25,7 +26,9 @@ void get_range(double VitaminTable[], double *minMax, int age, int vitamin, int 
   }
 }
 
-/* Returns the age group of age */
+/**
+  *  Returns the age group of the user 
+  */
 int age_group(int age){
   if (age<20) {return 0;}
   else if (age<30) {return 1;}
@@ -39,28 +42,37 @@ int age_group(int age){
   else {return 9;}
 }
 
-/* Loads the CSVs of ranges to a double array of 400 numbers */
+/**
+  * Loads the CSV-file with ranges to a double array
+  */
 void load_vitamin_ranges(double VitaminTable[], UserData userdata){
+<<<<<<< Updated upstream
   /*Open the file*/
   FILE *vitamins = fopen(".\\Vitamins.csv", "r");
+=======
+  FILE *vitamins = fopen(".\\Vitamin_Ranges.csv", "r");
+>>>>>>> Stashed changes
 
   if (vitamins == NULL){
     printf("File Vitamins.csv was not found");
     exit(EXIT_FAILURE);
   }
-
   get_vitamins_table(vitamins, VitaminTable, userdata);
-
   fclose(vitamins);
 
   return;
 }
 
+/**
+  * Scans the nutrients file dependent on age
+  * Uses user data to calculate how many of each nutrient they should have based on age and gender
+  */ 
 void get_vitamins_table(FILE *vitamins, double *VitaminTable, UserData userdata){
   int place, vitamin, gender, i;
-  /*Go through all the vitamins for both genders and all the age groups, to the array*/
   for (vitamin = 0; vitamin < VITAMINS; vitamin++){
+
     for (gender = 0; gender < GENDERS; gender++){
+
       for (i = 0; i < AGE_GROUPS; i++){
         place = place_in_table(i,vitamin,gender);
         
@@ -71,9 +83,12 @@ void get_vitamins_table(FILE *vitamins, double *VitaminTable, UserData userdata)
       }
     }  
   }
+  return;
 }
 
-/* A function to get to a place in the array */
+/**
+  * A function to find a place in the array 
+  */
 int place_in_table(int ageGroup, int vitamin, int gender){
   return ageGroup *2 + (vitamin * (AGE_GROUPS*2*2))  + (gender * AGE_GROUPS*2); 
 }
