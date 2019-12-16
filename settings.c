@@ -26,6 +26,11 @@ void user_settings(UserData* userData){
                 get_gender_input(userData);
                 user_settings_text();
                 break;
+            case '4':
+                clear_screen();
+                get_vegan_input(userData);
+                user_settings_text();
+                break;
             case '0':
                 save_user_data(*userData);
                 clear_screen();
@@ -96,6 +101,25 @@ void get_weight_input(UserData* userData){
 }
 
 /**
+ * Takes the users vegan preference from dialog and inputs it into the structure member gender and check for invalid inputs.
+ * @param userData the struct in control of all the users data and modifies the data
+ */
+void get_vegan_input(UserData* userData){
+    char vegan;
+    printf("Are you vegan (y)es or (n)o: ");
+    do{
+        vegan = tolower(getch());
+        if (vegan == 'y' || vegan == 'n'){
+            userData->vegan = vegan; 
+        }else{
+            printf("\nPlease input a valid vegan: ");
+        }
+    }while(vegan != 'y' && vegan != 'n');
+    printf("\nYour vegan preference is now set to %c\n\n", userData->vegan); 
+    return;
+}
+
+/**
  * Prints the introductory text to user settings
  */
 void user_settings_text(void){
@@ -104,6 +128,7 @@ void user_settings_text(void){
     printf(" (1) Age\n");
     printf(" (2) Weight\n");
     printf(" (3) Gender\n");
+    printf(" (4) Vegan\n");
     printf(" (0) Return to the main menu\n");
     return;
 }
@@ -121,5 +146,6 @@ void save_user_data(UserData userData){
     fprintf(file, "Age=%i\n", userData.age);
     fprintf(file, "Weight=%lf\n", userData.weight);
     fprintf(file, "Gender=%c\n", userData.gender);
+    fprintf(file, "Vegan=%c\n", userData.vegan);
     fclose(file);
 }

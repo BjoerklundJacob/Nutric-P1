@@ -106,6 +106,7 @@ void load_user_data(UserData* userData){
     fscanf(file, " Age=%i", &userData->age);
     fscanf(file, " Weight=%lf", &userData->weight);
     fscanf(file, " Gender=%c", &userData->gender);
+    fscanf(file, " Vegan=%c", &userData->vegan);
     fclose(file);
     return;
 }

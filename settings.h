@@ -11,6 +11,7 @@ void user_settings(UserData* userData);
 void get_age_input(UserData* userData);
 void get_gender_input(UserData* userData);
 void get_weight_input(UserData* userData);
+void get_vegan_input(UserData* userData);
 void user_settings_text(void);
 void save_user_data(UserData userData);
 void clear_screen(void);

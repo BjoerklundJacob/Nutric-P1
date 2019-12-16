@@ -59,7 +59,7 @@ void nutrient_output(UserData userdata){
     amount = nutrient_count[i];
 
     /* Gets the recommended range of the vitamin */
-    get_range(nutrient_ranges, minMax, userdata.age, i, userdata.gender == 'm' ? 0 : 1,userdata.weight);
+    get_range(nutrient_ranges, minMax, i, userdata);
     strcpy(unit, "g");
 
     if (i == mineral_zinc || i == mineral_selenium || i == mineral_iodine || i == vitamin_B12 || i == vitamin_A || i == vitamin_D){
