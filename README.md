@@ -55,4 +55,4 @@ Pressing the number one button will load the file: input.json
 
 Lastly the 0 button closes the program!
 
-Now enjoy the program! If you have any issues email: support@nutric.com
+Now enjoy the program!
