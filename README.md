@@ -1,7 +1,7 @@
 # VeGen-P1
 Repository for P1 - Software19
 
-Hello and welcome to Nutric, during this text you will learn to use and manage the files and programs involved in Nutric. 
+Hello and welcome to Nutric, during this text you will learn to use and manage the files and programs involved in Nutric.
 
 DISCLAIMER: The program is Windows 10 and Windows XP or earlier only!!!!
 
@@ -54,5 +54,7 @@ Pressing the number one button will load the file: input.json
 	the screen.
 
 Lastly the 0 button closes the program!
+
+To compile the program use the following command: "gcc menu.c settings.c output.c json_parser.c csv_nutrient_ranges.c csv_nutrient_parser.c json_structs.c nutrient_counter.c -g -ansi -Wall -pedantic -o Nutric.exe"
 
 Now enjoy the program!
