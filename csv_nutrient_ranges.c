@@ -1,44 +1,32 @@
 #include "csv_nutrient_ranges.h"
-/*int main(void){
-  double VitaminTable[ALLVITAMINS];
 
-  SetVitamins(VitaminTable);
-
-  double minMax[2];
-  int age = 19, vitamin = 1, gender = 1, weight = 100;
-  GetRange(VitaminTable, minMax, age, vitamin, gender, weight);
-
-  return 0;
-*/
-void GetRange(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
-  int place = PlaceInTable(AgeGroup(age), vitamin, gender);
+/*This function set a output array paremeter to too ranges*/
+/*From the inputs that it gets*/
+void get_range(double VitaminTable[], double *minMax, int age, int vitamin, int gender, int weight){
+  int place = place_in_table(age_group(age), vitamin, gender);
 
   switch (vitamin){
-  case VitaminA:
-  case Iron:
-  case Zinc:
-  case Iodine:
+  case mineral_iodine:
+  case mineral_iron:
+  case mineral_zinc:
+  case vitamin_A:
     minMax[0] = VitaminTable[place] * weight;
     minMax[1] = VitaminTable[place+1] * weight;
     break;
-  case VitaminD:
-  case Calcium:
-  case RiboflavinB2:
-  case NiacinB3:
-  case Selenium:
-  case VitaminB12:
+  case mineral_calcium:
+  case mineral_selenium:
+  case vitamin_B2:
+  case vitamin_B3:
+  case vitamin_B12:
+  case vitamin_D:
     minMax[0] = VitaminTable[place];
     minMax[1] = VitaminTable[place+1];
     break;
-  
-  default:
-    break;
   }
-
-  return;
 }
 
-int AgeGroup(int age){
+/* Returns the age group of age */
+int age_group(int age){
   if (age<20) {return 0;}
   else if (age<30) {return 1;}
   else if (age<40) {return 2;}
@@ -51,34 +39,33 @@ int AgeGroup(int age){
   else {return 9;}
 }
 
-void SetVitaminRanges(double VitaminTable[], UserData userdata){
-  FILE *vitamins = fopen(".\\Vitamins.csv", "r");
+/* Loads the CSVs of ranges to a double array of 400 numbers */
+void load_vitamin_ranges(double VitaminTable[], UserData userdata){
+  /*Open the file*/
+  FILE *vitamins = fopen(".\\Vitamin_Ranges.csv", "r");
 
   if (vitamins == NULL){
-    printf("File Vitamins.csv was not found");
+    printf("File Vitamin_Ranges.csv could not be opened.\n");
     exit(EXIT_FAILURE);
   }
 
-  GetVitaminsTable(vitamins, VitaminTable, userdata);
+  get_vitamins_table(vitamins, VitaminTable, userdata);
 
   fclose(vitamins);
 
   return;
 }
 
-void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
+void get_vitamins_table(FILE *vitamins, double *VitaminTable, UserData userdata){
   int place, vitamin, gender, i;
-
+  /*Go through all the vitamins for both genders and all the age groups, to the array*/
   for (vitamin = 0; vitamin < VITAMINS; vitamin++){
     for (gender = 0; gender < GENDERS; gender++){
       for (i = 0; i < AGE_GROUPS; i++){
-        place = PlaceInTable(i,vitamin,gender);
+        place = place_in_table(i,vitamin,gender);
         
         fscanf(vitamins,"%lf - %lf",&VitaminTable[place], &VitaminTable[place + 1]);
-        if (vitamin == VitaminA || vitamin == Iron || vitamin == Zinc || vitamin == Iodine){
-          VitaminTable[place] *= userdata.weight;
-          VitaminTable[place + 1] *= userdata.weight;
-        }
+
         if(i != AGE_GROUPS-1) 
           fscanf(vitamins, " ;");
       }
@@ -86,6 +73,7 @@ void GetVitaminsTable(FILE *vitamins, double *VitaminTable, UserData userdata){
   }
 }
 
-int PlaceInTable(int ageGroup, int vitamin, int gender){
+/* A function to get to a place in the array */
+int place_in_table(int ageGroup, int vitamin, int gender){
   return ageGroup *2 + (vitamin * (AGE_GROUPS*2*2))  + (gender * AGE_GROUPS*2); 
 }

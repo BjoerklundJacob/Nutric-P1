@@ -1,8 +1,8 @@
 #ifndef JSON_PARSER
 #define JSON_PARSER
-#include <stdio.h>
-#include "json_structs.h"
 
+#include "json_structs.h"
+#include <stdio.h>
 
 #define BUFFER_LEN 512
 

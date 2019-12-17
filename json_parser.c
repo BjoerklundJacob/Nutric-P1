@@ -1,5 +1,4 @@
 #include "json_parser.h"
-
 /*int main(void){
   map_t *map;
 
@@ -10,13 +9,12 @@
 
   map_free(map);
   return 0;
-}*/
-
+*/
 /** Parses a json file loading the data to a map, returning the loaded map
   * (simplified parsing - not full json parser)
   * @param file_dir directory to the .json file
   * @return map_t* allocated
-  */
+*/
 map_t* json_load(char* file_dir){
   FILE *file;
   map_t *map;
@@ -34,7 +32,7 @@ map_t* json_load(char* file_dir){
   
   /* if first char is not a '{' the json is formatted wrong */
   if (c != '{'){
-    printf("Could not parse JSON file.\n");
+    printf("Could not parse JSON file. Missing initial <{>\n");
     exit(EXIT_FAILURE);
   }
 
@@ -73,7 +71,7 @@ map_t* json_parse_map(FILE* file){
     /* get first white space character */
     c = non_white_space_char(file);
     if(c != '\"'){
-      printf("Invalid key formatting in json.\n");
+      printf("Invalid key formatting in json. The keys should be wrapped in <\">\n");
       exit(EXIT_FAILURE);
     }
     /* read key*/
@@ -90,7 +88,7 @@ map_t* json_parse_map(FILE* file){
   }
   while(c == ',');
   if(c != '}'){
-    printf("Missing '}' at the end of map.\n");
+    printf("Missing <}> at the end of map.\n");
     exit(EXIT_FAILURE);
   }
 
@@ -132,7 +130,7 @@ list_t* json_parse_list(FILE* file){
   }
   while(c == ',');
   if(c != ']'){
-    printf("Missing ']' at the end of list.\n");
+    printf("Missing <]> at the end of list.\n");
     exit(EXIT_FAILURE);
   }
 
@@ -208,7 +206,7 @@ value_types_t json_parse_value(FILE* file, void** value){
     case '\"':
       c = file_string_read(file, buffer, BUFFER_LEN, "\"", 0);
       if (c != '\"'){
-        printf("Could not parse value string.\n");
+        printf("Missing <\">. Could not parse value string.\n");
         exit(EXIT_FAILURE);
       }
       *value = malloc(strlen(buffer)+1);
@@ -237,7 +235,15 @@ value_types_t json_parse_value(FILE* file, void** value){
       break;
     /* value not being parsed by simplified json parser or invalid input */
     default:
-      printf("Unexpected value format in json. <%c>\n", c);
+      if(c == ']'){
+        printf("Error: Excess comma after last value in list\n", c);
+      }
+      else if(c == '}'){
+        printf("Error: Excess comma after last value in map\n", c);
+      }
+      else{
+        printf("Unexpected value format in json. <%c>\n", c);
+      }
       exit(EXIT_FAILURE);
   }
 
@@ -303,9 +309,8 @@ void fprint_value(FILE* file, void* value, value_types_t type, int depth){
       default: fprintf(file, "\"%s\"", value);
     }
   }
-  else{
+  else
     fprintf(file, "(null)");
-  }
 }
 
 /** Prints a list to a file
@@ -321,9 +326,8 @@ void fprint_list(FILE* file, list_t* list, int depth){
     findent(file, depth+1);
     element = list_element(list, i);
     fprint_value(file, element->value, element->value_type, depth+1);
-    if (i < list_size(list)-1){
+    if (i < list_size(list)-1)
       fprintf(file, ",\n");
-    }
   }
   fprintf(file, "\n");
   findent(file, depth);
@@ -336,7 +340,6 @@ void fprint_list(FILE* file, list_t* list, int depth){
   */
 void findent(FILE* file, int depth){
   int i;
-  for(i = 0; i < depth; ++i){
+  for(i = 0; i < depth; ++i)
     fprintf(file, "  ");
-  }
 }

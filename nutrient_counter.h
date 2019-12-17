@@ -11,18 +11,17 @@
 
 typedef enum _eNUTRIENTS{
   mineral_calcium,
-  mineral_iron,
-  mineral_zinc,
-  mineral_selenium,
   mineral_iodine,
+  mineral_iron,
+  mineral_selenium,
+  mineral_zinc,
+  vitamin_A,
   vitamin_B2,
   vitamin_B3,
   vitamin_B12,
-  vitamin_A,
   vitamin_D
 }eNUTRIENTS;
 
-void recipe_nutrient_count_add(map_t* recipe, list_t* nutrients);
+void meal_nutrient_count_add(map_t* recipe);
 double unit_to_gram(const char* unit);
-int ingredient_nutriens_index(list_t* nutrients, const char* name);
 #endif

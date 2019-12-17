@@ -1,10 +1,10 @@
 {
   "meals": [
     {
-      "name":"breakfast",
-      "ingredients":[
-        "100 g carrot",
-        "45 g squash"
+      "name": "Snack",
+      "ingredients": [
+        "50 g carrot",
+        "75 g banana"
       ]
     }
   ]
