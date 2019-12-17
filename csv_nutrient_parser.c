@@ -38,8 +38,10 @@ int get_ingredient_id(const char *search_string){
 
   /* Make string array for splitting search into words */
   search_words = calloc(50, sizeof(char*));
+  if(search_words == NULL){exit(EXIT_FAILURE);}
   for(i = 0; i < 50; ++i){
     search_words[i] = calloc(50, sizeof(char));
+    if(search_words[i] == NULL){exit(EXIT_FAILURE);}
   }
 
   fp = fopen("Food.csv", "r");
